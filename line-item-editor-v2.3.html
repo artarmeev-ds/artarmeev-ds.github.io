@@ -537,6 +537,10 @@
       transition: border-color var(--transition), box-shadow var(--transition);
     }
 
+    .input::placeholder {
+      color: var(--ds-input-placeholder-color);
+    }
+
     .input:focus {
       outline: none;
       border-color: var(--ds-input-focus-border-color);
@@ -791,8 +795,10 @@
 
     .form-label {
       display: block;
-      font-size: var(--ds-font-size-sm);
-      font-weight: var(--ds-font-weight-medium);
+      font-size: var(--ds-font-size-regular);
+      font-weight: var(--ds-font-weight-regular);
+      line-height: 1.4;
+      color: var(--ds-black);
       margin-bottom: var(--ds-spacer-2); /* DESIGN: snapped 6px→8px */
     }
 
@@ -803,6 +809,10 @@
       border-radius: var(--radius);
       font-size: var(--ds-input-font-size);
       font-family: inherit;
+    }
+
+    .form-input::placeholder {
+      color: var(--ds-input-placeholder-color);
     }
 
     .form-input:focus {
