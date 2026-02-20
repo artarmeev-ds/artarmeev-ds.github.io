@@ -1,0 +1,3777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>DocuSketch° Line Item Editor</title>
+  <link rel="stylesheet" href="ds-standalone.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    /* <!-- SVG Icon Library --> */
+    .ds-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--ds-icon-default);
+    }
+    .ds-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+    .ds-icon--xs { width: var(--ds-icon-xs); height: var(--ds-icon-xs); }
+    .ds-icon--sm { width: var(--ds-icon-sm); height: var(--ds-icon-sm); }
+    .ds-icon--md { width: var(--ds-icon-md); height: var(--ds-icon-md); }
+    .ds-icon--error { color: var(--ds-icon-error); }
+    .ds-icon--secondary { color: var(--ds-icon-secondary); }
+    .ds-icon--gray { color: var(--ds-icon-gray); }
+    .ds-icon--white { color: var(--ds-icon-white); }
+    .ds-icon--spinner svg { animation: spin 0.8s linear infinite; }
+
+    :root {
+      /* DESIGN: all values remapped to DS tokens from ds-standalone.css */
+      --bg-primary: var(--ds-gray);
+      --bg-card: var(--ds-white);
+      --accent: var(--ds-primary);
+      --accent-hover: var(--ds-primary-dark);
+      --accent-light: var(--ds-primary-light);
+      --text-primary: var(--ds-black);
+      --text-secondary: var(--ds-eucalyptus-dark);
+      --text-muted: var(--ds-gray-darker);
+      --border: var(--ds-gray-dark);
+      --border-light: var(--ds-gray);
+      --error: var(--ds-danger);
+      --error-bg: var(--ds-danger-light);
+      --success: var(--ds-success);
+      --success-bg: var(--ds-green-light);
+      --warning: var(--ds-warning);
+      --warning-bg: var(--ds-yellow-light);
+      --info: var(--ds-blue);
+      --info-bg: var(--ds-blue-light);
+      --radius: var(--ds-border-radius);
+      --radius-lg: var(--ds-border-radius-lg);
+      --shadow-sm: none; /* DESIGN: DS uses flat surfaces — no card-level shadows */
+      --shadow: none; /* DESIGN: DS uses flat surfaces — no card-level shadows */
+      --shadow-lg: var(--ds-shadow-dropdown);
+      --header-height: 56px;
+      --sidebar-width: 260px;
+      --transition: var(--ds-transition-fast);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--ds-font-family);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--header-height);
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--ds-spacer-5); /* 20px */
+      /* DESIGN: DS uses flat surfaces — header shadow removed */
+    }
+
+    .logo {
+      font-size: var(--ds-font-size-3xl); /* DESIGN: 22px — closest DS scale value */
+      font-weight: var(--ds-font-weight-medium);
+      letter-spacing: -0.5px;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: var(--ds-spacer-2); /* 8px — snapped to 4px grid */
+      align-items: center;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--ds-spacer-2); /* 8px */
+      padding: var(--ds-btn-padding-y) var(--ds-btn-padding-x);
+      border-radius: var(--ds-btn-border-radius);
+      font-size: var(--ds-btn-font-size);
+      font-weight: var(--ds-btn-font-weight);
+      cursor: pointer;
+      transition: all var(--transition);
+      border: 1px solid transparent;
+      font-family: inherit;
+      line-height: var(--ds-btn-line-height);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--text-primary);
+      border-color: var(--accent);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border-color: var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-primary);
+      border-color: var(--text-secondary);
+    }
+
+    .btn-beige {
+      background: var(--ds-secondary);
+      color: var(--ds-black);
+      border-color: var(--ds-secondary);
+    }
+
+    .btn-beige:hover {
+      background: var(--ds-gray);
+      border-color: var(--ds-gray);
+    }
+
+    .btn-beige:active {
+      background: var(--ds-secondary-dark);
+      border-color: var(--ds-secondary-dark);
+    }
+
+    .btn-danger {
+      /* DESIGN: DS btn-danger is white bg / red text (inverted from original) */
+      background: var(--ds-white);
+      color: var(--error);
+      border-color: var(--border);
+    }
+
+    .btn-danger:hover {
+      background: var(--bg-primary);
+    }
+
+    .btn-danger:active {
+      background: var(--error);
+      color: var(--ds-white);
+    }
+
+    .btn-success {
+      /* DESIGN: DS has no btn-success — using ds-btn-primary (chartreuse) */
+      background: var(--accent);
+      color: var(--text-primary);
+      border-color: var(--accent);
+    }
+
+    .btn-success:hover {
+      background: var(--accent-light);
+    }
+
+    .btn:disabled {
+      opacity: var(--ds-btn-disabled-opacity);
+      cursor: not-allowed;
+    }
+
+    .btn-sm {
+      padding: var(--ds-btn-sm-padding-y) var(--ds-btn-sm-padding-x);
+      font-size: var(--ds-btn-sm-font-size);
+      line-height: var(--ds-btn-sm-line-height);
+      border-radius: var(--ds-btn-sm-border-radius);
+    }
+
+    .btn.loading {
+      position: relative;
+      color: transparent;
+      pointer-events: none;
+    }
+
+    .btn.loading::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .btn-primary.loading::after {
+      border-color: rgba(61, 61, 53, 0.3);
+      border-top-color: var(--text-primary);
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Layout */
+    .app-container {
+      display: flex;
+      height: calc(100vh - var(--header-height));
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--bg-card);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .sidebar-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .sidebar-title {
+      font-size: var(--ds-font-size-regular);
+      font-weight: var(--ds-font-weight-medium);
+      margin-bottom: var(--ds-spacer-3);
+      display: flex;
+      align-items: center;
+      gap: var(--ds-spacer-2);
+    }
+
+    .sidebar-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .sidebar-actions .btn {
+      flex: 1;
+      font-size: var(--ds-font-size-sm);
+      padding: var(--ds-btn-sm-padding-y) var(--ds-btn-sm-padding-x);
+    }
+
+    .tree-view {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 0;
+    }
+
+    .tree-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: background 0.1s;
+      position: relative;
+    }
+
+    .tree-item:hover {
+      background: var(--bg-primary);
+    }
+
+    .tree-item.active {
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-light) 100%);
+    }
+
+    .tree-item-icon {
+      margin-right: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tree-item-label {
+      flex: 1;
+      font-size: var(--ds-font-size-sm); /* DESIGN: 12px — closest DS scale (was 13px) */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tree-item-count {
+      background: var(--bg-primary);
+      color: var(--text-secondary);
+      font-size: var(--ds-font-size-xs); /* DESIGN: 10px — closest DS scale (was 11px) */
+      padding: 2px var(--ds-spacer-2);
+      border-radius: 10px;
+      margin-left: var(--ds-spacer-2);
+    }
+
+    .tree-item.active .tree-item-count {
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .tree-item-actions {
+      display: none;
+      gap: 2px;
+      margin-left: 8px;
+    }
+
+    .tree-item:hover .tree-item-actions {
+      display: flex;
+    }
+
+    .tree-action-btn {
+      width: 20px;
+      height: 20px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: var(--ds-font-size-sm);
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tree-action-btn:hover {
+      background: var(--border);
+      color: var(--text-primary);
+    }
+
+    .tree-action-btn.danger:hover {
+      background: var(--error-bg);
+      color: var(--error);
+    }
+
+    .tree-level-1 {
+      padding-left: 16px;
+    }
+
+    .tree-level-2 {
+      padding-left: 32px;
+    }
+
+    .tree-level-3 {
+      padding-left: 48px;
+    }
+
+    .sidebar-footer {
+      padding: 16px;
+      border-top: 1px solid var(--border-light);
+      background: var(--bg-primary);
+    }
+
+    .sidebar-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .sidebar-total-label {
+      font-size: var(--ds-font-size-sm); /* DESIGN: 12px (was 13px) */
+      color: var(--text-secondary);
+    }
+
+    .sidebar-total-value {
+      font-size: var(--ds-font-size-xl);
+      font-weight: var(--ds-font-weight-medium);
+      color: var(--success);
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .toolbar {
+      padding: var(--ds-spacer-3) var(--ds-spacer-5);
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-stats {
+      display: flex;
+      gap: 8px;
+      margin-left: auto;
+    }
+
+    .stat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--ds-spacer-1);
+      padding: var(--ds-spacer-1) var(--ds-spacer-3);
+      border-radius: var(--ds-border-radius-lg);
+      font-size: var(--ds-font-size-sm);
+      font-weight: var(--ds-font-weight-medium);
+    }
+
+    .stat-badge.total {
+      background: var(--bg-primary);
+      color: var(--text-secondary);
+    }
+
+    .stat-badge.errors {
+      background: var(--error-bg);
+      color: var(--error);
+    }
+
+    .stat-badge.warnings {
+      background: var(--warning-bg);
+      color: var(--warning);
+    }
+
+    .stat-badge.selected {
+      background: var(--info-bg);
+      color: var(--info);
+    }
+
+    /* Table */
+    .table-container {
+      flex: 1;
+      overflow: auto;
+      padding: 16px 20px;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: var(--ds-font-size-sm); /* DESIGN: 12px — closest DS scale (was 13px) */
+    }
+
+    .data-table th {
+      position: sticky;
+      top: 0;
+      background: var(--bg-card);
+      padding: var(--ds-spacer-3) var(--ds-spacer-2);
+      text-align: left;
+      font-weight: var(--ds-font-weight-medium);
+      color: var(--text-secondary);
+      border-bottom: 2px solid var(--border);
+      white-space: nowrap;
+      z-index: 10;
+    }
+
+    .data-table th.required::after {
+      content: ' *';
+      color: var(--error);
+    }
+
+    .data-table td {
+      padding: 4px;
+      border-bottom: 1px solid var(--border-light);
+      vertical-align: middle;
+    }
+
+    .data-table tr:hover td {
+      background: var(--bg-primary);
+    }
+
+    .group-header {
+      background: var(--bg-primary) !important;
+    }
+
+    .group-header td {
+      padding: var(--ds-spacer-3) var(--ds-spacer-2);
+      font-weight: var(--ds-font-weight-medium);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .group-badge {
+      display: inline-block;
+      padding: 2px var(--ds-spacer-2);
+      border-radius: var(--ds-border-radius-xs);
+      font-size: var(--ds-font-size-xs); /* DESIGN: 10px (was 11px) */
+      font-weight: var(--ds-font-weight-medium);
+      text-transform: uppercase;
+      margin-right: var(--ds-spacer-2);
+    }
+
+    .group-badge.project {
+      background: var(--accent);
+      color: var(--text-primary);
+    }
+
+    .group-badge.floor {
+      background: var(--info-bg);
+      color: var(--info);
+    }
+
+    .group-badge.room {
+      background: var(--success-bg);
+      color: var(--success);
+    }
+
+    .group-stats {
+      font-weight: var(--ds-font-weight-regular);
+      color: var(--text-secondary);
+      margin-left: 12px;
+    }
+
+    /* Inputs */
+    .input {
+      width: 100%;
+      padding: var(--ds-spacer-2) var(--ds-spacer-2); /* DESIGN: snapped 6px→8px */
+      border: 1px solid var(--ds-input-border-color);
+      border-radius: var(--ds-border-radius-xs);
+      font-size: var(--ds-font-size-sm); /* DESIGN: 12px (was 13px) */
+      font-family: inherit;
+      background: var(--ds-input-bg);
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .input:focus {
+      outline: none;
+      border-color: var(--ds-input-focus-border-color);
+      box-shadow: none; /* DESIGN: DS inputs have no focus ring */
+    }
+
+    .input.error {
+      border-color: var(--error);
+      background: var(--error-bg);
+    }
+
+    .input.warning {
+      border-color: var(--warning);
+      background: var(--warning-bg);
+    }
+
+    .input.mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: var(--ds-font-size-sm);
+    }
+
+    .input-number {
+      text-align: right;
+    }
+
+    select.input {
+      cursor: pointer;
+      padding-right: 24px;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b6b5f' d='M6 8L2 4h8z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 6px center;
+    }
+
+    .drag-handle {
+      cursor: grab;
+      color: var(--text-muted);
+      user-select: none;
+      width: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .drag-handle:active {
+      cursor: grabbing;
+    }
+
+    .row-number {
+      color: var(--text-muted);
+      font-size: var(--ds-font-size-sm);
+      text-align: center;
+    }
+
+    .checkbox {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: var(--accent);
+    }
+
+    .total-cell {
+      color: var(--success);
+      font-weight: var(--ds-font-weight-medium);
+      text-align: right;
+      padding-right: 12px !important;
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 4px;
+    }
+
+    .action-btn {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: var(--ds-font-size-regular);
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .action-btn:hover {
+      background: var(--border);
+      color: var(--text-primary);
+    }
+
+    .action-btn.danger:hover {
+      background: var(--error-bg);
+      color: var(--error);
+    }
+
+    .action-btn[title]::after {
+      content: attr(title);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 4px 8px;
+      background: var(--text-primary);
+      color: white;
+      font-size: var(--ds-font-size-xs); /* DESIGN: 10px (was 11px) */
+      border-radius: 4px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition);
+    }
+
+    .action-btn[title]:hover::after {
+      opacity: 1;
+    }
+
+    /* Autocomplete */
+    .autocomplete-wrapper {
+      position: relative;
+    }
+
+    .autocomplete-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+    }
+
+    .autocomplete-item {
+      padding: 8px 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .autocomplete-item:hover, .autocomplete-item.highlighted {
+      background: var(--bg-primary);
+    }
+
+    .autocomplete-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: var(--ds-font-size-sm);
+      font-weight: var(--ds-font-weight-medium);
+      min-width: 50px;
+    }
+
+    .autocomplete-desc {
+      color: var(--text-secondary);
+      font-size: var(--ds-font-size-sm);
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .autocomplete-unit {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: var(--ds-font-size-xs); /* DESIGN: 10px (was 11px) */
+      color: var(--text-muted);
+      background: var(--bg-primary);
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 8px;
+    }
+
+    .autocomplete-message {
+      padding: 12px 16px;
+      color: var(--warning);
+      font-size: var(--ds-font-size-sm);
+      font-style: italic;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Warning icon handled inline via icon('warning') in JS */
+
+    .autocomplete-unit {
+      color: var(--text-muted);
+      font-size: var(--ds-font-size-xs); /* DESIGN: 10px (was 11px) */
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      width: 100%;
+      max-width: 440px;
+      transform: translateY(-20px);
+      transition: transform 0.2s;
+    }
+
+    .modal-overlay.active .modal {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      padding: var(--ds-modal-header-padding);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .modal-title {
+      font-size: var(--ds-h2-font-size);
+      font-weight: var(--ds-font-weight-medium);
+    }
+
+    .modal-body {
+      padding: var(--ds-modal-body-padding);
+    }
+
+    .modal-footer {
+      padding: var(--ds-modal-footer-padding);
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--ds-spacer-2);
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: var(--ds-font-size-sm);
+      font-weight: var(--ds-font-weight-medium);
+      margin-bottom: var(--ds-spacer-2); /* DESIGN: snapped 6px→8px */
+    }
+
+    .form-input {
+      width: 100%;
+      padding: var(--ds-input-padding);
+      border: 1px solid var(--ds-input-border-color);
+      border-radius: var(--radius);
+      font-size: var(--ds-input-font-size);
+      font-family: inherit;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--ds-input-focus-border-color);
+      box-shadow: none; /* DESIGN: DS inputs have no focus ring */
+    }
+
+    .warning-box {
+      background: var(--warning-bg);
+      border: 1px solid var(--warning);
+      border-radius: var(--radius);
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+
+    .warning-box-title {
+      font-weight: var(--ds-font-weight-medium);
+      color: var(--warning);
+      margin-bottom: 4px;
+      font-size: var(--ds-font-size-sm); /* DESIGN: 12px (was 13px) */
+      display: flex;
+      align-items: center;
+      gap: var(--ds-spacer-1);
+    }
+
+    .warning-box-text {
+      font-size: var(--ds-font-size-sm); /* DESIGN: 12px (was 13px) */
+      color: var(--text-secondary);
+    }
+
+    /* Toast */
+    .toast-container {
+      position: fixed;
+      top: var(--ds-toast-top); /* 80px */
+      right: var(--ds-toast-right); /* 30px */
+      z-index: 1100;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toast {
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 280px;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .toast.success {
+      background: var(--success-bg);
+      border: 1px solid var(--success);
+      color: var(--success);
+    }
+
+    .toast.error {
+      background: var(--error-bg);
+      border: 1px solid var(--error);
+      color: var(--error);
+    }
+
+    .toast.warning {
+      background: var(--warning-bg);
+      border: 1px solid var(--warning);
+      color: var(--warning);
+    }
+
+    .toast-close {
+      margin-left: auto;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: inherit;
+      opacity: 0.7;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .toast-close:hover {
+      opacity: 1;
+    }
+
+    /* Start Screen */
+    .start-screen {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      overflow-y: auto;
+    }
+
+    .start-container {
+      width: 100%;
+      max-width: 520px;
+    }
+
+    .start-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border); /* DESIGN: flat card — border replaces shadow */
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .start-card-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .start-card-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .start-card-title {
+      font-size: var(--ds-font-size-xl);
+      font-weight: var(--ds-font-weight-medium);
+    }
+
+    .start-card-body {
+      padding: 24px;
+    }
+
+    .auth-step {
+      display: none;
+    }
+
+    .auth-step.active {
+      display: block;
+    }
+
+    .auth-status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: var(--success-bg);
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+    }
+
+    .auth-status-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--success);
+      font-weight: var(--ds-font-weight-medium);
+    }
+
+    .auth-status-badge::before {
+      content: '';
+      width: 20px;
+      height: 20px;
+      background: var(--success) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E") center/12px no-repeat;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .change-token-btn {
+      font-size: var(--ds-font-size-sm);
+      color: var(--text-secondary);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .change-token-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .login-form .form-input {
+      font-family: inherit;
+    }
+
+    .login-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Sketch List */
+    .sketch-list-container {
+      margin-bottom: 16px;
+    }
+
+    .sketch-list-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .sketch-list-title {
+      font-size: var(--ds-font-size-sm); /* DESIGN: 12px (was 13px) */
+      font-weight: var(--ds-font-weight-medium);
+      color: var(--text-secondary);
+    }
+
+    .sketch-list-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--ds-spacer-2);
+      padding: 24px;
+      color: var(--text-muted);
+      font-size: var(--ds-font-size-sm); /* DESIGN: 12px (was 13px) */
+    }
+
+    /* Loading spinner handled inline via icon('spinner') in JS */
+
+    .sketch-list {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      max-height: 240px;
+      overflow-y: auto;
+    }
+
+    .sketch-list-empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--ds-spacer-2);
+      padding: 24px;
+      color: var(--text-muted);
+      font-size: var(--ds-font-size-sm); /* DESIGN: 12px (was 13px) */
+    }
+
+    .sketch-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-light);
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+
+    .sketch-item:last-child {
+      border-bottom: none;
+    }
+
+    .sketch-item:hover {
+      background: var(--bg-primary);
+    }
+
+    .sketch-item.selected {
+      background: var(--accent-light);
+      border-left: 3px solid var(--accent);
+    }
+
+    .sketch-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sketch-item-name {
+      font-weight: var(--ds-font-weight-medium);
+      font-size: var(--ds-font-size-sm); /* DESIGN: 12px (was 13px) */
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+
+    .sketch-item-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: var(--ds-font-size-xs); /* DESIGN: 10px (was 11px) */
+      color: var(--text-muted);
+    }
+
+    .sketch-item-id {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .sketch-item-date {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .sketch-item-check {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      margin-right: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all var(--transition);
+    }
+
+    .sketch-item.selected .sketch-item-check {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .sketch-item.selected .sketch-item-check::after {
+      content: '';
+      width: 12px;
+      height: 12px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231A1905' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E") center/contain no-repeat;
+    }
+
+    .sketch-pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .sketch-pagination-btn {
+      padding: 6px 12px;
+      font-size: var(--ds-font-size-sm);
+    }
+
+    .sketch-pagination-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .sketch-pagination-info {
+      font-size: var(--ds-font-size-sm);
+      color: var(--text-secondary);
+      min-width: 100px;
+      text-align: center;
+    }
+
+    .manual-input-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-muted);
+      font-size: var(--ds-font-size-sm);
+      margin: 16px 0;
+    }
+
+    .manual-input-divider::before, .manual-input-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-light);
+    }
+
+    /* Project Info Section */
+    .project-info-section {
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .project-info-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      cursor: pointer;
+      user-select: none;
+      transition: background var(--transition);
+    }
+
+    .project-info-header:hover {
+      background: var(--bg-primary);
+    }
+
+    .project-info-title {
+      font-size: var(--ds-font-size-sm);
+      font-weight: var(--ds-font-weight-medium);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .project-info-toggle {
+      color: var(--text-muted);
+      transition: transform 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .project-info-section.collapsed .project-info-toggle {
+      transform: rotate(-90deg);
+    }
+
+    .project-info-content {
+      padding: 0 16px 12px 16px;
+      display: block;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .project-info-section.collapsed .project-info-content {
+      display: none;
+    }
+
+    .project-info-group {
+      margin-bottom: 12px;
+    }
+
+    .project-info-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .project-info-group-title {
+      font-size: var(--ds-font-size-xs); /* DESIGN: 10px (was 11px) */
+      font-weight: var(--ds-font-weight-medium);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .project-info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 4px 0;
+      font-size: var(--ds-font-size-sm);
+    }
+
+    .project-info-label {
+      color: var(--text-secondary);
+      flex-shrink: 0;
+      margin-right: 8px;
+    }
+
+    .project-info-value {
+      color: var(--text-primary);
+      text-align: right;
+      word-break: break-word;
+      max-width: 60%;
+    }
+
+    .project-info-value.empty {
+      color: var(--text-muted);
+    }
+
+    .project-info-value.mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: var(--ds-font-size-xs); /* DESIGN: 10px (was 11px) */
+    }
+
+    /* Floor info compact */
+    .floor-info-item {
+      background: var(--bg-primary);
+      border-radius: 4px;
+      padding: 6px 10px;
+      margin-bottom: 4px;
+      font-size: var(--ds-font-size-xs); /* DESIGN: 10px (was 11px) */
+    }
+
+    .floor-info-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .floor-info-title {
+      font-weight: var(--ds-font-weight-medium);
+      margin-bottom: 2px;
+    }
+
+    .floor-info-stats {
+      color: var(--text-secondary);
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .floor-info-stats span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Files Section */
+    .files-section {
+      margin-top: 12px;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .files-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      background: var(--bg-primary);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .files-header:hover {
+      background: var(--border-light);
+    }
+
+    .files-title {
+      font-size: var(--ds-font-size-sm);
+      font-weight: var(--ds-font-weight-medium);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .files-count {
+      background: var(--accent);
+      color: var(--text-primary);
+      font-size: var(--ds-font-size-xs);
+      padding: 2px var(--ds-spacer-2);
+      border-radius: 10px;
+      font-weight: var(--ds-font-weight-medium);
+    }
+
+    .files-toggle {
+      color: var(--text-muted);
+      transition: transform 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .files-section.collapsed .files-toggle {
+      transform: rotate(-90deg);
+    }
+
+    .files-content {
+      max-height: 200px;
+      overflow-y: auto;
+      display: block;
+    }
+
+    .files-section.collapsed .files-content {
+      display: none;
+    }
+
+    .files-empty {
+      padding: 12px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: var(--ds-font-size-xs); /* DESIGN: 10px (was 11px) */
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-top: 1px solid var(--border-light);
+      gap: 10px;
+    }
+
+    .file-item:first-child {
+      border-top: none;
+    }
+
+    .file-icon {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .file-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .file-name {
+      font-size: var(--ds-font-size-xs); /* DESIGN: 10px (was 11px) */
+      font-weight: var(--ds-font-weight-medium);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+
+    .file-meta {
+      font-size: var(--ds-font-size-xs);
+      color: var(--text-muted);
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .file-download {
+      flex-shrink: 0;
+    }
+
+    .file-download a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: all var(--transition);
+    }
+
+    .file-download a:hover {
+      background: var(--accent-light);
+      color: var(--text-primary);
+    }
+
+    /* Metrics grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+
+    .metric-item {
+      background: var(--bg-primary);
+      border-radius: 4px;
+      padding: 8px 10px;
+      text-align: center;
+    }
+
+    .metric-value {
+      font-size: var(--ds-font-size-regular);
+      font-weight: var(--ds-font-weight-medium);
+      color: var(--text-primary);
+    }
+
+    .metric-label {
+      font-size: var(--ds-font-size-xs);
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: var(--text-muted);
+      font-size: var(--ds-font-size-sm); /* DESIGN: 12px (was 13px) */
+      margin: 24px 0;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .upload-zone {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color var(--transition), background var(--transition);
+      margin-bottom: 16px;
+    }
+
+    .upload-zone:hover, .upload-zone.dragover {
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .upload-zone-icon {
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .upload-zone-text {
+      color: var(--text-secondary);
+      font-size: var(--ds-font-size-regular);
+    }
+
+    .upload-zone-hint {
+      color: var(--text-muted);
+      font-size: var(--ds-font-size-sm);
+      margin-top: 4px;
+    }
+
+    .start-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .start-buttons .btn {
+      flex: 1;
+    }
+
+    /* Error Display */
+    .error-display {
+      background: var(--error-bg);
+      border: 1px solid var(--error);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-top: 16px;
+    }
+
+    .error-display-header {
+      display: flex;
+      align-items: center;
+      gap: var(--ds-spacer-2);
+      font-weight: var(--ds-font-weight-medium);
+      color: var(--error);
+      margin-bottom: 8px;
+    }
+
+    .error-display-message {
+      font-size: var(--ds-font-size-sm); /* DESIGN: 12px (was 13px) */
+      color: var(--text-primary);
+      word-break: break-word;
+    }
+
+    .error-display-details {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(217, 65, 65, 0.2);
+      font-size: var(--ds-font-size-sm);
+      color: var(--text-secondary);
+      font-family: 'JetBrains Mono', monospace;
+      max-height: 100px;
+      overflow-y: auto;
+    }
+
+    .hidden-input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .dragging {
+      opacity: 0.5;
+    }
+
+    .drag-over {
+      background: var(--accent) !important;
+    }
+
+    /* Column widths */
+    .col-drag {
+      width: 30px;
+    }
+
+    .col-check {
+      width: 30px;
+    }
+
+    .col-num {
+      width: 40px;
+    }
+
+    .col-id {
+      width: 60px;
+    }
+
+    .col-cat {
+      width: 75px;
+    }
+
+    .col-sel {
+      width: 95px;
+    }
+
+    .col-act {
+      width: 50px;
+    }
+
+    .col-calc {
+      width: 65px;
+    }
+
+    .col-qty {
+      width: 70px;
+    }
+
+    .col-unit {
+      width: 65px;
+    }
+
+    .col-remove {
+      width: 85px;
+    }
+
+    .col-replace {
+      width: 85px;
+    }
+
+    .col-total {
+      width: 90px;
+    }
+
+    .col-desc {
+      min-width: 150px;
+      transition: min-width 0.2s;
+    }
+
+    .col-evidence {
+      min-width: 120px;
+      transition: all 0.2s;
+    }
+
+    .col-actions {
+      width: 60px;
+    }
+
+    /* Collapsible Evidence column */
+    .col-evidence-header {
+      cursor: pointer;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .col-evidence-header .toggle-icon {
+      margin-left: 6px;
+      transition: transform 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .col-evidence-header .header-text {
+      margin-right: 2px;
+    }
+
+    .evidence-collapsed .col-evidence {
+      width: 40px;
+      min-width: 40px;
+      max-width: 40px;
+      text-align: center;
+    }
+
+    .evidence-collapsed .col-evidence-header {
+      padding: 10px 4px;
+    }
+
+    .evidence-collapsed .col-evidence-header .toggle-icon {
+      transform: rotate(-90deg);
+      margin-left: 0;
+    }
+
+    .evidence-collapsed .col-evidence-header .header-text {
+      display: none;
+    }
+
+    .evidence-collapsed .col-desc {
+      min-width: 280px;
+    }
+
+    .evidence-collapsed .evidence-content {
+      display: none;
+    }
+
+    .evidence-collapsed .evidence-collapsed-icon {
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Inline validation errors (W-07) */
+    .inline-error {
+      color: var(--error);
+      font-size: var(--ds-font-size-sm);
+      margin-top: var(--ds-spacer-1);
+      display: none;
+    }
+
+    .inline-error.visible {
+      display: block;
+    }
+
+    /* Confirmation modal body text */
+    .confirm-body-text {
+      font-size: var(--ds-font-size-regular);
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: fixed;
+        left: -100%;
+        top: var(--header-height);
+        height: calc(100vh - var(--header-height));
+        z-index: 99;
+        transition: left 0.3s;
+      }
+
+      .sidebar.open {
+        left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+<header class="header">
+  <div class="logo">DocuSketch<span>°</span></div>
+  <div class="header-actions" id="headerActions" style="display: none;">
+    <input accept=".xml,.fif,.json" class="hidden-input" id="importInput" type="file">
+    <button class="btn btn-secondary" onclick="document.getElementById('importInput').click()"><span class="ds-icon ds-icon--sm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg></span> Import</button>
+    <button class="btn btn-beige" onclick="exportVeriskXML()"><span class="ds-icon ds-icon--sm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg></span> Export Verisk XML</button>
+    <button class="btn btn-secondary" onclick="exportJSON()"><span class="ds-icon ds-icon--sm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4l-9-5.19"/><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05"/><path d="M12 22.08V12"/></svg></span> Export JSON</button>
+  </div>
+</header>
+<div class="app-container">
+  <div class="start-screen" id="startScreen">
+    <div class="start-container">
+      <div class="start-card">
+        <div class="start-card-header">
+          <div class="start-card-icon"><span class="ds-icon ds-icon--md"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></span></div>
+          <div class="start-card-title">Connect to Server</div>
+        </div>
+        <div class="start-card-body">
+          <div class="auth-step active" id="authStep1">
+            <div class="login-form">
+              <div class="form-group">
+                <label class="form-label">Email</label>
+                <input autocomplete="username" class="form-input" id="loginEmail" placeholder="user@example.com"
+                       type="email">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Password</label>
+                <input autocomplete="current-password" class="form-input" id="loginPassword"
+                       placeholder="Enter password"
+                       type="password">
+              </div>
+            </div>
+            <button class="btn btn-primary login-btn" id="loginBtn" onclick="authenticate()"
+                    style="width: 100%; margin-top: var(--ds-spacer-3);"><span class="ds-icon ds-icon--sm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span> Log in
+            </button>
+            <div id="authError"></div>
+          </div>
+          <div class="auth-step" id="authStep2">
+            <div class="auth-status">
+              <div class="auth-status-badge">Authenticated</div>
+              <button class="change-token-btn" onclick="changeToken()">Log Out</button>
+            </div>
+
+            <!-- Sketch List Section -->
+            <div class="sketch-list-container">
+              <div class="sketch-list-header">
+                <span class="sketch-list-title">Select an Instant Sketch</span>
+                <button class="btn btn-sm btn-secondary" onclick="fetchSketchList()" title="Refresh list"><span class="ds-icon ds-icon--sm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg></span></button>
+              </div>
+              <div id="sketchListContent">
+                <div class="sketch-list-loading"><span class="ds-icon ds-icon--sm ds-icon--secondary ds-icon--spinner"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a10 10 0 010 20 10 10 0 010-20" stroke-dasharray="31.4 31.4" stroke-dashoffset="31.4"/></svg></span> Loading sketches...</div>
+              </div>
+              <div class="sketch-pagination" id="sketchPagination" style="display:none;">
+                <button class="btn btn-sm btn-secondary sketch-pagination-btn" disabled
+                        id="prevPageBtn" onclick="goToPage(currentPage - 1)"><span class="ds-icon ds-icon--xs"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></span> Prev
+                </button>
+                <span class="sketch-pagination-info" id="paginationInfo">Page 1 of 1</span>
+                <button class="btn btn-sm btn-secondary sketch-pagination-btn" disabled
+                        id="nextPageBtn" onclick="goToPage(currentPage + 1)">Next <span class="ds-icon ds-icon--xs"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Manual ID Input -->
+            <div class="manual-input-divider">or enter ID manually</div>
+            <div class="form-group" style="margin-bottom:16px;">
+              <input class="form-input mono" id="sketchIdInput" oninput="onManualIdInput()"
+                     placeholder="Enter sketch request ID manually"
+                     type="text">
+            </div>
+
+            <!-- Load Button -->
+            <button class="btn btn-success" disabled id="loadSketchBtn" onclick="loadSketchFromServer()"
+                    style="width: 100%;"><span class="ds-icon ds-icon--sm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg></span> Load line items
+            </button>
+            <div id="loadError"></div>
+          </div>
+        </div>
+      </div>
+      <div class="divider">or work offline</div>
+      <div class="start-card">
+        <div class="start-card-body">
+          <div class="upload-zone" id="uploadZone">
+            <div class="upload-zone-icon"><span class="ds-icon ds-icon--md ds-icon--secondary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg></span></div>
+            <div class="upload-zone-text">Drop file here or click to browse</div>
+            <div class="upload-zone-hint">Supports .xml, .fif, .json files</div>
+          </div>
+          <input accept=".xml,.fif,.json" class="hidden-input" id="startImportInput" type="file">
+          <div class="start-buttons">
+            <button class="btn btn-secondary" onclick="loadSampleData()"><span class="ds-icon ds-icon--sm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg></span> Load sample</button>
+            <button class="btn btn-secondary" onclick="createNewDocument()"><span class="ds-icon ds-icon--sm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span> Create new</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="sidebar" id="sidebar" style="display: none;">
+    <!-- Project Info Section (populated dynamically) -->
+    <div class="project-info-section" id="projectInfoSection" style="display: none;">
+      <div class="project-info-header" onclick="toggleProjectInfo()">
+        <span class="project-info-title"><span class="ds-icon ds-icon--sm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg></span> Project Info</span>
+        <span class="project-info-toggle"><span class="ds-icon ds-icon--xs ds-icon--secondary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></span>
+      </div>
+      <div class="project-info-content" id="projectInfoContent">
+        <!-- Content populated by renderProjectInfo() -->
+      </div>
+    </div>
+
+    <div class="sidebar-header">
+      <div class="sidebar-title"><span class="ds-icon ds-icon--sm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg></span> Structure</div>
+      <div class="sidebar-actions">
+        <button class="btn btn-secondary btn-sm" onclick="showAddFloorModal()"><span class="ds-icon ds-icon--sm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span> Add floor</button>
+        <button class="btn btn-secondary btn-sm" onclick="showAddRoomModal()"><span class="ds-icon ds-icon--sm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2z"/><circle cx="15.5" cy="12" r="1"/></svg></span> Add room</button>
+      </div>
+    </div>
+    <div class="tree-view" id="treeView"></div>
+    <div class="sidebar-footer">
+      <div class="sidebar-total">
+        <span class="sidebar-total-label">Total (RCV)</span>
+        <span class="sidebar-total-value" id="totalRCV">$0.00</span>
+      </div>
+    </div>
+  </aside>
+  <main class="main-content" id="mainContent" style="display: none;">
+    <div class="toolbar">
+      <button class="btn btn-primary" onclick="addLineItem()"><span class="ds-icon ds-icon--sm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span> Add line item</button>
+      <button class="btn btn-secondary" onclick="validateAll()"><span class="ds-icon ds-icon--sm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span> Validate</button>
+      <button class="btn btn-danger" id="deleteSelectedBtn" onclick="deleteSelected()" style="display: none;"><span class="ds-icon ds-icon--sm ds-icon--error"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M10 11v6M14 11v6"/></svg></span> Delete selected</button>
+      <div class="toolbar-stats">
+        <span class="stat-badge total" id="statTotal">0 items</span>
+        <span class="stat-badge errors" id="statErrors" style="display: none;">0 errors</span>
+        <span class="stat-badge warnings" id="statWarnings" style="display: none;">0 warnings</span>
+        <span class="stat-badge selected" id="statSelected" style="display: none;">0 selected</span>
+      </div>
+    </div>
+    <div class="table-container">
+      <table class="data-table" id="dataTable">
+        <thead>
+        <tr>
+          <th class="col-drag"></th>
+          <th class="col-check"><input class="checkbox" id="selectAll" onchange="toggleSelectAll()" type="checkbox">
+          </th>
+          <th class="col-num">#</th>
+          <th class="col-id">ID</th>
+          <th class="col-cat required">CAT</th>
+          <th class="col-sel required">SEL</th>
+          <th class="col-act">Act</th>
+          <th class="col-calc">Calc</th>
+          <th class="col-qty">Qty</th>
+          <th class="col-unit">Unit</th>
+          <th class="col-remove">Remove $</th>
+          <th class="col-replace">Replace $</th>
+          <th class="col-total">Total</th>
+          <th class="col-desc">Description</th>
+          <th class="col-evidence col-evidence-header" onclick="toggleEvidenceColumn()"
+              title="Click to collapse/expand"><span class="header-text">Evidence</span><span
+            class="toggle-icon"><span class="ds-icon ds-icon--xs ds-icon--secondary"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span></span></th>
+          <th class="col-actions">Actions</th>
+        </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+<div class="toast-container" id="toastContainer"></div>
+<div class="modal-overlay" id="floorModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="floorModalTitle">Add floor</div>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Floor name</label>
+        <input class="form-input" id="floorNameInput" placeholder="e.g., First Floor" type="text">
+        <div class="inline-error" id="floorNameError">Enter a floor name</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('floorModal')">Cancel</button>
+      <button class="btn btn-primary" id="floorModalSubmit" onclick="submitFloor()">Add floor</button>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay" id="roomModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="roomModalTitle">Add room</div>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Room name</label>
+        <input class="form-input" id="roomNameInput" placeholder="e.g., Living Room" type="text">
+        <div class="inline-error" id="roomNameError">Enter a room name</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Parent floor</label>
+        <select class="form-input" id="roomFloorSelect"></select>
+        <div class="inline-error" id="roomFloorError">Select a floor</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('roomModal')">Cancel</button>
+      <button class="btn btn-primary" id="roomModalSubmit" onclick="submitRoom()">Add room</button>
+    </div>
+  </div>
+</div>
+<!-- DESIGN: W-03 — delete modal uses question as title, consequence as body -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="deleteModalTitle">Delete this item?</div>
+    </div>
+    <div class="modal-body">
+      <div class="warning-box" id="deleteWarning"></div>
+      <p class="confirm-body-text" id="deleteMessage"></p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('deleteModal')">Cancel</button>
+      <button class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+<!-- W-10: Confirmation modal for export/delete-selected (replaces confirm()) -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="confirmModalTitle"></div>
+    </div>
+    <div class="modal-body">
+      <p class="confirm-body-text" id="confirmModalMessage"></p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('confirmModal')">Cancel</button>
+      <button class="btn btn-primary" id="confirmModalAction"></button>
+    </div>
+  </div>
+</div>
+<script>
+  /* ── SVG Icon Library ───────────────────────────────────────── */
+  const svgA = 'xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"';
+  const iconSvgs = {
+    import:     `<svg ${svgA}><path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>`,
+    export:     `<svg ${svgA}><path d="M12 17V5m0 0l-4 4m4-4l4 4"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>`,
+    document:   `<svg ${svgA}><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg>`,
+    package:    `<svg ${svgA}><path d="M16.5 9.4l-9-5.19"/><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05"/><path d="M12 22.08V12"/></svg>`,
+    globe:      `<svg ${svgA}><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>`,
+    lock:       `<svg ${svgA}><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>`,
+    refresh:    `<svg ${svgA}><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg>`,
+    folder:     `<svg ${svgA}><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>`,
+    clipboard:  `<svg ${svgA}><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>`,
+    copy:       `<svg ${svgA}><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>`,
+    layers:     `<svg ${svgA}><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>`,
+    door:       `<svg ${svgA}><path d="M18 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2z"/><circle cx="15.5" cy="12" r="1"/></svg>`,
+    trash:      `<svg ${svgA}><path d="M3 6h18"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M10 11v6M14 11v6"/></svg>`,
+    comment:    `<svg ${svgA}><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>`,
+    image:      `<svg ${svgA}><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>`,
+    video:      `<svg ${svgA}><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>`,
+    map:        `<svg ${svgA}><path d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4z"/><path d="M8 2v16M16 6v16"/></svg>`,
+    camera:     `<svg ${svgA}><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>`,
+    paperclip:  `<svg ${svgA}><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.49"/></svg>`,
+    calendar:   `<svg ${svgA}><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>`,
+    home:       `<svg ${svgA}><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>`,
+    warning:    `<svg ${svgA}><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>`,
+    download:   `<svg ${svgA}><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>`,
+    grip:       '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="5" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="9" cy="19" r="1.5"/><circle cx="15" cy="5" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="15" cy="19" r="1.5"/></svg>',
+    edit:       `<svg ${svgA}><path d="M17 3a2.83 2.83 0 114 4L7.5 20.5 2 22l1.5-5.5z"/></svg>`,
+    x:          `<svg ${svgA}><path d="M18 6L6 18M6 6l12 12"/></svg>`,
+    check:      `<svg ${svgA}><path d="M20 6L9 17l-5-5"/></svg>`,
+    plus:       `<svg ${svgA}><path d="M12 5v14M5 12h14"/></svg>`,
+    chevronDown:`<svg ${svgA}><path d="M6 9l6 6 6-6"/></svg>`,
+    chevronLeft:`<svg ${svgA}><path d="M15 18l-6-6 6-6"/></svg>`,
+    chevronRight:`<svg ${svgA}><path d="M9 18l6-6-6-6"/></svg>`,
+    spinner:    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a10 10 0 010 20 10 10 0 010-20" stroke-dasharray="31.4 31.4" stroke-dashoffset="31.4"/></svg>'
+  };
+
+  function icon(name, size = 'md', modifier = '') {
+    const cls = `ds-icon ds-icon--${size}${modifier ? ' ds-icon--' + modifier : ''}`;
+    return `<span class="${cls}">${iconSvgs[name] || ''}</span>`;
+  }
+  /* ── End Icon Library ───────────────────────────────────────── */
+
+  const API_BASE_URL = 'https://sandbox.v2docusketch.com/sketch';
+  const AUTH_API_URL = 'https://sandbox.v2docusketch.com/customer/api/v1/login';
+  const LOCAL_PROXY_URL = 'http://localhost:8080/sketch';
+  const LOCAL_AUTH_PROXY_URL = 'http://localhost:8080/customer/api/v1/login';
+  const REFRESH_TOKEN_URL = 'https://sandbox.v2docusketch.com/customer/api/v1/login/refresh';
+  const LOCAL_REFRESH_PROXY_URL = 'http://localhost:8080/customer/api/v1/login/refresh';
+  const useLocalProxy = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  let authToken = '';
+  let isRefreshingToken = false;
+  let refreshTokenPromise = null;
+  const sowDatabase = {
+    categories: {
+      'WTR': { name: 'Water Extraction', selectors: ['PUMP', 'AIRMOV', 'DEHUM', 'INJECT', 'MOIST'] },
+      'DRY': { name: 'Drywall', selectors: ['DRY12', 'DRY58', 'DRYMR', 'PATCH', 'TAPE'] },
+      'PNT': { name: 'Painting', selectors: ['WALL', 'CEIL', 'TRIM', 'DOOR', 'PRIME'] },
+      'FCC': { name: 'Floor Covering - Carpet', selectors: ['CARPT', 'PAD', 'TACKL', 'SEAM', 'TRANS'] },
+      'SDG': { name: 'Siding', selectors: ['VINYL', 'WOOD', 'ALUM', 'FIBER', 'TRIM'] },
+      'CLN': { name: 'Cleaning', selectors: ['GENRL', 'HEPA', 'DEOD', 'SANI', 'WIPE'] },
+      'DMO': { name: 'Demolition', selectors: ['DEBAG', 'HAUL', 'LABOR', 'DUMP', 'SORT'] },
+      'CON': { name: 'Content Manipulation', selectors: ['LABOR', 'MVOUT', 'MVBCK', 'PACK', 'STORE'] },
+      'FLR': { name: 'Flooring', selectors: ['VINYL', 'TILE', 'HARDWD', 'LAMIN', 'GROUT'] },
+      'CAB': { name: 'Cabinets', selectors: ['BASE', 'WALL', 'VANTY', 'COUNTR', 'HDWR'] }
+    },
+    selectors: {
+      'PUMP': { desc: 'Water pump extraction', unit: 'HR', act: '+' },
+      'AIRMOV': { desc: 'Air mover equipment', unit: 'DA', act: '+' },
+      'DEHUM': { desc: 'Dehumidifier equipment', unit: 'DA', act: '+' },
+      'INJECT': { desc: 'Wall injection drying', unit: 'LF', act: '+' },
+      'MOIST': { desc: 'Moisture testing', unit: 'EA', act: '+' },
+      'DRY12': { desc: '1/2" drywall', unit: 'SF', act: '&' },
+      'DRY58': { desc: '5/8" drywall', unit: 'SF', act: '&' },
+      'DRYMR': { desc: 'Mold resistant drywall', unit: 'SF', act: '&' },
+      'PATCH': { desc: 'Drywall patch repair', unit: 'EA', act: 'R' },
+      'TAPE': { desc: 'Tape and finish', unit: 'SF', act: '+' },
+      'WALL': { desc: 'Wall painting', unit: 'SF', act: 'P' },
+      'CEIL': { desc: 'Ceiling painting', unit: 'SF', act: 'P' },
+      'TRIM': { desc: 'Trim painting', unit: 'LF', act: 'P' },
+      'DOOR': { desc: 'Door painting', unit: 'EA', act: 'P' },
+      'PRIME': { desc: 'Primer application', unit: 'SF', act: 'P' },
+      'CARPT': { desc: 'Carpet installation', unit: 'SY', act: '&' },
+      'PAD': { desc: 'Carpet padding', unit: 'SY', act: '&' },
+      'TACKL': { desc: 'Tack strip', unit: 'LF', act: '&' },
+      'SEAM': { desc: 'Carpet seaming', unit: 'LF', act: '+' },
+      'TRANS': { desc: 'Transition strip', unit: 'LF', act: '+' },
+      'VINYL': { desc: 'Vinyl material', unit: 'SF', act: '&' },
+      'WOOD': { desc: 'Wood material', unit: 'SF', act: '&' },
+      'ALUM': { desc: 'Aluminum material', unit: 'SF', act: '&' },
+      'FIBER': { desc: 'Fiber cement material', unit: 'SF', act: '&' },
+      'GENRL': { desc: 'General cleaning', unit: 'SF', act: 'C' },
+      'HEPA': { desc: 'HEPA vacuum cleaning', unit: 'SF', act: 'C' },
+      'DEOD': { desc: 'Deodorization treatment', unit: 'SF', act: 'C' },
+      'SANI': { desc: 'Sanitization', unit: 'SF', act: 'C' },
+      'WIPE': { desc: 'Wipe down surfaces', unit: 'SF', act: 'C' },
+      'DEBAG': { desc: 'Debris bagging', unit: 'EA', act: '-' },
+      'HAUL': { desc: 'Debris hauling', unit: 'CY', act: '-' },
+      'LABOR': { desc: 'General labor', unit: 'HR', act: '+' },
+      'DUMP': { desc: 'Dump fees', unit: 'EA', act: '+' },
+      'SORT': { desc: 'Sort and stack', unit: 'HR', act: '+' },
+      'MVOUT': { desc: 'Move out contents', unit: 'HR', act: '+' },
+      'MVBCK': { desc: 'Move back contents', unit: 'HR', act: '+' },
+      'PACK': { desc: 'Pack contents', unit: 'HR', act: '+' },
+      'STORE': { desc: 'Storage fees', unit: 'MO', act: '+' },
+      'TILE': { desc: 'Tile installation', unit: 'SF', act: '&' },
+      'HARDWD': { desc: 'Hardwood flooring', unit: 'SF', act: '&' },
+      'LAMIN': { desc: 'Laminate flooring', unit: 'SF', act: '&' },
+      'GROUT': { desc: 'Grout installation', unit: 'SF', act: '+' },
+      'BASE': { desc: 'Base cabinet', unit: 'LF', act: '&' },
+      'VANTY': { desc: 'Vanity cabinet', unit: 'EA', act: '&' },
+      'COUNTR': { desc: 'Countertop', unit: 'SF', act: '&' },
+      'HDWR': { desc: 'Cabinet hardware', unit: 'EA', act: '+' }
+    },
+    actions: {
+      '+': 'Add/Install',
+      '-': 'Remove/Demolish',
+      '&': 'Remove & Replace',
+      'R': 'Repair',
+      'C': 'Clean',
+      'P': 'Paint'
+    },
+    calcs: ['W', 'WC', 'C', 'F', 'PF', 'PC', 'V', 'SY', 'EA', 'LF', 'HH', 'SH', 'LL', 'EW', 'FLR_RMV', 'FLR_RPL', 'WOLF', 'WOP', 'WOSF', 'WOSFD', 'AREA'],
+    units: ['SF', 'LF', 'EA', 'SQ', 'CY', 'HR', 'DA', 'MO', 'GAL', 'CF', 'SY']
+  };
+  let sketchStructure = { document: { id: '', minorVersion: '1', label: '' }, levels: [] };
+  let lineItems = [];
+  let selectedItems = new Set();
+  let activeFilter = 'all';
+  let editingFloorId = null;
+  let editingRoomId = null;
+  let activeAutocomplete = null;
+  let highlightedIndex = -1;
+  let draggedRow = null;
+  let pendingACSelection = null; // v2.2: Tracks pending autocomplete selection to prevent blur race condition
+
+  // Sketch list state
+  let sketchList = [];
+  let currentPage = 0;
+  let totalPages = 0;
+  let totalItems = 0;
+  let selectedSketchId = null;
+  const PAGE_SIZE = 10;
+
+  // Project info state
+  let projectInfo = null;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setupEventListeners();
+    const storedToken = sessionStorage.getItem('authToken');
+    if (storedToken) {
+      authToken = storedToken;
+      showAuthStep2();
+    }
+  });
+
+  function setupEventListeners() {
+    document.getElementById('importInput').addEventListener('change', handleFileImport);
+    document.getElementById('startImportInput').addEventListener('change', handleFileImport);
+    const uploadZone = document.getElementById('uploadZone');
+    uploadZone.addEventListener('click', () => document.getElementById('startImportInput').click());
+    uploadZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadZone.classList.add('dragover');
+    });
+    uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+    uploadZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadZone.classList.remove('dragover');
+      if (e.dataTransfer.files[0]) importFile(e.dataTransfer.files[0]);
+    });
+    ['loginEmail', 'loginPassword', 'sketchIdInput', 'floorNameInput', 'roomNameInput'].forEach((id, i) => {
+      document.getElementById(id).addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') [authenticate, authenticate, loadSketchFromServer, submitFloor, submitRoom][i]();
+      });
+    });
+    document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', (e) => {
+      if (e.target === o) o.classList.remove('active');
+    }));
+  }
+
+  async function authenticate() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    if (!email || !password) {
+      showError('authError', 'Enter email and password');
+      return;
+    }
+
+    const btn = document.getElementById('loginBtn');
+    btn.disabled = true;
+    btn.innerHTML = icon('spinner','sm','secondary') + ' Logging in...';
+    clearError('authError');
+
+    try {
+      const loginUrl = useLocalProxy ? LOCAL_AUTH_PROXY_URL : AUTH_API_URL;
+      const response = await fetch(loginUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ username: email, password })
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        const msgs = { 401: 'Invalid email or password. Check your credentials and try again.', 403: 'Access denied. Contact your administrator.', 500: 'Server error. Try again later.' };
+        showError('authError', msgs[response.status] || data?.message || `Login failed (${response.status})`);
+        return;
+      }
+      authToken = data.accessToken;
+      sessionStorage.setItem('authToken', data.accessToken);
+      if (data.refreshToken) sessionStorage.setItem('refreshToken', data.refreshToken);
+      showAuthStep2();
+    } catch (error) {
+      if (useLocalProxy) {
+        showError('authError', 'Cannot connect to local proxy — make sure cors-proxy.js is running on port 8080');
+      } else {
+        showError('authError', 'Unable to reach server — open this page from localhost to use the CORS proxy');
+      }
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = icon('lock','sm') + ' Log in';
+    }
+  }
+
+  function showAuthStep2() {
+    document.getElementById('authStep1').classList.remove('active');
+    document.getElementById('authStep2').classList.add('active');
+    // Reset state and fetch sketch list
+    selectedSketchId = null;
+    document.getElementById('sketchIdInput').value = '';
+    updateLoadButton();
+    fetchSketchList();
+  }
+
+  function changeToken() {
+    authToken = '';
+    sessionStorage.removeItem('authToken');
+    sessionStorage.removeItem('refreshToken');
+    document.getElementById('loginEmail').value = '';
+    document.getElementById('loginPassword').value = '';
+    document.getElementById('authStep2').classList.remove('active');
+    document.getElementById('authStep1').classList.add('active');
+    clearError('authError');
+    clearError('loadError');
+    // Reset sketch list state
+    sketchList = [];
+    currentPage = 0;
+    totalPages = 0;
+    totalItems = 0;
+    selectedSketchId = null;
+  }
+
+  // Token refresh & authenticated fetch
+  async function refreshAuthToken() {
+    const refreshToken = sessionStorage.getItem('refreshToken');
+    if (!refreshToken) throw new Error('No refresh token');
+
+    const url = useLocalProxy ? LOCAL_REFRESH_PROXY_URL : REFRESH_TOKEN_URL;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ refreshToken, clientType: 'WEB' })
+    });
+    if (!response.ok) throw new Error('Token refresh failed');
+
+    const data = await response.json();
+    authToken = data.accessToken;
+    sessionStorage.setItem('authToken', data.accessToken);
+    if (data.refreshToken) sessionStorage.setItem('refreshToken', data.refreshToken);
+    return authToken;
+  }
+
+  async function authFetch(url, options = {}) {
+    options.headers = { ...options.headers, 'Authorization': `Bearer ${authToken}` };
+    let response = await fetch(url, options);
+
+    if (response.status === 401 && sessionStorage.getItem('refreshToken')) {
+      // Prevent concurrent refresh calls — share a single promise
+      if (!isRefreshingToken) {
+        isRefreshingToken = true;
+        refreshTokenPromise = refreshAuthToken()
+          .finally(() => {
+            isRefreshingToken = false;
+          });
+      }
+      try {
+        const newToken = await refreshTokenPromise;
+        options.headers['Authorization'] = `Bearer ${newToken}`;
+        response = await fetch(url, options);
+      } catch {
+        // Refresh failed — force logout
+        changeToken();
+        throw new Error('Session expired. Log in again.');
+      }
+    }
+    return response;
+  }
+
+  // Sketch List Functions
+  async function fetchSketchList(page = 0) {
+    currentPage = page;
+    const content = document.getElementById('sketchListContent');
+    content.innerHTML = '<div class="sketch-list-loading">' + icon('spinner','sm','secondary') + ' Loading sketches...</div>';
+    document.getElementById('sketchPagination').style.display = 'none';
+
+    try {
+      const baseUrl = useLocalProxy ? LOCAL_PROXY_URL : API_BASE_URL;
+      const response = await authFetch(`${baseUrl}/rest/v1/instant-sketch?page=${page}&pageSize=${PAGE_SIZE}`, {
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'omit',
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (!response.ok) {
+        const msgs = { 401: 'Authentication failed. Log in again.', 403: 'Access denied. Contact your administrator.', 500: 'Server error. Try again later.' };
+        throw new Error(msgs[response.status] || `Request failed (${response.status})`);
+      }
+
+      const responseData = await response.json();
+      // Handle wrapped response: { type, details: { items, page, ... } }
+      const data = responseData.details || responseData;
+
+      sketchList = data.items || [];
+      totalPages = data.totalPages || 0;
+      totalItems = data.totalItems || 0;
+      currentPage = data.page || 0;
+
+      renderSketchList();
+    } catch (error) {
+      console.error('Failed to fetch sketches:', error);
+      content.innerHTML = `<div class="sketch-list-empty" style="color:var(--error);">${icon('warning','sm','error')} ${esc(error.message)}</div>`;
+    }
+  }
+
+  function renderSketchList() {
+    const content = document.getElementById('sketchListContent');
+    const pagination = document.getElementById('sketchPagination');
+
+    if (sketchList.length === 0) {
+      content.innerHTML = '<div class="sketch-list-empty">No instant sketches found</div>';
+      pagination.style.display = 'none';
+      return;
+    }
+
+    let html = '<div class="sketch-list">';
+    sketchList.forEach(sketch => {
+      const isSelected = selectedSketchId === sketch.id;
+      // Handle created as Unix timestamp (milliseconds) or ISO string
+      let createdDate = '';
+      if (sketch.created) {
+        const date = typeof sketch.created === 'number'
+          ? new Date(sketch.created)
+          : new Date(sketch.created);
+        createdDate = date.toLocaleDateString();
+      }
+      html += `
+                    <div class="sketch-item ${isSelected ? 'selected' : ''}" onclick="selectSketch('${esc(sketch.id)}')">
+                        <div class="sketch-item-check"></div>
+                        <div class="sketch-item-info">
+                            <div class="sketch-item-name">${esc(sketch.name || 'Untitled Sketch')}</div>
+                            <div class="sketch-item-meta">
+                                <span class="sketch-item-id">${esc(sketch.id)}</span>
+                                ${createdDate ? `<span class="sketch-item-date">${icon('calendar','xs','gray')} ${createdDate}</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+    });
+    html += '</div>';
+    content.innerHTML = html;
+
+    // Update pagination
+    if (totalPages > 1) {
+      pagination.style.display = 'flex';
+      document.getElementById('prevPageBtn').disabled = currentPage === 0;
+      document.getElementById('nextPageBtn').disabled = currentPage >= totalPages - 1;
+      document.getElementById('paginationInfo').textContent = `Page ${currentPage + 1} of ${totalPages}`;
+    } else {
+      pagination.style.display = totalItems > 0 ? 'flex' : 'none';
+      document.getElementById('prevPageBtn').disabled = true;
+      document.getElementById('nextPageBtn').disabled = true;
+      document.getElementById('paginationInfo').textContent = `${totalItems} sketch${totalItems !== 1 ? 'es' : ''}`;
+    }
+  }
+
+  function goToPage(page) {
+    if (page < 0 || page >= totalPages) return;
+    fetchSketchList(page);
+  }
+
+  function selectSketch(sketchId) {
+    selectedSketchId = sketchId;
+    document.getElementById('sketchIdInput').value = sketchId;
+    renderSketchList();
+    updateLoadButton();
+  }
+
+  function onManualIdInput() {
+    const manualId = document.getElementById('sketchIdInput').value.trim();
+    // If manual input differs from selected sketch, clear selection
+    if (manualId !== selectedSketchId) {
+      selectedSketchId = null;
+      renderSketchList();
+    }
+    updateLoadButton();
+  }
+
+  function updateLoadButton() {
+    const sketchId = document.getElementById('sketchIdInput').value.trim();
+    const btn = document.getElementById('loadSketchBtn');
+    btn.disabled = !sketchId;
+  }
+
+  function showError(id, msg, details = null) {
+    document.getElementById(id).innerHTML = `<div class="error-display"><div class="error-display-header">${icon('warning','sm','error')} Error</div><div class="error-display-message">${esc(msg)}</div>${details ? `<div class="error-display-details">${esc(details)}</div>` : ''}</div>`;
+  }
+
+  function clearError(id) {
+    document.getElementById(id).innerHTML = '';
+  }
+
+  async function loadSketchFromServer() {
+    const sketchId = document.getElementById('sketchIdInput').value.trim();
+    if (!sketchId) {
+      showError('loadError', 'Select a sketch from the list or enter an ID manually');
+      return;
+    }
+    const btn = document.getElementById('loadSketchBtn');
+    btn.classList.add('loading');
+    btn.disabled = true;
+    clearError('loadError');
+
+    const baseUrl = useLocalProxy ? LOCAL_PROXY_URL : API_BASE_URL;
+
+    // Step 1: Fetch project info (GET request)
+    try {
+      const infoResponse = await authFetch(`${baseUrl}/rest/v1/instant-sketch/${sketchId}`, {
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'omit',
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (infoResponse.ok) {
+        const infoData = await infoResponse.json();
+        projectInfo = infoData.details || infoData;
+      } else {
+        // Warning only - don't block
+        projectInfo = null;
+        showToast('Could not load project details', 'warning');
+      }
+    } catch (error) {
+      console.error('Failed to fetch project info:', error);
+      projectInfo = null;
+      showToast('Could not load project details', 'warning');
+    }
+
+    // Step 2: Fetch line items (POST request)
+    try {
+      const response = await authFetch(`${baseUrl}/rest/v1/lineitems/generate/instant-sketch/${sketchId}`, {
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'omit',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json, text/plain, */*'
+        }
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        const msgs = {
+          400: 'Bad Request',
+          401: 'Authentication failed. Log in again.',
+          403: 'Access denied. Contact your administrator.',
+          404: 'Sketch not found. Check the ID and try again.',
+          500: 'Server error generating line items. Try again later.',
+          502: 'Bad gateway. Try again later.',
+          503: 'Service unavailable. Try again later.',
+          504: 'Gateway timeout. Try again later.'
+        };
+        showError('loadError', msgs[response.status] || `Request failed (${response.status})`, data?.message || data?.error || (typeof data === 'string' ? data : null));
+        return;
+      }
+      const sketchData = data.details || data;
+      if (sketchData.sketchStructure?.sketchDocument) {
+        parseJSONData(sketchData);
+        showEditor();
+        showToast('Line items loaded', 'success'); /* DESIGN: W-06 [Object] [past-tense verb] */
+      } else {
+        showError('loadError', 'Invalid response format. Check the sketch ID or contact support.', JSON.stringify(data, null, 2).substring(0, 500));
+      }
+    } catch (error) {
+      if (error.message?.includes('fetch') || error.message?.includes('Failed') || error.name === 'TypeError') {
+        if (useLocalProxy) {
+          showError('loadError', 'Cannot connect to local proxy', 'Make sure cors-proxy.js is running on port 8080');
+        } else {
+          showError('loadError', 'Network error - CORS blocked', 'Open this page from localhost and run cors-proxy.js locally');
+        }
+      } else {
+        showError('loadError', 'Unexpected error. Try again or contact support.', error.message);
+      }
+    } finally {
+      btn.classList.remove('loading');
+      updateLoadButton();
+    }
+  }
+
+  function showEditor() {
+    document.getElementById('startScreen').style.display = 'none';
+    document.getElementById('sidebar').style.display = 'flex';
+    document.getElementById('mainContent').style.display = 'flex';
+    document.getElementById('headerActions').style.display = 'flex';
+    renderProjectInfo();
+    renderTree();
+    renderTable();
+    updateStats();
+  }
+
+  function toggleProjectInfo() {
+    document.getElementById('projectInfoSection').classList.toggle('collapsed');
+  }
+
+  function toggleFilesSection() {
+    document.querySelector('.files-section')?.classList.toggle('collapsed');
+  }
+
+  function formatValue(val) {
+    if (val === null || val === undefined || val === '') return { text: '-', empty: true };
+    return { text: String(val), empty: false };
+  }
+
+  function formatDate(val) {
+    if (!val) return { text: '-', empty: true };
+    try {
+      const date = typeof val === 'number' ? new Date(val) : new Date(val);
+      if (isNaN(date.getTime())) return { text: '-', empty: true };
+      return { text: date.toLocaleString(), empty: false };
+    } catch {
+      return { text: '-', empty: true };
+    }
+  }
+
+  function formatNumber(val, suffix = '') {
+    if (val === null || val === undefined || val === '') return { text: '-', empty: true };
+    const num = typeof val === 'number' ? val : parseFloat(val);
+    if (isNaN(num)) return { text: '-', empty: true };
+    return { text: num.toLocaleString() + suffix, empty: false };
+  }
+
+  function renderInfoRow(label, value) {
+    const v = typeof value === 'object' ? value : formatValue(value);
+    return `<div class="project-info-row"><span class="project-info-label">${esc(label)}</span><span class="project-info-value${v.empty ? ' empty' : ''}">${esc(v.text)}</span></div>`;
+  }
+
+  function getFileIcon(type) {
+    const icons = {
+      'COMMENT': icon('comment','sm','gray'),
+      'IMAGE': icon('image','sm','gray'),
+      'DOCUMENT': icon('document','sm','gray'),
+      'VIDEO': icon('video','sm','gray'),
+      'FLOOR_PLAN': icon('map','sm','gray'),
+      'PHOTO': icon('camera','sm','gray')
+    };
+    return icons[type] || icon('paperclip','sm','gray');
+  }
+
+  function renderProjectInfo() {
+    const section = document.getElementById('projectInfoSection');
+    const content = document.getElementById('projectInfoContent');
+
+    if (!projectInfo) {
+      section.style.display = 'none';
+      return;
+    }
+
+    section.style.display = 'block';
+
+    const data = projectInfo.sketchData || {};
+    const project = data.project || {};
+    const device = data.deviceInfo || {};
+    const metrics = data.calculatedMetrics || {};
+    const files = projectInfo.files || [];
+    const floors = project.floors || [];
+
+    let html = '';
+
+    // Basic Info Group
+    html += '<div class="project-info-group">';
+    html += '<div class="project-info-group-title">Basic Info</div>';
+    html += renderInfoRow('ID', projectInfo.id);
+    html += renderInfoRow('Name', project.name);
+    html += renderInfoRow('Address', project.address);
+    html += renderInfoRow('Claim #', project.claimNumber);
+    html += renderInfoRow('Customer', project.customerName);
+    html += renderInfoRow('Loss Date', project.lossDate);
+    html += renderInfoRow('Created', formatDate(project.dateCreated));
+    html += renderInfoRow('Modified', formatDate(project.lastModified));
+    html += '</div>';
+
+    // Water Classification Group
+    html += '<div class="project-info-group">';
+    html += '<div class="project-info-group-title">Water Classification</div>';
+    html += renderInfoRow('Use Project Classification', project.useProjectWaterClassification ? 'Yes' : 'No');
+    html += renderInfoRow('Water Class', project.waterClass);
+    html += renderInfoRow('Water Category', project.waterCategory);
+    html += '</div>';
+
+    // Calculated Metrics Group
+    html += '<div class="project-info-group">';
+    html += '<div class="project-info-group-title">Calculated Metrics</div>';
+    html += '<div class="metrics-grid">';
+    html += `<div class="metric-item"><div class="metric-value">${formatNumber(metrics.totalChambers).text}</div><div class="metric-label">Chambers</div></div>`;
+    html += `<div class="metric-item"><div class="metric-value">${formatNumber(metrics.totalAffectedAreaSqFt, ' SF').text}</div><div class="metric-label">Affected Area</div></div>`;
+    html += `<div class="metric-item"><div class="metric-value">${formatNumber(metrics.floodCutLinearFeet, ' LF').text}</div><div class="metric-label">Flood Cut</div></div>`;
+    html += `<div class="metric-item"><div class="metric-value">${formatNumber(metrics.wallMoistureAreaSqFt, ' SF').text}</div><div class="metric-label">Wall Moisture</div></div>`;
+    html += '</div>';
+    if (metrics.equipmentCounts) {
+      html += '<div style="margin-top:8px;font-size:11px;color:var(--text-secondary);">';
+      html += `Equipment: ${formatNumber(metrics.equipmentCounts.dehumidifier).text} Dehum, ${formatNumber(metrics.equipmentCounts.airMover).text} Air Movers, ${formatNumber(metrics.equipmentCounts.airScrubber).text} Scrubbers`;
+      html += '</div>';
+    }
+    html += '</div>';
+
+    // Floors Group
+    if (floors.length > 0) {
+      html += '<div class="project-info-group">';
+      html += '<div class="project-info-group-title">Floors</div>';
+      floors.forEach(floor => {
+        html += '<div class="floor-info-item">';
+        html += `<div class="floor-info-title">Floor ${floor.floorNumber !== undefined ? floor.floorNumber : '-'}</div>`;
+        html += '<div class="floor-info-stats">';
+        html += `<span>${icon('door','xs','gray')} ${formatNumber(floor.numberOfRooms).text} rooms</span>`;
+        html += `<span>${icon('camera','xs','gray')} ${formatNumber(floor.numberOf360Images).text} images</span>`;
+        html += '</div>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+
+    // Device Info Group
+    html += '<div class="project-info-group">';
+    html += '<div class="project-info-group-title">Device Info</div>';
+    html += renderInfoRow('Device ID', device.deviceId);
+    html += renderInfoRow('Model', device.deviceModel);
+    html += renderInfoRow('OS Version', device.osVersion);
+    html += renderInfoRow('App Version', device.appVersion);
+    html += renderInfoRow('Build', device.buildNumber);
+    html += '</div>';
+
+    // API Info
+    html += '<div class="project-info-group">';
+    html += '<div class="project-info-group-title">Submission</div>';
+    html += renderInfoRow('API Version', data.apiVersion);
+    html += renderInfoRow('Submitted At', formatDate(data.submittedAt));
+    html += renderInfoRow('Record Created', formatDate(projectInfo.created));
+    html += renderInfoRow('Record Modified', formatDate(projectInfo.modified));
+    html += '</div>';
+
+    // Files Section
+    html += `<div class="files-section collapsed">`;
+    html += `<div class="files-header" onclick="toggleFilesSection()">`;
+    html += `<span class="files-title">${icon('paperclip','sm')} Files <span class="files-count">${files.length}</span></span>`;
+    html += `<span class="files-toggle">${icon('chevronDown','xs','gray')}</span>`;
+    html += `</div>`;
+    html += `<div class="files-content">`;
+
+    if (files.length === 0) {
+      html += '<div class="files-empty">No files attached</div>';
+    } else {
+      files.forEach(file => {
+        html += '<div class="file-item">';
+        html += `<span class="file-icon">${getFileIcon(file.type)}</span>`;
+        html += '<div class="file-info">';
+        html += `<div class="file-name">${esc(file.fileName || file.id || 'Unknown')}</div>`;
+        html += '<div class="file-meta">';
+        html += `<span>${esc(file.type || '-')}</span>`;
+        if (file.linkedToType) html += `<span>→ ${esc(file.linkedToType)}</span>`;
+        if (file.createdAt) html += `<span>${formatDate(file.createdAt).text}</span>`;
+        html += '</div>';
+        html += '</div>';
+        if (file.url) {
+          html += `<div class="file-download"><a href="${esc(file.url)}" target="_blank" title="Download">${icon('download','sm')}</a></div>`;
+        }
+        html += '</div>';
+      });
+    }
+
+    html += '</div></div>';
+
+    content.innerHTML = html;
+  }
+
+  function handleFileImport(e) {
+    if (e.target.files[0]) importFile(e.target.files[0]);
+    e.target.value = '';
+  }
+
+  function importFile(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const content = e.target.result.trim();
+        if (content.startsWith('{')) parseJSONImport(content);
+        else if (content.startsWith('<')) parseXMLImport(content);
+        else throw new Error('Unrecognized format');
+        showEditor();
+        showToast('File imported', 'success'); /* DESIGN: W-06 [Object] [past-tense verb] */
+      } catch (err) {
+        showToast('Import failed', 'error');
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  function parseJSONImport(content) {
+    const data = JSON.parse(content);
+    parseJSONData(data.details || data);
+  }
+
+  function parseJSONData(data) {
+    const doc = data.sketchStructure.sketchDocument;
+    sketchStructure = {
+      document: { id: doc.id || genId('SKT'), minorVersion: '1', label: doc.name || 'Untitled' },
+      levels: []
+    };
+    if (doc.levels) sketchStructure.levels = doc.levels.map((l, i) => ({
+      id: l.id || genId('LVL'),
+      floorElevation: l.floorElevation || '0',
+      label: l.name || `Floor ${i + 1}`,
+      rooms: (l.rooms || []).map(r => ({
+        id: r.id || genId('RM'),
+        label: r.name || 'Room',
+        levelId: l.id,
+        ceilingHeight: r.ceilingHeight,
+        wallIDs: r.wallIDs,
+        abbrevNum: r.abbrevNum
+      }))
+    }));
+    lineItems = (data.lineItems || []).map((item, i) => ({
+      id: item.id || `LI${i + 1}`,
+      groupId: item.groupId || sketchStructure.document.id,
+      cat: item.cat || '',
+      sel: item.sel || '',
+      act: item.act || '',
+      calc: item.calc || '',
+      quantity: parseFloat(item.quantity) || 0,
+      unit: item.unit || 'EA',
+      removePrice: parseFloat(item.removePrice) || 0,
+      replacePrice: parseFloat(item.replacePrice) || 0,
+      desc: item.desc || '',
+      evidence: item.evidence || '',
+      notes: item.notes || []
+    }));
+  }
+
+  function parseXMLImport(content) {
+    const doc = new DOMParser().parseFromString(content, 'text/xml');
+    const skDoc = doc.querySelector('SKETCHDOCUMENT');
+    if (!skDoc) throw new Error('No SKETCHDOCUMENT');
+    sketchStructure = {
+      document: {
+        id: skDoc.getAttribute('id') || genId('SKT'),
+        minorVersion: skDoc.getAttribute('minorVersion') || '1',
+        label: skDoc.getAttribute('name') || 'Imported'
+      }, levels: []
+    };
+    doc.querySelectorAll('SKETCHLEVEL').forEach(lvl => {
+      const level = {
+        id: lvl.getAttribute('id') || genId('LVL'),
+        floorElevation: lvl.getAttribute('floorElevation') || '0',
+        label: lvl.getAttribute('name') || 'Floor',
+        rooms: []
+      };
+      lvl.querySelectorAll('SKETCHROOM').forEach(rm => {
+        const lbl = rm.querySelector('SKETCHLABEL SKETCHCDATACHILD');
+        level.rooms.push({
+          id: rm.getAttribute('id') || genId('RM'),
+          label: lbl?.textContent || 'Room',
+          levelId: level.id,
+          ceilingHeight: rm.getAttribute('ceilingHeight'),
+          wallIDs: rm.getAttribute('wallIDs')
+        });
+      });
+      sketchStructure.levels.push(level);
+    });
+    lineItems = [];
+    doc.querySelectorAll('LINEITEM').forEach((item, i) => {
+      const notes = [];
+      item.querySelectorAll('NOTE').forEach(n => {
+        const d = n.querySelector('DATA');
+        notes.push({ internal: n.getAttribute('internal') === 'true', text: d?.textContent || '' });
+      });
+      lineItems.push({
+        id: item.getAttribute('id') || `LI${i + 1}`,
+        groupId: item.getAttribute('groupId') || sketchStructure.document.id,
+        cat: item.getAttribute('cat') || '',
+        sel: item.getAttribute('sel') || '',
+        act: item.getAttribute('act') || '',
+        calc: item.getAttribute('calc') || '',
+        quantity: parseFloat(item.getAttribute('quantity')) || 0,
+        unit: item.getAttribute('unit') || 'EA',
+        removePrice: parseFloat(item.getAttribute('removePrice')) || 0,
+        replacePrice: parseFloat(item.getAttribute('otherPrice')) || 0,
+        desc: item.getAttribute('desc') || '',
+        notes
+      });
+    });
+  }
+
+  function exportVeriskXML() {
+    const errors = validateAll();
+    if (errors > 0) {
+      showConfirmModal(
+        `Export with ${errors} error(s)?`,
+        'The exported file may contain invalid data.',
+        'Export anyway',
+        () => doExportVeriskXML()
+      );
+      return;
+    }
+    doExportVeriskXML();
+  }
+
+  function doExportVeriskXML() {
+    let xml = '<?xml version="1.0" encoding="UTF-8"?>\n<SKETCH_FILES>\n';
+    xml += `  <SKETCHDOCUMENT id="${escXml(sketchStructure.document.id)}" minorVersion="${escXml(sketchStructure.document.minorVersion)}">\n    <COORDINATE3 x="0" y="0" z="0"/>\n`;
+    sketchStructure.levels.forEach(l => {
+      xml += `    <SKETCHLEVEL id="${escXml(l.id)}" floorElevation="${escXml(l.floorElevation)}" name="${escXml(l.label)}">\n`;
+      l.rooms.forEach(r => {
+        xml += `      <SKETCHROOM id="${escXml(r.id)}" ceilingHeight="${escXml(r.ceilingHeight || '2438')}" wallIDs="${escXml(r.wallIDs || '')}"><SKETCHLABEL><SKETCHCDATACHILD><![CDATA[${r.label}]]></SKETCHCDATACHILD></SKETCHLABEL></SKETCHROOM>\n`;
+      });
+      xml += '    </SKETCHLEVEL>\n';
+    });
+    xml += '  </SKETCHDOCUMENT>\n  <LINEITEMDETAIL>\n';
+    lineItems.forEach(item => {
+      let attrs = `id="${escXml(item.id)}" groupId="${escXml(item.groupId)}" cat="${escXml(item.cat)}" sel="${escXml(item.sel)}"`;
+      if (item.act) attrs += ` act="${escXml(item.act)}"`;
+      if (item.calc) attrs += ` calc="${escXml(item.calc)}"`;
+      attrs += ` quantity="${item.quantity}" unit="${escXml(item.unit)}"`;
+      if (item.removePrice) attrs += ` removePrice="${item.removePrice}"`;
+      if (item.replacePrice) attrs += ` otherPrice="${item.replacePrice}"`;
+      if (item.desc) attrs += ` desc="${escXml(item.desc)}"`;
+      if (item.notes?.length) {
+        xml += `    <LINEITEM ${attrs}><NOTES>${item.notes.map(n => `<NOTE internal="${n.internal}"><DATA><![CDATA[${n.text}]]></DATA></NOTE>`).join('')}</NOTES></LINEITEM>\n`;
+      } else {
+        xml += `    <LINEITEM ${attrs}/>\n`;
+      }
+    });
+    xml += '  </LINEITEMDETAIL>\n</SKETCH_FILES>';
+    download(xml, 'line-items.xml', 'application/xml');
+    showToast('XML exported', 'success');
+  }
+
+  function exportJSON() {
+    const errors = validateAll();
+    if (errors > 0) {
+      showConfirmModal(
+        `Export with ${errors} error(s)?`,
+        'The exported file may contain invalid data.',
+        'Export anyway',
+        () => doExportJSON()
+      );
+      return;
+    }
+    doExportJSON();
+  }
+
+  function doExportJSON() {
+    const data = {
+      type: 'HTTP_OK',
+      details: {
+        sketchStructure: {
+          sketchDocument: {
+            id: sketchStructure.document.id,
+            name: sketchStructure.document.label,
+            levels: sketchStructure.levels.map((l, i) => ({
+              id: l.id,
+              name: l.label,
+              sortOrder: i,
+              rooms: l.rooms.map(r => ({
+                id: r.id,
+                name: r.label,
+                abbrevNum: r.abbrevNum,
+                ceilingHeight: r.ceilingHeight,
+                wallIDs: r.wallIDs
+              }))
+            }))
+          }
+        },
+        lineItems: lineItems.map(i => ({
+          id: i.id,
+          groupId: i.groupId,
+          cat: i.cat,
+          sel: i.sel,
+          act: i.act,
+          calc: i.calc,
+          quantity: String(i.quantity),
+          unit: i.unit,
+          removePrice: String(i.removePrice),
+          replacePrice: String(i.replacePrice),
+          desc: i.desc,
+          evidence: i.evidence || '',
+          notes: i.notes
+        }))
+      }
+    };
+    download(JSON.stringify(data, null, 2), 'line-items.json', 'application/json');
+    showToast('JSON exported', 'success');
+  }
+
+  function download(content, name, type) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([content], { type }));
+    a.download = name;
+    a.click();
+  }
+
+  function loadSampleData() {
+    sketchStructure = {
+      document: { id: 'SKT1', minorVersion: '1', label: 'Sample Water Damage Project' },
+      levels: [{
+        id: 'LVL1',
+        floorElevation: '0',
+        label: 'First Floor',
+        rooms: [{ id: 'RM1', label: 'Living Room', levelId: 'LVL1', ceilingHeight: '2438', wallIDs: '' }, {
+          id: 'RM2',
+          label: 'Kitchen',
+          levelId: 'LVL1',
+          ceilingHeight: '2438',
+          wallIDs: ''
+        }]
+      }, {
+        id: 'LVL2',
+        floorElevation: '3000',
+        label: 'Second Floor',
+        rooms: [{ id: 'RM3', label: 'Master Bedroom', levelId: 'LVL2', ceilingHeight: '2438', wallIDs: '' }]
+      }]
+    };
+    lineItems = [{
+      id: 'LI1',
+      groupId: 'RM1',
+      cat: 'WTR',
+      sel: 'PUMP',
+      act: '+',
+      calc: '',
+      quantity: 4,
+      unit: 'HR',
+      removePrice: 0,
+      replacePrice: 45,
+      desc: 'Water extraction',
+      notes: []
+    }, {
+      id: 'LI2',
+      groupId: 'RM1',
+      cat: 'WTR',
+      sel: 'DEHUM',
+      act: '+',
+      calc: '',
+      quantity: 5,
+      unit: 'DA',
+      removePrice: 0,
+      replacePrice: 65,
+      desc: 'Dehumidifier rental',
+      notes: []
+    }, {
+      id: 'LI3',
+      groupId: 'RM1',
+      cat: 'FCC',
+      sel: 'CARPT',
+      act: '&',
+      calc: 'F',
+      quantity: 250,
+      unit: 'SF',
+      removePrice: 0.35,
+      replacePrice: 4.5,
+      desc: 'Remove and replace carpet',
+      notes: []
+    }, {
+      id: 'LI4',
+      groupId: 'RM2',
+      cat: 'DRY',
+      sel: 'DRY12',
+      act: '&',
+      calc: 'W',
+      quantity: 120,
+      unit: 'SF',
+      removePrice: 0.45,
+      replacePrice: 2.25,
+      desc: 'Remove and replace drywall',
+      notes: []
+    }, {
+      id: 'LI5',
+      groupId: 'RM2',
+      cat: 'PNT',
+      sel: 'WALL',
+      act: '+',
+      calc: 'W',
+      quantity: 120,
+      unit: 'SF',
+      removePrice: 0,
+      replacePrice: 1.85,
+      desc: 'Paint walls',
+      notes: []
+    }, {
+      id: 'LI6',
+      groupId: 'RM3',
+      cat: 'CLN',
+      sel: 'HEPA',
+      act: 'C',
+      calc: 'F',
+      quantity: 180,
+      unit: 'SF',
+      removePrice: 0,
+      replacePrice: 0.75,
+      desc: 'HEPA vacuum',
+      notes: []
+    }, {
+      id: 'LI7',
+      groupId: 'SKT1',
+      cat: 'DMO',
+      sel: 'HAUL',
+      act: '-',
+      calc: '',
+      quantity: 3,
+      unit: 'CY',
+      removePrice: 125,
+      replacePrice: 0,
+      desc: 'Debris hauling',
+      notes: []
+    }];
+    showEditor();
+    showToast('Sample loaded', 'success');
+  }
+
+  function createNewDocument() {
+    const lvlId = genId('LVL');
+    sketchStructure = {
+      document: { id: genId('SKT'), minorVersion: '1', label: 'New Project' },
+      levels: [{
+        id: lvlId,
+        floorElevation: '0',
+        label: 'First Floor',
+        rooms: [{
+          id: genId('RM'),
+          label: 'Room 1',
+          levelId: lvlId,
+          ceilingHeight: '2438',
+          wallIDs: ''
+        }, { id: genId('RM'), label: 'Room 2', levelId: lvlId, ceilingHeight: '2438', wallIDs: '' }]
+      }]
+    };
+    lineItems = [];
+    showEditor();
+    showToast('Document created', 'success');
+  }
+
+  function genId(p) {
+    return p + Math.random().toString(36).substr(2, 9).toUpperCase();
+  }
+
+  function renderTree() {
+    const c = document.getElementById('treeView');
+    const all = lineItems.length, proj = lineItems.filter(i => i.groupId === sketchStructure.document.id).length;
+    let h = `<div class="tree-item ${activeFilter === 'all' ? 'active' : ''}" onclick="filterByGroup('all')"><span class="tree-item-icon">${icon('clipboard','sm')}</span><span class="tree-item-label">All Items</span><span class="tree-item-count">${all}</span></div><div class="tree-item tree-level-1 ${activeFilter === sketchStructure.document.id ? 'active' : ''}" onclick="filterByGroup('${sketchStructure.document.id}')"><span class="tree-item-icon">${icon('home','sm')}</span><span class="tree-item-label">${esc(sketchStructure.document.label || 'Project')}</span><span class="tree-item-count">${proj}</span></div>`;
+    sketchStructure.levels.forEach(l => {
+      const lc = lineItems.filter(i => i.groupId === l.id).length + l.rooms.reduce((s, r) => s + lineItems.filter(i => i.groupId === r.id).length, 0);
+      h += `<div class="tree-item tree-level-2 ${activeFilter === l.id ? 'active' : ''}" onclick="filterByGroup('${l.id}')"><span class="tree-item-icon">${icon('layers','sm')}</span><span class="tree-item-label">${esc(l.label)}</span><span class="tree-item-count">${lc}</span><div class="tree-item-actions"><button class="tree-action-btn" onclick="event.stopPropagation();showAddRoomModal('${l.id}')" title="Add room">${icon('plus','xs')}</button><button class="tree-action-btn" onclick="event.stopPropagation();showEditFloorModal('${l.id}')" title="Edit">${icon('edit','xs')}</button><button class="tree-action-btn danger" onclick="event.stopPropagation();confirmDeleteFloor('${l.id}')" title="Delete">${icon('x','xs')}</button></div></div>`;
+      l.rooms.forEach(r => {
+        const rc = lineItems.filter(i => i.groupId === r.id).length;
+        h += `<div class="tree-item tree-level-3 ${activeFilter === r.id ? 'active' : ''}" onclick="filterByGroup('${r.id}')"><span class="tree-item-icon">${icon('door','sm')}</span><span class="tree-item-label">${esc(r.label)}</span><span class="tree-item-count">${rc}</span><div class="tree-item-actions"><button class="tree-action-btn" onclick="event.stopPropagation();showEditRoomModal('${r.id}')" title="Edit">${icon('edit','xs')}</button><button class="tree-action-btn danger" onclick="event.stopPropagation();confirmDeleteRoom('${r.id}')" title="Delete">${icon('x','xs')}</button></div></div>`;
+      });
+    });
+    c.innerHTML = h;
+    document.getElementById('totalRCV').textContent = '$' + lineItems.reduce((s, i) => s + calcTotal(i), 0).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function filterByGroup(g) {
+    activeFilter = g;
+    renderTree();
+    renderTable();
+  }
+
+  function renderTable() {
+    const tbody = document.getElementById('tableBody');
+    let h = '', n = 0;
+    let filtered = lineItems;
+    if (activeFilter !== 'all') {
+      if (activeFilter === sketchStructure.document.id) filtered = lineItems.filter(i => i.groupId === sketchStructure.document.id);
+      else {
+        const lvl = sketchStructure.levels.find(l => l.id === activeFilter);
+        filtered = lvl ? lineItems.filter(i => i.groupId === activeFilter || lvl.rooms.some(r => r.id === i.groupId)) : lineItems.filter(i => i.groupId === activeFilter);
+      }
+    }
+    const groups = {};
+    const projItems = filtered.filter(i => i.groupId === sketchStructure.document.id);
+    if (projItems.length || activeFilter === 'all' || activeFilter === sketchStructure.document.id) groups[sketchStructure.document.id] = {
+      type: 'project',
+      label: sketchStructure.document.label || 'Project',
+      items: projItems
+    };
+    sketchStructure.levels.forEach(l => {
+      const li = filtered.filter(i => i.groupId === l.id);
+      if ((activeFilter === 'all' || activeFilter === l.id) && li.length) groups[l.id] = {
+        type: 'floor',
+        label: l.label,
+        items: li
+      };
+      l.rooms.forEach(r => {
+        const ri = filtered.filter(i => i.groupId === r.id);
+        if (ri.length || activeFilter === r.id) groups[r.id] = { type: 'room', label: r.label, items: ri };
+      });
+    });
+    Object.entries(groups).forEach(([gid, g]) => {
+      const sub = g.items.reduce((s, i) => s + calcTotal(i), 0);
+      h += `<tr class="group-header" data-group="${gid}" ondragover="dragOver(event)" ondrop="drop(event)"><td colspan="16"><span class="group-badge ${g.type}">${g.type}</span>${esc(g.label)}<span class="group-stats">${g.items.length} items · $${sub.toFixed(2)}</span></td></tr>`;
+      g.items.forEach((item, displayIdx) => {
+        n++;
+        const tot = calcTotal(item);
+        const itemId = item.id;
+        h += `<tr data-id="${itemId}" data-group="${gid}" draggable="true" ondragstart="dragStart(event)" ondragover="dragOver(event)" ondrop="drop(event)" ondragend="dragEnd(event)"><td class="col-drag"><span class="drag-handle">${icon('grip','sm','gray')}</span></td><td class="col-check"><input type="checkbox" class="checkbox" ${selectedItems.has(itemId) ? 'checked' : ''} onchange="toggleSelect('${itemId}')"></td><td class="col-num"><span class="row-number">${n}</span></td><td class="col-id"><input type="text" class="input mono" value="${esc(itemId)}" onblur="updateItemById('${itemId}','id',this.value.trim())" onkeydown="if(event.key==='Enter'){this.blur()}"></td><td class="col-cat"><div class="autocomplete-wrapper"><input type="text" class="input mono ${getValidationClass('cat', item)}" value="${esc(item.cat)}" onfocus="showACById(this,'cat','${itemId}')" oninput="filterACById(this,'cat','${itemId}')" onblur="hideAC(this);handleFieldBlurById('${itemId}','cat',this)" onkeydown="acKey(event,this);handleFieldKeydown(event,'${itemId}','cat',this)"></div></td><td class="col-sel"><div class="autocomplete-wrapper"><input type="text" class="input mono ${getValidationClass('sel', item)}" value="${esc(item.sel)}" onfocus="showACById(this,'sel','${itemId}')" oninput="filterACById(this,'sel','${itemId}')" onblur="hideAC(this);handleFieldBlurById('${itemId}','sel',this)" onkeydown="acKey(event,this);handleFieldKeydown(event,'${itemId}','sel',this)"></div></td><td class="col-act"><div class="autocomplete-wrapper"><input type="text" class="input" value="${esc(item.act)}" onfocus="showACById(this,'act','${itemId}')" oninput="filterACById(this,'act','${itemId}')" onblur="hideAC(this);updateItemById('${itemId}','act',this.value.trim())" onkeydown="acKey(event,this);if(event.key==='Enter'&&!activeAutocomplete)this.blur()"></div></td><td class="col-calc"><div class="autocomplete-wrapper"><input type="text" class="input mono" value="${esc(item.calc)}" onfocus="showACById(this,'calc','${itemId}')" oninput="filterACById(this,'calc','${itemId}')" onblur="hideAC(this);updateItemById('${itemId}','calc',this.value.trim())" onkeydown="acKey(event,this);if(event.key==='Enter'&&!activeAutocomplete)this.blur()"></div></td><td class="col-qty"><input type="number" class="input input-number" value="${item.quantity}" step="0.01" onblur="updateItemById('${itemId}','quantity',parseFloat(this.value)||0)" onkeydown="if(event.key==='Enter')this.blur()"></td><td class="col-unit"><select class="input" onchange="updateItemById('${itemId}','unit',this.value)">${sowDatabase.units.map(u => `<option value="${u}"${item.unit === u ? ' selected' : ''}>${u}</option>`).join('')}</select></td><td class="col-remove"><input type="number" class="input input-number" value="${item.removePrice}" step="0.01" onblur="updateItemById('${itemId}','removePrice',parseFloat(this.value)||0)" onkeydown="if(event.key==='Enter')this.blur()"></td><td class="col-replace"><input type="number" class="input input-number" value="${item.replacePrice}" step="0.01" onblur="updateItemById('${itemId}','replacePrice',parseFloat(this.value)||0)" onkeydown="if(event.key==='Enter')this.blur()"></td><td class="col-total total-cell">$${tot.toFixed(2)}</td><td class="col-desc"><input type="text" class="input" value="${esc(item.desc)}" onblur="updateItemById('${itemId}','desc',this.value)" onkeydown="if(event.key==='Enter')this.blur()"></td><td class="col-evidence"><span class="evidence-content" style="color:var(--text-muted);font-size:11px;">${item.evidence ? esc(item.evidence) : '—'}</span><span class="evidence-collapsed-icon" style="display:none;color:var(--text-muted);font-size:14px;" title="Evidence column collapsed">${icon('paperclip','xs','gray')}</span></td><td class="col-actions"><div class="row-actions"><button class="action-btn" title="Copy" onclick="copyItemById('${itemId}')">${icon('copy','sm')}</button><button class="action-btn danger" title="Delete" onclick="deleteItemById('${itemId}')">${icon('trash','sm','error')}</button></div></td></tr>`;
+      });
+    });
+    tbody.innerHTML = h;
+    updateStats();
+  }
+
+  function calcTotal(i) {
+    return ((parseFloat(i.removePrice) || 0) + (parseFloat(i.replacePrice) || 0)) * (parseFloat(i.quantity) || 0);
+  }
+
+  // Helper to find item index by ID
+  function getItemIndexById(id) {
+    return lineItems.findIndex(i => i.id === id);
+  }
+
+  function getItemById(id) {
+    return lineItems.find(i => i.id === id);
+  }
+
+  // ID-based update function (preferred)
+  function updateItemById(id, f, v) {
+    const item = getItemById(id);
+    if (!item) return;
+
+    item[f] = v;
+
+    // When CAT changes, clear SEL if new category doesn't have current selector
+    if (f === 'cat' && item.sel) {
+      const newCatData = sowDatabase.categories[v.toUpperCase()];
+      if (newCatData && !newCatData.selectors.includes(item.sel.toUpperCase())) {
+        item.sel = '';
+      }
+    }
+
+    renderTable();
+    renderTree();
+  }
+
+  // Legacy index-based update (kept for compatibility)
+  function updateItem(i, f, v) {
+    if (i >= 0 && i < lineItems.length) {
+      updateItemById(lineItems[i].id, f, v);
+    }
+  }
+
+  function validateCat(val) {
+    if (!val || val.trim() === '') return 'error'; // Empty = error
+    if (!sowDatabase.categories.hasOwnProperty(val.toUpperCase())) return 'warning'; // Not in presets = warning
+    return 'valid';
+  }
+
+  function validateSel(val, cat) {
+    if (!val || val.trim() === '') return 'error'; // Empty = error
+    const catData = sowDatabase.categories[cat?.toUpperCase()];
+    if (catData) {
+      if (!catData.selectors.includes(val.toUpperCase())) return 'warning'; // Not in presets = warning
+    } else {
+      if (!sowDatabase.selectors.hasOwnProperty(val.toUpperCase())) return 'warning';
+    }
+    return 'valid';
+  }
+
+  function getValidationClass(field, item) {
+    const result = field === 'cat' ? validateCat(item.cat) : validateSel(item.sel, item.cat);
+    if (result === 'error') return 'error';
+    if (result === 'warning') return 'warning';
+    return '';
+  }
+
+  function handleFieldBlurById(id, field, input) {
+    // v2.2 FIX: Skip blur handling if an autocomplete selection just happened for this field
+    // This prevents the blur event from overwriting the autocomplete-selected value
+    if (pendingACSelection && pendingACSelection.itemId === id && pendingACSelection.field === field) {
+      return; // Autocomplete selection will handle the update
+    }
+
+    const item = getItemById(id);
+    if (!item) return;
+    const val = input.value.trim();
+
+    // Always update if value changed (use direct assignment to avoid re-render issues)
+    if (item[field] !== val) {
+      item[field] = val;
+
+      // When CAT changes, clear SEL if new category doesn't have current selector
+      if (field === 'cat' && item.sel) {
+        const newCatData = sowDatabase.categories[val.toUpperCase()];
+        if (!newCatData || !newCatData.selectors.includes(item.sel.toUpperCase())) {
+          item.sel = '';
+        }
+      }
+
+      // Defer render to avoid issues with blur event processing
+      setTimeout(() => {
+        renderTable();
+        renderTree();
+      }, 0);
+    }
+  }
+
+  function handleFieldBlur(idx, field, input) {
+    if (idx >= 0 && idx < lineItems.length) {
+      handleFieldBlurById(lineItems[idx].id, field, input);
+    }
+  }
+
+  function handleFieldKeydown(e, itemId, field, input) {
+    // Enter key handling is done in acKey when autocomplete is active
+    // This handles Enter when autocomplete is NOT active
+    if (e.key === 'Enter' && !activeAutocomplete) {
+      e.preventDefault();
+      const val = input.value.trim();
+      updateItemById(itemId, field, val);
+    }
+  }
+
+  function countErrors() {
+    return lineItems.filter(i => validateCat(i.cat) === 'error' || validateSel(i.sel, i.cat) === 'error').length;
+  }
+
+  function countWarnings() {
+    return lineItems.filter(i => validateCat(i.cat) === 'warning' || validateSel(i.sel, i.cat) === 'warning').length;
+  }
+
+  function addLineItem() {
+    const gid = activeFilter === 'all' ? sketchStructure.document.id : activeFilter;
+    lineItems.push({
+      id: 'LI' + (lineItems.length + 1),
+      groupId: gid,
+      cat: '',
+      sel: '',
+      act: '',
+      calc: '',
+      quantity: 1,
+      unit: 'EA',
+      removePrice: 0,
+      replacePrice: 0,
+      desc: '',
+      notes: []
+    });
+    renderTable();
+    renderTree();
+    showToast('Item added', 'success');
+  }
+
+  function copyItemById(id) {
+    const idx = getItemIndexById(id);
+    if (idx < 0) return;
+    const o = lineItems[idx];
+    lineItems.splice(idx + 1, 0, { ...o, id: 'LI' + (lineItems.length + 1), notes: [...(o.notes || [])] });
+    renderTable();
+    renderTree();
+    showToast('Item copied', 'success');
+  }
+
+  function copyItem(i) {
+    if (i >= 0 && i < lineItems.length) copyItemById(lineItems[i].id);
+  }
+
+  function deleteItemById(id) {
+    const idx = getItemIndexById(id);
+    if (idx < 0) return;
+    lineItems.splice(idx, 1);
+    renderTable();
+    renderTree();
+    showToast('Item deleted', 'success');
+  }
+
+  function deleteItem(i) {
+    if (i >= 0 && i < lineItems.length) deleteItemById(lineItems[i].id);
+  }
+
+  function toggleSelect(id) {
+    selectedItems.has(id) ? selectedItems.delete(id) : selectedItems.add(id);
+    updateStats();
+  }
+
+  function toggleSelectAll() {
+    const cb = document.getElementById('selectAll'),
+      ids = [...document.querySelectorAll('#tableBody tr[data-id]')].map(r => r.dataset.id);
+    ids.forEach(id => cb.checked ? selectedItems.add(id) : selectedItems.delete(id));
+    renderTable();
+  }
+
+  function deleteSelected() {
+    if (!selectedItems.size) return;
+    showConfirmModal(
+      `Delete ${selectedItems.size} item(s)?`,
+      'This action cannot be undone.',
+      'Delete',
+      () => {
+        lineItems = lineItems.filter(i => !selectedItems.has(i.id));
+        selectedItems.clear();
+        renderTable();
+        renderTree();
+        showToast('Items deleted', 'success');
+      }
+    );
+  }
+
+  function updateStats() {
+    const t = lineItems.length, e = countErrors(), w = countWarnings(), s = selectedItems.size;
+    document.getElementById('statTotal').textContent = `${t} item${t !== 1 ? 's' : ''}`;
+    const eb = document.getElementById('statErrors'), wb = document.getElementById('statWarnings'),
+      sb = document.getElementById('statSelected'), db = document.getElementById('deleteSelectedBtn');
+    eb.textContent = `${e} error${e !== 1 ? 's' : ''}`;
+    eb.style.display = e ? 'inline-flex' : 'none';
+    wb.textContent = `${w} warning${w !== 1 ? 's' : ''}`;
+    wb.style.display = w ? 'inline-flex' : 'none';
+    sb.textContent = `${s} selected`;
+    sb.style.display = s ? 'inline-flex' : 'none';
+    db.style.display = s ? 'inline-flex' : 'none';
+  }
+
+  function validateAll() {
+    const e = countErrors(), w = countWarnings();
+    if (e > 0) showToast(`${e} error(s), ${w} warning(s)`, 'error');
+    else if (w > 0) showToast(`${w} warning(s)`, 'warning');
+    else showToast('Validation passed', 'success');
+    renderTable();
+    return e;
+  }
+
+  function showACById(inp, type, itemId) {
+    hideAllAC();
+    const item = getItemById(itemId);
+    if (!item) return;
+
+    const wrap = inp.closest('.autocomplete-wrapper');
+    const items = getACItemsById(type, inp.value, itemId);
+
+    // Handle SEL field when no valid category is selected
+    if (type === 'sel') {
+      const cat = item.cat?.toUpperCase();
+      const catData = sowDatabase.categories[cat];
+      if (!cat || !catData) {
+        const dd = document.createElement('div');
+        dd.className = 'autocomplete-dropdown';
+        dd.innerHTML = '<div class="autocomplete-message">' + icon('warning','sm') + ' Select a category first</div>';
+        wrap.appendChild(dd);
+        activeAutocomplete = { dropdown: dd, input: inp, type, itemId: itemId, items: [] };
+        return;
+      }
+    }
+
+    if (!items.length) return;
+
+    const dd = document.createElement('div');
+    dd.className = 'autocomplete-dropdown';
+    dd.innerHTML = items.map((it, i) => `<div class="autocomplete-item" data-value="${it.code}" data-index="${i}" onmousedown="selectACById('${it.code}','${itemId}','${type}')"><span class="autocomplete-code">${esc(it.code)}</span><span class="autocomplete-desc">${esc(it.desc)}</span>${it.unit ? `<span class="autocomplete-unit">${it.unit}</span>` : ''}</div>`).join('');
+    wrap.appendChild(dd);
+    activeAutocomplete = { dropdown: dd, input: inp, type, itemId: itemId, items };
+    highlightedIndex = -1;
+  }
+
+  function showAC(inp, type, idx) {
+    if (idx >= 0 && idx < lineItems.length) showACById(inp, type, lineItems[idx].id);
+  }
+
+  function filterACById(inp, type, itemId) {
+    if (activeAutocomplete) activeAutocomplete.dropdown.remove();
+    showACById(inp, type, itemId);
+  }
+
+  function filterAC(inp, type, idx) {
+    if (idx >= 0 && idx < lineItems.length) filterACById(inp, type, lineItems[idx].id);
+  }
+
+  function hideAC(inp) {
+    setTimeout(() => {
+      if (activeAutocomplete?.input === inp) {
+        activeAutocomplete.dropdown.remove();
+        activeAutocomplete = null;
+      }
+    }, 200);
+  }
+
+  function hideAllAC() {
+    document.querySelectorAll('.autocomplete-dropdown').forEach(d => d.remove());
+    activeAutocomplete = null;
+  }
+
+  function selectACById(v, itemId, type) {
+    const item = getItemById(itemId);
+    if (!item) return;
+
+    // v2.2 FIX: Mark that an autocomplete selection is pending
+    // This prevents the blur handler from overwriting our selection
+    pendingACSelection = { itemId: itemId, field: type };
+
+    if (type === 'cat') {
+      // CAT selection: clear SEL if category changes
+      const oldCat = item.cat;
+      if (oldCat.toUpperCase() !== v.toUpperCase()) {
+        item.cat = v;
+        item.sel = ''; // Clear SEL when category changes
+      }
+    } else if (type === 'sel') {
+      // SEL selection: auto-fill Unit, Activity, and Description
+      const selData = sowDatabase.selectors[v];
+
+      // Always set the SEL value first
+      item.sel = v;
+
+      if (selData) {
+        // Auto-fill unit
+        item.unit = selData.unit || item.unit || 'EA';
+
+        // Auto-fill activity
+        item.act = selData.act || item.act || '+';
+
+        // Auto-fill description ONLY if empty
+        if (!item.desc || item.desc.trim() === '') {
+          item.desc = selData.desc;
+        }
+      }
+    } else {
+      item[type] = v;
+    }
+    hideAllAC();
+
+    // v2.2 FIX: Defer render to let blur event fire first, then clear pending flag
+    setTimeout(() => {
+      renderTable();
+      renderTree();
+      pendingACSelection = null; // Clear the pending flag after render
+    }, 0);
+  }
+
+  function selectAC(v, idx, type) {
+    if (idx >= 0 && idx < lineItems.length) selectACById(v, lineItems[idx].id, type);
+  }
+
+  function acKey(e, inp) {
+    if (!activeAutocomplete) {
+      return;
+    }
+    const items = activeAutocomplete.dropdown.querySelectorAll('.autocomplete-item');
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      highlightedIndex = Math.min(highlightedIndex + 1, items.length - 1);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      highlightedIndex = Math.max(highlightedIndex - 1, 0);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (highlightedIndex >= 0 && items[highlightedIndex]) {
+        // Select highlighted item from dropdown
+        selectACById(items[highlightedIndex].dataset.value, activeAutocomplete.itemId, activeAutocomplete.type);
+      } else {
+        // No item highlighted - save the typed value directly
+        const itemId = activeAutocomplete.itemId;
+        const type = activeAutocomplete.type;
+        const val = inp.value.trim();
+        hideAllAC();
+        updateItemById(itemId, type, val);
+      }
+      return;
+    } else if (e.key === 'Escape') {
+      hideAllAC();
+      inp.blur();
+      return;
+    }
+    items.forEach((it, i) => it.classList.toggle('highlighted', i === highlightedIndex));
+    if (highlightedIndex >= 0 && items[highlightedIndex]) items[highlightedIndex].scrollIntoView({ block: 'nearest' });
+  }
+
+  function getACItemsById(type, filter, itemId) {
+    const item = getItemById(itemId);
+    filter = filter.toLowerCase();
+    if (type === 'cat') {
+      // CAT: Display format "CODE - Full Category Name"
+      return Object.entries(sowDatabase.categories)
+        .filter(([c, d]) => c.toLowerCase().includes(filter) || d.name.toLowerCase().includes(filter))
+        .map(([c, d]) => ({ code: c, desc: d.name, displayCode: c, displayDesc: d.name }));
+    }
+    if (type === 'sel') {
+      const cat = item?.cat?.toUpperCase();
+      const catData = sowDatabase.categories[cat];
+
+      // If no valid category, return empty to show message
+      if (!cat || !catData) {
+        return []; // Will trigger "Select a category first" message
+      }
+
+      // Context-aware: Filter selectors based on selected CAT
+      return catData.selectors
+        .filter(c => {
+          const d = sowDatabase.selectors[c];
+          return c.toLowerCase().includes(filter) || d?.desc.toLowerCase().includes(filter);
+        })
+        .map(c => {
+          const d = sowDatabase.selectors[c] || { desc: c, unit: 'EA', act: '+' };
+          // Display format: "CODE - Description (UNIT)"
+          return { code: c, desc: d.desc, unit: d.unit, act: d.act || '+' };
+        });
+    }
+    if (type === 'act') return Object.entries(sowDatabase.actions).filter(([c, d]) => c.toLowerCase().includes(filter) || d.toLowerCase().includes(filter)).map(([c, d]) => ({
+      code: c,
+      desc: d
+    }));
+    if (type === 'calc') return sowDatabase.calcs.filter(c => c.toLowerCase().includes(filter)).map(c => ({
+      code: c,
+      desc: 'Sketch variable'
+    }));
+    return [];
+  }
+
+  function getACItems(type, filter, idx) {
+    return getACItemsById(type, filter, lineItems[idx]?.id);
+  }
+
+  function dragStart(e) {
+    draggedRow = e.target.closest('tr');
+    draggedRow.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+  }
+
+  function dragOver(e) {
+    e.preventDefault();
+    const r = e.target.closest('tr');
+    if (r && r !== draggedRow) r.classList.add('drag-over');
+  }
+
+  function drop(e) {
+    e.preventDefault();
+    const target = e.target.closest('tr');
+    if (target && draggedRow && target !== draggedRow) {
+      const did = draggedRow.dataset.id, tid = target.dataset.id, tg = target.dataset.group;
+      if (did && (tid || tg)) {
+        const di = lineItems.findIndex(i => i.id === did);
+        if (target.classList.contains('group-header')) lineItems[di].groupId = tg;
+        else if (tid) {
+          const ti = lineItems.findIndex(i => i.id === tid), targetGroupId = lineItems[ti].groupId;
+          const [rm] = lineItems.splice(di, 1);
+          const newTi = lineItems.findIndex(i => i.id === tid);
+          rm.groupId = targetGroupId;
+          lineItems.splice(newTi, 0, rm);
+        }
+        renderTable();
+        renderTree();
+      }
+    }
+    document.querySelectorAll('.drag-over').forEach(r => r.classList.remove('drag-over'));
+  }
+
+  function dragEnd() {
+    if (draggedRow) draggedRow.classList.remove('dragging');
+    draggedRow = null;
+    document.querySelectorAll('.drag-over').forEach(r => r.classList.remove('drag-over'));
+  }
+
+  function showAddFloorModal() {
+    editingFloorId = null;
+    document.getElementById('floorModalTitle').textContent = 'Add floor';
+    document.getElementById('floorNameInput').value = '';
+    document.getElementById('floorModalSubmit').textContent = 'Add floor';
+    hideInlineError('floorNameError');
+    openModal('floorModal');
+  }
+
+  function showEditFloorModal(id) {
+    const l = sketchStructure.levels.find(x => x.id === id);
+    if (!l) return;
+    editingFloorId = id;
+    document.getElementById('floorModalTitle').textContent = 'Edit floor';
+    document.getElementById('floorNameInput').value = l.label;
+    document.getElementById('floorModalSubmit').textContent = 'Save';
+    hideInlineError('floorNameError');
+    openModal('floorModal');
+  }
+
+  function submitFloor() {
+    const name = document.getElementById('floorNameInput').value.trim();
+    if (!name) {
+      showInlineError('floorNameError');
+      return;
+    }
+    if (editingFloorId) {
+      const l = sketchStructure.levels.find(x => x.id === editingFloorId);
+      if (l) l.label = name;
+      showToast('Floor updated', 'success');
+    } else {
+      sketchStructure.levels.push({
+        id: genId('LVL'),
+        floorElevation: String(sketchStructure.levels.length * 3000),
+        label: name,
+        rooms: []
+      });
+      showToast('Floor added', 'success');
+    }
+    closeModal('floorModal');
+    renderTree();
+  }
+
+  function confirmDeleteFloor(id) {
+    const l = sketchStructure.levels.find(x => x.id === id);
+    if (!l) return;
+    const rc = l.rooms.length,
+      ic = lineItems.filter(i => i.groupId === id || l.rooms.some(r => r.id === i.groupId)).length;
+    document.getElementById('deleteModalTitle').textContent = `Delete "${l.label}"?`;
+    document.getElementById('deleteWarning').innerHTML = (rc || ic) ? `<div class="warning-box-title">${icon('warning','sm','error')} Warning</div><div class="warning-box-text">${rc ? `${rc} room(s) will be deleted.<br>` : ''}${ic ? `${ic} item(s) will move to Project.` : ''}</div>` : '';
+    document.getElementById('deleteWarning').style.display = (rc || ic) ? 'block' : 'none';
+    document.getElementById('deleteMessage').textContent = (rc || ic) ? '' : 'This action cannot be undone.';
+    document.getElementById('confirmDeleteBtn').onclick = () => {
+      lineItems.forEach(i => {
+        if (i.groupId === id || l.rooms.some(r => r.id === i.groupId)) i.groupId = sketchStructure.document.id;
+      });
+      sketchStructure.levels = sketchStructure.levels.filter(x => x.id !== id);
+      closeModal('deleteModal');
+      renderTree();
+      renderTable();
+      showToast('Floor deleted', 'success');
+    };
+    openModal('deleteModal');
+  }
+
+  function showAddRoomModal(lvlId = null) {
+    editingRoomId = null;
+    document.getElementById('roomModalTitle').textContent = 'Add room';
+    document.getElementById('roomNameInput').value = '';
+    document.getElementById('roomModalSubmit').textContent = 'Add room';
+    hideInlineError('roomNameError');
+    hideInlineError('roomFloorError');
+    const sel = document.getElementById('roomFloorSelect');
+    sel.innerHTML = sketchStructure.levels.map(l => `<option value="${l.id}"${l.id === lvlId ? ' selected' : ''}>${esc(l.label)}</option>`).join('');
+    if (!sketchStructure.levels.length) {
+      showToast('Add a floor first', 'warning');
+      return;
+    }
+    openModal('roomModal');
+  }
+
+  function showEditRoomModal(rid) {
+    let room = null, lvlId = null;
+    for (const l of sketchStructure.levels) {
+      const r = l.rooms.find(x => x.id === rid);
+      if (r) {
+        room = r;
+        lvlId = l.id;
+        break;
+      }
+    }
+    if (!room) return;
+    editingRoomId = rid;
+    document.getElementById('roomModalTitle').textContent = 'Edit room';
+    document.getElementById('roomNameInput').value = room.label;
+    document.getElementById('roomModalSubmit').textContent = 'Save';
+    hideInlineError('roomNameError');
+    hideInlineError('roomFloorError');
+    document.getElementById('roomFloorSelect').innerHTML = sketchStructure.levels.map(l => `<option value="${l.id}"${l.id === lvlId ? ' selected' : ''}>${esc(l.label)}</option>`).join('');
+    openModal('roomModal');
+  }
+
+  function submitRoom() {
+    const name = document.getElementById('roomNameInput').value.trim(),
+      lvlId = document.getElementById('roomFloorSelect').value;
+    let hasError = false;
+    if (!name) {
+      showInlineError('roomNameError');
+      hasError = true;
+    } else {
+      hideInlineError('roomNameError');
+    }
+    if (!lvlId) {
+      showInlineError('roomFloorError');
+      hasError = true;
+    } else {
+      hideInlineError('roomFloorError');
+    }
+    if (hasError) return;
+    const lvl = sketchStructure.levels.find(l => l.id === lvlId);
+    if (!lvl) return;
+    if (editingRoomId) {
+      for (const l of sketchStructure.levels) {
+        const ri = l.rooms.findIndex(r => r.id === editingRoomId);
+        if (ri >= 0) {
+          const rm = l.rooms[ri];
+          if (l.id !== lvlId) {
+            l.rooms.splice(ri, 1);
+            rm.levelId = lvlId;
+            lvl.rooms.push(rm);
+          }
+          rm.label = name;
+          break;
+        }
+      }
+      showToast('Room updated', 'success');
+    } else {
+      lvl.rooms.push({ id: genId('RM'), label: name, levelId: lvlId, ceilingHeight: '2438', wallIDs: '' });
+      showToast('Room added', 'success');
+    }
+    closeModal('roomModal');
+    renderTree();
+  }
+
+  function confirmDeleteRoom(rid) {
+    let room = null;
+    for (const l of sketchStructure.levels) {
+      const r = l.rooms.find(x => x.id === rid);
+      if (r) {
+        room = r;
+        break;
+      }
+    }
+    if (!room) return;
+    const ic = lineItems.filter(i => i.groupId === rid).length;
+    document.getElementById('deleteModalTitle').textContent = `Delete "${room.label}"?`;
+    document.getElementById('deleteWarning').innerHTML = ic ? `<div class="warning-box-title">${icon('warning','sm','error')} Warning</div><div class="warning-box-text">${ic} item(s) will move to Project.</div>` : '';
+    document.getElementById('deleteWarning').style.display = ic ? 'block' : 'none';
+    document.getElementById('deleteMessage').textContent = ic ? '' : 'This action cannot be undone.';
+    document.getElementById('confirmDeleteBtn').onclick = () => {
+      lineItems.forEach(i => {
+        if (i.groupId === rid) i.groupId = sketchStructure.document.id;
+      });
+      for (const l of sketchStructure.levels) l.rooms = l.rooms.filter(r => r.id !== rid);
+      closeModal('deleteModal');
+      renderTree();
+      renderTable();
+      showToast('Room deleted', 'success');
+    };
+    openModal('deleteModal');
+  }
+
+  function openModal(id) {
+    document.getElementById(id).classList.add('active');
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('active');
+  }
+
+  function toggleEvidenceColumn() {
+    const table = document.getElementById('dataTable');
+    table.classList.toggle('evidence-collapsed');
+  }
+
+  function showToast(msg, type = 'success') {
+    const c = document.getElementById('toastContainer'), t = document.createElement('div');
+    t.className = `toast ${type}`;
+    t.innerHTML = `<span>${esc(msg)}</span><button class="toast-close" onclick="this.parentElement.remove()">${icon('x','xs')}</button>`;
+    c.appendChild(t);
+    setTimeout(() => t.remove(), 4000);
+  }
+
+  function esc(t) {
+    if (t == null) return '';
+    const d = document.createElement('div');
+    d.textContent = String(t);
+    return d.innerHTML;
+  }
+
+  function escXml(t) {
+    if (t == null) return '';
+    return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+  }
+
+  /* W-10: styled confirmation modal replacing confirm() */
+  function showConfirmModal(title, message, actionLabel, onConfirm) {
+    document.getElementById('confirmModalTitle').textContent = title;
+    document.getElementById('confirmModalMessage').textContent = message;
+    const actionBtn = document.getElementById('confirmModalAction');
+    actionBtn.textContent = actionLabel;
+    actionBtn.onclick = () => {
+      closeModal('confirmModal');
+      onConfirm();
+    };
+    openModal('confirmModal');
+  }
+
+  /* W-07: inline validation helpers */
+  function showInlineError(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('visible');
+  }
+
+  function hideInlineError(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('visible');
+  }
+</script>
+</body>
+</html>
