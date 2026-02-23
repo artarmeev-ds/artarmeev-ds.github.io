@@ -1940,7 +1940,7 @@ body {
   top: 0;
   z-index: 100;
   height: var(--header-height);
-  background: var(--bg-card);
+  background: var(--bg-primary);
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
@@ -2139,7 +2139,7 @@ body {
 }
 
 .tree-item.active {
-  background: var(--ds-eucalyptus-light);
+  background: var(--bg-primary);
 }
 
 .tree-item-icon {
@@ -2211,7 +2211,7 @@ body {
 .sidebar-footer {
   padding: 16px;
   border-top: 1px solid var(--border-light);
-  background: var(--bg-primary);
+  background: var(--bg-card);
 }
 
 .sidebar-total {
@@ -2277,6 +2277,7 @@ body {
   flex: 1;
   overflow: auto;
   padding: 16px 20px;
+  background: var(--bg-card);
 }
 
 .data-table {
@@ -2317,7 +2318,7 @@ body {
 }
 
 .group-header {
-  background: var(--bg-primary) !important;
+  background: var(--bg-card) !important;
 }
 
 .group-header td {
