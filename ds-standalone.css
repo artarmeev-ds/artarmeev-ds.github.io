@@ -2289,12 +2289,14 @@ body {
 .data-table th {
   position: sticky;
   top: 0;
+  height: 40px;
   background: var(--bg-card);
-  padding: var(--ds-spacer-3) var(--ds-spacer-2);
+  padding: 0 var(--ds-spacer-2);
   text-align: left;
+  font-size: var(--ds-font-size-regular); /* 14px — matches Figma wTable header cell */
   font-weight: var(--ds-font-weight-medium);
-  color: var(--text-secondary);
-  border-bottom: 2px solid var(--border);
+  color: var(--text-primary); /* #1a1905 black — matches Figma */
+  border-bottom: 1px solid var(--border); /* 1px — matches Figma */
   white-space: nowrap;
   z-index: 10;
 }
