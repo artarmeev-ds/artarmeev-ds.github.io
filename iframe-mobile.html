@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Project Overview — Mobile</title>
+<meta name="viewport" content="width=390">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--ds-color-bg-neutral);
+    font-family: var(--ds-font-family);
+    color: var(--ds-color-text-primary);
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+  }
+  body { width: 390px; min-height: 100vh; margin: 0 auto; }
+
+  /* iOS-style status bar */
+  .status-bar {
+    height: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 24px 4px;
+  }
+  .status-time { font-weight: 600; font-size: 17px; letter-spacing: -0.4px; }
+  .status-icons { display: flex; align-items: center; gap: 6px; font-size: 14px; }
+  .status-icons span { display: inline-block; }
+  .signal-bar { display: inline-flex; gap: 2px; align-items: flex-end; height: 12px; }
+  .signal-bar i { width: 3px; background: var(--ds-color-text-primary); border-radius: 1px; display: inline-block; }
+  .signal-bar i:nth-child(1) { height: 4px; }
+  .signal-bar i:nth-child(2) { height: 7px; }
+  .signal-bar i:nth-child(3) { height: 10px; }
+  .signal-bar i:nth-child(4) { height: 12px; }
+  .battery {
+    width: 28px; height: 14px;
+    border: 1.5px solid var(--ds-color-text-primary);
+    border-radius: 4px;
+    position: relative;
+    padding: 1.5px;
+  }
+  .battery::after {
+    content: '';
+    position: absolute;
+    right: -3px; top: 4px;
+    width: 2px; height: 4px;
+    background: var(--ds-color-text-primary);
+    border-radius: 0 1px 1px 0;
+  }
+  .battery i {
+    display: block;
+    background: var(--ds-color-text-primary);
+    height: 100%;
+    width: 90%;
+    border-radius: 1.5px;
+  }
+
+  /* Top navigation bar */
+  .top-nav {
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    position: relative;
+  }
+  .nav-btn {
+    width: 44px; height: 44px;
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    background: rgba(247, 247, 247, 0.7);
+    backdrop-filter: blur(20px);
+    border-radius: var(--ds-radius-pill);
+    border: none;
+    cursor: pointer;
+    color: var(--ds-color-text-primary);
+    font-size: 20px;
+    line-height: 1;
+  }
+  .nav-title {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+  }
+
+  /* Content area */
+  .content {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* Card base */
+  .card {
+    background: var(--ds-color-bg-white);
+    border-radius: var(--ds-radius-card-mobile);
+    overflow: hidden;
+    border: 0.5px solid var(--ds-color-stroke-neutral);
+  }
+
+  /* Project hero card */
+  .hero-img {
+    height: 180px;
+    background:
+      linear-gradient(135deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 50%),
+      linear-gradient(180deg, #b8a591 0%, #6e5a48 35%, #4a3a2e 70%, #2c2218 100%);
+    border-bottom: 0.5px solid var(--ds-color-stroke-neutral);
+    position: relative;
+  }
+  .hero-img::before {
+    /* fake door/wall hints */
+    content: '';
+    position: absolute;
+    inset: 30% 35% 0 50%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(0,0,0,0.25));
+    transform: skewY(2deg);
+    border-radius: 4px 4px 0 0;
+  }
+  .hero-img::after {
+    content: '';
+    position: absolute;
+    inset: 50% 5% 0 5%;
+    background:
+      radial-gradient(ellipse at center top, rgba(255,255,255,0.12), transparent 60%),
+      linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.3) 100%);
+  }
+  .hero-badges {
+    position: absolute;
+    inset: 8px 8px auto 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .hero-loss {
+    position: absolute;
+    bottom: 8px; left: 8px;
+    background: var(--ds-color-bg-white);
+    border: 0.5px solid var(--ds-color-stroke-neutral);
+    border-radius: var(--ds-radius-pill);
+    padding: 3px 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 400;
+  }
+  .hero-loss-icon {
+    display: inline-flex;
+    width: 16px; height: 16px;
+    align-items: center; justify-content: center;
+    color: var(--ds-color-text-primary);
+  }
+
+  .hero-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 16px 0;
+  }
+  .hero-title {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+    margin: 0;
+  }
+  .round-icon-btn {
+    width: 32px; height: 32px;
+    border-radius: var(--ds-radius-pill);
+    background: var(--ds-color-bg-neutral-dark);
+    border: none;
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    cursor: pointer;
+    color: var(--ds-color-text-primary);
+    flex-shrink: 0;
+  }
+  .hero-info {
+    padding: 0 16px 16px;
+    font-size: 14px;
+    line-height: 18px;
+    color: var(--ds-color-text-primary);
+  }
+  .hero-info p { margin: 0; }
+
+  /* Stats card */
+  .stats-card {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .stats-row {
+    display: flex;
+    align-items: center;
+    text-align: center;
+  }
+  .stat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .stat-num {
+    font-size: var(--ds-font-size-h1);
+    font-weight: 500;
+    line-height: 28px;
+    letter-spacing: -0.6px;
+  }
+  .stat-label {
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: -0.1px;
+  }
+
+  /* Pill button */
+  .pill-btn {
+    height: 44px;
+    border-radius: var(--ds-radius-pill);
+    background: var(--ds-color-bg-button-primary);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+    color: var(--ds-color-text-primary);
+    cursor: pointer;
+    padding: 12px 8px;
+    font-family: inherit;
+  }
+  .pill-btn-outline {
+    background: var(--ds-color-bg-white);
+    border: 1px solid var(--ds-color-stroke-neutral);
+  }
+
+  /* Section card (sketches, sow, estimates) */
+  .section-card {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .section-card-head {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 24px;
+    padding: 4px 0;
+  }
+  .section-card-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+    color: var(--ds-color-text-muted);
+  }
+
+  /* Tab bar */
+  .tab-bar-wrap {
+    padding: 0 25px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .tab-bar {
+    height: 62px;
+    width: 100%;
+    background: rgba(247, 247, 247, 0.85);
+    backdrop-filter: blur(20px);
+    border-radius: 96px;
+    padding: 4px;
+    display: flex;
+    gap: 0;
+  }
+  .tab {
+    flex: 1;
+    height: 54px;
+    border-radius: 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    cursor: pointer;
+    color: var(--ds-color-text-muted);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.4px;
+  }
+  .tab.active {
+    background: #ededed;
+    color: var(--ds-color-text-primary);
+  }
+  .tab-icon { font-size: 18px; line-height: 1; }
+  .home-indicator {
+    height: 5px;
+    width: 134px;
+    background: var(--ds-color-bg-black);
+    border-radius: 100px;
+    margin-top: 14px;
+  }
+
+  /* Mobile-only badges within the meta strip on hero */
+  .mini-badge {
+    background: var(--ds-color-status-neutral-bg);
+    color: var(--ds-color-status-neutral-text);
+    border-radius: var(--ds-radius-pill);
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .mini-badge.success { background: var(--ds-color-status-success-bg); color: var(--ds-color-status-success); }
+  .mini-badge.warning { background: var(--ds-color-status-warning-bg); color: var(--ds-color-status-warning); }
+</style>
+</head>
+<body class="proposal-1">
+
+  <div class="status-bar">
+    <span class="status-time">9:41</span>
+    <div class="status-icons">
+      <span class="signal-bar"><i></i><i></i><i></i><i></i></span>
+      <span>📶</span>
+      <span class="battery"><i></i></span>
+    </div>
+  </div>
+
+  <div class="top-nav">
+    <button class="nav-btn">‹</button>
+    <span class="nav-title">201025 Washington</span>
+    <button class="nav-btn">⋯</button>
+  </div>
+
+  <div class="content">
+
+    <!-- Project hero card -->
+    <div class="card">
+      <div class="hero-img">
+        <div class="hero-badges">
+          <span class="mini-badge success">Active</span>
+        </div>
+        <div class="hero-loss">
+          <span class="hero-loss-icon">💧</span>
+          <span>Water</span>
+        </div>
+      </div>
+      <div class="hero-title-row">
+        <h2 class="hero-title">201025 Washington</h2>
+        <button class="round-icon-btn">✎</button>
+      </div>
+      <div class="hero-info">
+        <p>Stoney Ridge Bnd 12821, Del Valle, Texas, 78617</p>
+        <p>01/12/2022</p>
+      </div>
+    </div>
+
+    <!-- Stats card -->
+    <div class="card stats-card">
+      <div class="stats-row">
+        <div class="stat"><span class="stat-num">1</span><span class="stat-label">Rooms</span></div>
+        <div class="stat"><span class="stat-num">1</span><span class="stat-label">Floors</span></div>
+        <div class="stat"><span class="stat-num">0</span><span class="stat-label">Comments</span></div>
+      </div>
+      <button class="pill-btn pill-btn-outline">▤ View rooms</button>
+    </div>
+
+    <!-- Sketches card -->
+    <div class="card section-card">
+      <div class="section-card-head">
+        <h3 class="section-card-title">Sketches</h3>
+      </div>
+      <button class="pill-btn">⬚ Request sketch</button>
+    </div>
+
+    <!-- Scope of work card -->
+    <div class="card section-card">
+      <div class="section-card-head">
+        <h3 class="section-card-title">Scope of work</h3>
+      </div>
+      <button class="pill-btn">⚒ Add Scope of work</button>
+    </div>
+
+    <!-- Estimates card -->
+    <div class="card section-card">
+      <div class="section-card-head">
+        <h3 class="section-card-title">Estimates</h3>
+      </div>
+      <button class="pill-btn">$ Request estimate</button>
+    </div>
+
+    <!-- Share access -->
+    <button class="pill-btn pill-btn-outline">⤴ Share access</button>
+
+  </div>
+
+  <!-- Tab bar -->
+  <div class="tab-bar-wrap">
+    <div class="tab-bar">
+      <div class="tab active">
+        <span class="tab-icon">⌂</span>
+        <span>Projects</span>
+      </div>
+      <div class="tab">
+        <span class="tab-icon">📷</span>
+        <span>Camera</span>
+      </div>
+      <div class="tab">
+        <span class="tab-icon">?</span>
+        <span>Support</span>
+      </div>
+      <div class="tab">
+        <span class="tab-icon">⚙</span>
+        <span>Settings</span>
+      </div>
+    </div>
+    <div class="home-indicator"></div>
+  </div>
+
+<script>
+  const p = new URLSearchParams(location.search).get('p') || '1';
+  document.body.className = 'proposal-' + p;
+</script>
+</body>
+</html>

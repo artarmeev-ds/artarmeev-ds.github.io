@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Phoenix — Design Proposals</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f3ea;
+    --bg-card: #ffffff;
+    --text: #1a1905;
+    --text-muted: #6f6d41;
+    --stroke: #e2e0d3;
+    --accent: #c0bc90;
+    --accent-strong: #6f6d41;
+    --shadow: 0 1px 3px rgba(26, 25, 5, 0.08);
+    --shadow-lg: 0 4px 24px rgba(26, 25, 5, 0.06);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* Page top */
+  .page-header {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 32px 24px;
+  }
+  .page-header h1 {
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: -1px;
+    margin: 0 0 8px;
+  }
+  .page-header p {
+    color: var(--text-muted);
+    font-size: 16px;
+    margin: 0 0 16px;
+    max-width: 760px;
+  }
+  .page-meta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .pill {
+    display: inline-flex;
+    padding: 4px 10px;
+    border-radius: 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--stroke);
+    font-weight: 500;
+  }
+
+  /* Sticky proposal nav */
+  .toc {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(244, 243, 234, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--stroke);
+    padding: 12px 32px;
+  }
+  .toc-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .toc-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-right: 8px;
+  }
+  .toc a {
+    text-decoration: none;
+    color: var(--text);
+    background: var(--bg-card);
+    border: 1px solid var(--stroke);
+    padding: 6px 12px;
+    border-radius: 24px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 150ms;
+  }
+  .toc a:hover {
+    border-color: var(--accent-strong);
+    background: var(--accent);
+  }
+
+  /* Proposal block */
+  .proposal {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 48px 32px;
+    border-bottom: 1px solid var(--stroke);
+  }
+  .proposal-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  .proposal-num {
+    flex-shrink: 0;
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--accent-strong);
+    color: var(--bg-card);
+    font-size: 24px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center; justify-content: center;
+  }
+  .proposal-meta { flex: 1; }
+  .proposal-meta h2 {
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    margin: 0 0 6px;
+  }
+  .proposal-tag {
+    display: inline-block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent-strong);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .proposal-meta p {
+    color: var(--text-muted);
+    font-size: 15px;
+    margin: 0 0 12px;
+    max-width: 800px;
+  }
+
+  /* Token swatches */
+  .swatches {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .swatch {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 96px;
+  }
+  .swatch-color {
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid var(--stroke);
+  }
+  .swatch-name {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .swatch-value {
+    font-size: 11px;
+    color: var(--text);
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  }
+
+  /* Iframe row */
+  .frames {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 24px;
+    align-items: start;
+  }
+  .frame-wrap {
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--stroke);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  .frame-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--stroke);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .frame-desktop iframe {
+    display: block;
+    width: 100%;
+    height: 720px;
+    border: none;
+  }
+  .frame-mobile {
+    width: 412px;
+    flex-shrink: 0;
+  }
+  .frame-mobile iframe {
+    display: block;
+    width: 100%;
+    height: 720px;
+    border: none;
+  }
+
+  @media (max-width: 1240px) {
+    .frames {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .frame-mobile {
+      width: 100%;
+      max-width: 412px;
+    }
+  }
+
+  /* Footer */
+  .page-footer {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px 32px 48px;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  /* Inline color preview chips for proposal headers */
+  .chips {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .chip {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    border: 1px solid var(--stroke);
+  }
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <h1>Phoenix Design Proposals</h1>
+  <p>Five candidate directions for the Phoenix portal: palette, badge system, layout density, and typography. Each proposal swaps a subset of the design tokens defined in <code>src/styles/tokens/_design-tokens.scss</code>. Desktop shows the Project Overview · Overview tab; mobile shows the project detail screen from Figma.</p>
+  <div class="page-meta">
+    <span class="pill">Reference · docusketch-frontend</span>
+    <span class="pill">Tokens · CSS variables</span>
+    <span class="pill">Iframes · scroll independently</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="toc-inner">
+    <span class="toc-label">Jump to</span>
+    <a href="#p1">1 · Baseline</a>
+    <a href="#p2">2 · Warm Terracotta</a>
+    <a href="#p3">3 · Badge System</a>
+    <a href="#p4">4 · Density</a>
+    <a href="#p5">5 · Typography</a>
+  </div>
+</nav>
+
+<!-- ============================================================
+     PROPOSAL 1 — Baseline
+     ============================================================ -->
+<section class="proposal" id="p1">
+  <div class="proposal-header">
+    <div class="proposal-num">1</div>
+    <div class="proposal-meta">
+      <span class="proposal-tag">Baseline · current tokens</span>
+      <h2>Phoenix today</h2>
+      <p>The current palette as it ships in <code>_design-tokens.scss</code> — olive primary <code>#c0bc90</code>, warm cream neutral <code>#f4f3ea</code>, electric yellow accent <code>#e5df00</code>. Anchors all subsequent comparisons.</p>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-color" style="background:#c0bc90"></div><span class="swatch-name">bg-primary</span><span class="swatch-value">#c0bc90</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:#f4f3ea"></div><span class="swatch-name">bg-neutral</span><span class="swatch-value">#f4f3ea</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:#e5df00"></div><span class="swatch-name">bg-accent</span><span class="swatch-value">#e5df00</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:#6f6d41"></div><span class="swatch-name">bg-dark</span><span class="swatch-value">#6f6d41</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:#1a1905"></div><span class="swatch-name">text-primary</span><span class="swatch-value">#1a1905</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="frames">
+    <div class="frame-wrap frame-desktop">
+      <div class="frame-label"><span>Desktop · Project Overview / Overview</span><span>1024px</span></div>
+      <iframe src="iframe-desktop.html?p=1" title="Desktop baseline"></iframe>
+    </div>
+    <div class="frame-wrap frame-mobile">
+      <div class="frame-label"><span>Mobile · Project detail</span><span>390px</span></div>
+      <iframe src="iframe-mobile.html?p=1" title="Mobile baseline"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PROPOSAL 2 — Warm Terracotta Palette
+     ============================================================ -->
+<section class="proposal" id="p2">
+  <div class="proposal-header">
+    <div class="proposal-num">2</div>
+    <div class="proposal-meta">
+      <span class="proposal-tag">Palette · warm terracotta</span>
+      <h2>Warm terracotta accent</h2>
+      <p>Replace the olive/yellow accent family with warm coral/terracotta. Same neutral cream backdrop, but primary buttons and accents shift to <code>#e87b50</code>. Reads as more energetic and restoration-industry-coded than the current olive.</p>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-color" style="background:#d4a896"></div><span class="swatch-name">bg-primary</span><span class="swatch-value">#d4a896</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:#faf3f0"></div><span class="swatch-name">bg-neutral</span><span class="swatch-value">#faf3f0</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:#e87b50"></div><span class="swatch-name">bg-accent</span><span class="swatch-value">#e87b50</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:#8b4a36"></div><span class="swatch-name">bg-dark</span><span class="swatch-value">#8b4a36</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:#f0c4b1"></div><span class="swatch-name">btn-primary</span><span class="swatch-value">#f0c4b1</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="frames">
+    <div class="frame-wrap frame-desktop">
+      <div class="frame-label"><span>Desktop · Project Overview / Overview</span><span>1024px</span></div>
+      <iframe src="iframe-desktop.html?p=2" title="Desktop terracotta"></iframe>
+    </div>
+    <div class="frame-wrap frame-mobile">
+      <div class="frame-label"><span>Mobile · Project detail</span><span>390px</span></div>
+      <iframe src="iframe-mobile.html?p=2" title="Mobile terracotta"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PROPOSAL 3 — Badge color system
+     ============================================================ -->
+<section class="proposal" id="p3">
+  <div class="proposal-header">
+    <div class="proposal-num">3</div>
+    <div class="proposal-meta">
+      <span class="proposal-tag">Status badges · refined</span>
+      <h2>Badge color system v2</h2>
+      <p>Tightens the status palette: more saturated text colors against soft tinted backgrounds. Accessibility AA passes for every pair. <em>Done</em> green moves from <code>#64b56e</code> to <code>#15803d</code>; <em>In progress</em> warning, <em>Revision</em> info, and <em>New</em> neutral all get matching upgrades. Same layout — only badge tokens change.</p>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-color" style="background:#dcfce7"></div><span class="swatch-name">success-bg</span><span class="swatch-value">#dcfce7</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:#15803d"></div><span class="swatch-name">success</span><span class="swatch-value">#15803d</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:#fef3c7"></div><span class="swatch-name">warning-bg</span><span class="swatch-value">#fef3c7</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:#b45309"></div><span class="swatch-name">warning</span><span class="swatch-value">#b45309</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:#dbeafe"></div><span class="swatch-name">info-bg</span><span class="swatch-value">#dbeafe</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:#1d4ed8"></div><span class="swatch-name">info</span><span class="swatch-value">#1d4ed8</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:#fee2e2"></div><span class="swatch-name">error-bg</span><span class="swatch-value">#fee2e2</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:#b91c1c"></div><span class="swatch-name">error</span><span class="swatch-value">#b91c1c</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="frames">
+    <div class="frame-wrap frame-desktop">
+      <div class="frame-label"><span>Desktop · Project Overview / Overview</span><span>1024px</span></div>
+      <iframe src="iframe-desktop.html?p=3" title="Desktop badges"></iframe>
+    </div>
+    <div class="frame-wrap frame-mobile">
+      <div class="frame-label"><span>Mobile · Project detail</span><span>390px</span></div>
+      <iframe src="iframe-mobile.html?p=3" title="Mobile badges"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PROPOSAL 4 — Layout density
+     ============================================================ -->
+<section class="proposal" id="p4">
+  <div class="proposal-header">
+    <div class="proposal-num">4</div>
+    <div class="proposal-meta">
+      <span class="proposal-tag">Layout · density &amp; radius</span>
+      <h2>Tighter rhythm, softer edges</h2>
+      <p>Compresses the spacing scale by ~15% (28→24, 24→20, 20→16) so more sections fit above the fold, then bumps card radii from <code>8px</code> to <code>16px</code> on desktop and <code>20px</code> on mobile to compensate visually. Shadows go softer and farther. Net effect: more information per viewport, friendlier surfaces.</p>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-color" style="background:linear-gradient(135deg,var(--accent),var(--bg-card));border-radius:16px"></div><span class="swatch-name">radius-card</span><span class="swatch-value">8 → 16px</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:linear-gradient(135deg,var(--accent),var(--bg-card));border-radius:20px"></div><span class="swatch-name">radius-mobile</span><span class="swatch-value">24 → 20px</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:var(--bg-card);box-shadow:0 4px 16px rgba(26,25,5,0.1)"></div><span class="swatch-name">shadow-2</span><span class="swatch-value">0 4px 16px</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:#fff;display:flex;align-items:center;justify-content:center;font-family:ui-monospace,monospace;font-size:11px">16</div><span class="swatch-name">spacing-16</span><span class="swatch-value">16 → 14px</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:#fff;display:flex;align-items:center;justify-content:center;font-family:ui-monospace,monospace;font-size:11px">24</div><span class="swatch-name">spacing-24</span><span class="swatch-value">24 → 20px</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="frames">
+    <div class="frame-wrap frame-desktop">
+      <div class="frame-label"><span>Desktop · Project Overview / Overview</span><span>1024px</span></div>
+      <iframe src="iframe-desktop.html?p=4" title="Desktop density"></iframe>
+    </div>
+    <div class="frame-wrap frame-mobile">
+      <div class="frame-label"><span>Mobile · Project detail</span><span>390px</span></div>
+      <iframe src="iframe-mobile.html?p=4" title="Mobile density"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PROPOSAL 5 — Typography scale
+     ============================================================ -->
+<section class="proposal" id="p5">
+  <div class="proposal-header">
+    <div class="proposal-num">5</div>
+    <div class="proposal-meta">
+      <span class="proposal-tag">Typography · larger hierarchy</span>
+      <h2>Bolder type, clearer hierarchy</h2>
+      <p>Steps the heading scale up one notch (h1 24→28, h2 20→22, h3 16→18) and pushes body from 14→15. Medium weight rises from 500 to 600 so titles read decisively at-a-glance — useful for triage workflows where adjusters scan many projects per session.</p>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-color" style="background:#fff;color:#1a1905;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;height:48px">H1 28</div><span class="swatch-name">h1</span><span class="swatch-value">24 → 28px</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:#fff;color:#1a1905;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;height:42px">H2 22</div><span class="swatch-name">h2</span><span class="swatch-value">20 → 22px</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:#fff;color:#1a1905;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;height:36px">H3 18</div><span class="swatch-name">h3</span><span class="swatch-value">16 → 18px</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:#fff;color:#1a1905;display:flex;align-items:center;justify-content:center;font-size:13px">Body 15</div><span class="swatch-name">body</span><span class="swatch-value">14 → 15px</span></div>
+        <div class="swatch"><div class="swatch-color" style="background:#fff;color:#1a1905;display:flex;align-items:center;justify-content:center;font-size:11px">Caption 13</div><span class="swatch-name">caption</span><span class="swatch-value">12 → 13px</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="frames">
+    <div class="frame-wrap frame-desktop">
+      <div class="frame-label"><span>Desktop · Project Overview / Overview</span><span>1024px</span></div>
+      <iframe src="iframe-desktop.html?p=5" title="Desktop typography"></iframe>
+    </div>
+    <div class="frame-wrap frame-mobile">
+      <div class="frame-label"><span>Mobile · Project detail</span><span>390px</span></div>
+      <iframe src="iframe-mobile.html?p=5" title="Mobile typography"></iframe>
+    </div>
+  </div>
+</section>
+
+<footer class="page-footer">
+  Tokens defined in <code>tokens.css</code>; each proposal applies a <code>body.proposal-N</code> class that overrides a subset of CSS variables. Iframes scroll independently. Static HTML — Angular components are simulated.
+</footer>
+
+</body>
+</html>
