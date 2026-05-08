@@ -353,6 +353,128 @@
   .section { padding: 20px 0; }
   .section.first { padding-top: 0; }
 
+  /* =====================================================
+     INITIAL ESTIMATE BANNER — promo / decoration surface.
+     Uses --ds-color-bg-promo (pale lemon-lime in DS 2.1,
+     chartreuse in legacy mode).
+  ===================================================== */
+  .ie-banner {
+    background: var(--ds-color-bg-white);
+    border: 1px solid var(--ds-color-stroke-neutral);
+    border-radius: 12px;
+    padding: 16px;
+    margin: 12px 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: 16px;
+    align-items: stretch;
+  }
+  .ie-banner-left {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .ie-banner-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 20px;
+    padding: 0 8px;
+    border-radius: 4px;
+    background: #ebfac1;
+    color: #15803d;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    align-self: flex-start;
+  }
+  body.legacy .ie-banner-tag {
+    background: #c0bc90;
+    color: #1a1905;
+  }
+  /* Match the project-name h2 — Test Project 360 */
+  .ie-banner-title {
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 500;
+    letter-spacing: -0.018em;
+    margin: 0;
+  }
+  .ie-banner-desc {
+    font-size: 14px;
+    line-height: 20px;
+    margin: 0;
+    max-width: 440px;
+  }
+  .ie-banner-steps {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    background: var(--ds-color-bg-neutral);
+    border-radius: 20px;
+    padding: 6px 12px;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 16px;
+  }
+  .ie-banner-steps b {
+    color: var(--ds-color-text-secondary);
+    font-weight: 500;
+    margin-right: 6px;
+    font-variant-numeric: tabular-nums;
+  }
+  .ie-banner-steps .arr { color: var(--ds-color-text-muted); }
+  .btn-promo {
+    align-self: flex-start;
+    background: var(--ds-color-bg-promo);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1905;
+    cursor: pointer;
+    font-family: inherit;
+    margin-top: auto;
+  }
+  .ie-banner-right {
+    background: var(--ds-color-bg-white);
+    border: 1px solid var(--ds-color-stroke-neutral);
+    border-radius: 8px;
+    padding: 12px 16px;
+  }
+  .ie-banner-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .ie-banner-table th {
+    text-align: left;
+    padding: 2px 0 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ds-color-text-secondary);
+    border-bottom: 1px solid var(--ds-color-stroke-neutral);
+  }
+  .ie-banner-table th:nth-child(2),
+  .ie-banner-table th:nth-child(3) { text-align: right; }
+  .ie-banner-table td {
+    padding: 6px 0;
+    font-weight: 500;
+    vertical-align: top;
+  }
+  .ie-banner-table td:nth-child(2),
+  .ie-banner-table td:nth-child(3) {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .ie-banner-table tbody tr:last-child td {
+    color: var(--ds-color-text-secondary);
+  }
+
   /* ============== LEGACY MODE OVERRIDES (?v=old) ============== */
   body.legacy .section {
     border-top: 1px solid var(--ds-color-stroke-neutral);
@@ -895,6 +1017,36 @@
             <span class="badge sow-badge"><svg class="badge-icon" aria-hidden="true"><use href="#sym-sow" fill="#1a1905"/></svg>SOW</span>
           </div>
         </div>
+
+        <!-- Initial Estimate promo banner — uses lemon-lime (DS 2.1) / chartreuse (legacy) -->
+        <section class="ie-banner">
+          <div class="ie-banner-left">
+            <span class="ie-banner-tag">New</span>
+            <h2 class="ie-banner-title">Initial Estimate</h2>
+            <p class="ie-banner-desc">Turn this project's data into a Xactimate-ready scope of work — generated, editable, and exportable in minutes.</p>
+            <div class="ie-banner-steps">
+              <span><b>01</b>Request sketch</span>
+              <span class="arr">→</span>
+              <span><b>02</b>Map affected areas</span>
+              <span class="arr">→</span>
+              <span><b>03</b>Get estimate</span>
+            </div>
+            <button class="btn-promo">Try it out</button>
+          </div>
+          <div class="ie-banner-right">
+            <table class="ie-banner-table">
+              <thead>
+                <tr><th>Description</th><th>QTY</th><th>Total</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Drywall, hung &amp; taped</td><td>220 SF</td><td>$486</td></tr>
+                <tr><td>Paint — 2 coats</td><td>220 SF</td><td>$198</td></tr>
+                <tr><td>Carpet pad</td><td>158 SF</td><td>$94</td></tr>
+                <tr><td>Baseboard, 4¼"</td><td>42 LF</td><td>$112</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
 
         <!-- 360° Tour -->
         <div class="section">
