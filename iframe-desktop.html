@@ -272,6 +272,57 @@
   .section { padding: 20px 0; }
   .section.first { padding-top: 0; }
 
+  /* ============== LEGACY MODE OVERRIDES (?v=old) ============== */
+  body.legacy .section {
+    border-top: 1px solid var(--ds-color-stroke-neutral);
+  }
+  body.legacy .section.first { border-top: none; }
+  /* Old badges: 16h, saturated bg, white text */
+  body.legacy .badge {
+    height: 16px;
+    padding: 0 6px;
+  }
+  body.legacy .badge svg.badge-icon {
+    width: 12px;
+    height: 12px;
+    margin-right: 4px;
+  }
+  body.legacy .badge-done    { background: #64b56e; color: #fff; }
+  body.legacy .badge-progress{ background: #549cd3; color: #fff; }
+  body.legacy .badge-done svg.badge-icon use,
+  body.legacy .badge-progress svg.badge-icon use {
+    fill: #ffffff !important;
+    stroke: #ffffff !important;
+  }
+  /* SOW returns to saturated olive */
+  body.legacy .badge.sow-badge {
+    background: #c0bc90;
+    color: #1a1905;
+  }
+  body.legacy .badge.sow-badge svg.badge-icon use {
+    fill: #1a1905 !important;
+  }
+  /* Yellow Open 360° (the only yellow on the web page) — dark text + dark icon */
+  body.legacy .btn-accent { color: #1a1905; }
+  body.legacy .btn-accent img { filter: none; }
+  /* Other web primary actions — Request estimate, Generate, sidebar Open 360° tour
+     — use the OLD dark beige #6f6d41 with white foreground */
+  body.legacy .btn-primary,
+  body.legacy .sidebar-btn-primary {
+    background: #6f6d41 !important;
+    border-color: #6f6d41 !important;
+    color: #ffffff !important;
+  }
+  body.legacy .btn-primary:hover,
+  body.legacy .sidebar-btn-primary:hover {
+    background: #54522e !important;
+    border-color: #54522e !important;
+  }
+  body.legacy .btn-primary img,
+  body.legacy .sidebar-btn-primary img {
+    filter: invert(1);
+  }
+
   .section-row {
     display: flex;
     align-items: center;
@@ -754,7 +805,7 @@
             <span>Residential</span>
             <span class="dot">·</span>
             <span>Loss 11/12/2025</span>
-            <span class="badge"><svg class="badge-icon" aria-hidden="true"><use href="#sym-sow" fill="#1a1905"/></svg>SOW</span>
+            <span class="badge sow-badge"><svg class="badge-icon" aria-hidden="true"><use href="#sym-sow" fill="#1a1905"/></svg>SOW</span>
           </div>
         </div>
 
@@ -956,8 +1007,10 @@
   </div>
 
 <script>
-  const p = new URLSearchParams(location.search).get('p') || '1';
-  document.body.className = 'proposal-' + p;
+  const params = new URLSearchParams(location.search);
+  const p = params.get('p') || '1';
+  const isLegacy = params.get('v') === 'old';
+  document.body.className = 'proposal-' + p + (isLegacy ? ' legacy' : '');
 </script>
 </body>
 </html>

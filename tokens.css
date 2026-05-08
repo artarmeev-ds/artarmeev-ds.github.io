@@ -105,3 +105,34 @@
 
 /* Proposal class kept for compatibility — :root already has DS 2.1 applied. */
 body.proposal-1 { /* no overrides — DS 2.1 baseline lives on :root */ }
+
+/* ==================================================================
+   LEGACY MODE — pre DS 2.1 (current production)
+   Triggered by ?v=old in iframe URL or .legacy class on body in main page
+   ================================================================== */
+body.legacy {
+  /* Yellow chartreuse — ONLY for the main Open 360° CTA on web (.btn-accent)
+     and the mobile primary pills. Other web primary actions use #6f6d41 dark
+     beige (handled in iframe-desktop.html legacy overrides). */
+  --ds-color-bg-action:         #e5df00;
+  --ds-color-bg-action-hover:   #f9f6bf;
+  --ds-color-bg-action-pressed: #999300;
+
+  /* Old beige palette (Dark / Base / Light) */
+  --ds-color-bg-primary: #c0bc90;          /* old Base */
+  --ds-color-bg-dark:    #6f6d41;          /* old Dark */
+  --ds-color-bg-button-primary: #e5df00;   /* mobile pill turns yellow */
+
+  /* Beige text — exact #6f6d41 (not the opacity recipe) */
+  --ds-color-text-secondary: #6f6d41;
+  --ds-color-text-muted:     #6f6d41;
+
+  /* Old neutral badge bg — Latest matches SOW (saturated olive Base) */
+  --ds-color-status-neutral-bg: #c0bc90;
+
+  /* Saturated text-on-color status colors */
+  --ds-color-status-success:    #ffffff;
+  --ds-color-status-success-bg: #64b56e;
+  --ds-color-status-info:       #ffffff;
+  --ds-color-status-info-bg:    #549cd3;
+}

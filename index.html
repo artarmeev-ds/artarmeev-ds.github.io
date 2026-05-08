@@ -292,6 +292,37 @@
     font-size: 12px;
     line-height: 14px;
   }
+
+  /* Floating version toggle — bottom right */
+  .version-toggle {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 100;
+    background: var(--ds-color-bg-white);
+    border: 1px solid var(--ds-color-stroke-neutral);
+    border-radius: 24px;
+    padding: 4px;
+    display: flex;
+    gap: 0;
+    box-shadow: 0 4px 16px rgba(26, 25, 5, 0.12);
+    font-family: var(--ds-font-family);
+  }
+  .version-toggle button {
+    padding: 6px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--ds-color-text-secondary);
+    font-family: inherit;
+  }
+  .version-toggle button.active {
+    background: var(--ds-color-bg-action);
+    color: var(--ds-color-text-primary);
+  }
 </style>
 </head>
 <body>
@@ -492,6 +523,29 @@
 <footer class="page-footer">
   Tokens defined in <code>tokens.css</code>. Iframes scroll independently. Static HTML — Angular components are simulated. DS 2.1 reference: <a href="https://www.figma.com/design/uWPtoRCtbBAnOqzJVNhYr3/3.0-Design-system?node-id=17411-20553">Figma frame 17411-20553</a>.
 </footer>
+
+<!-- Floating version toggle: switches both iframes between New (DS 2.1) and Old (legacy) -->
+<div class="version-toggle" role="group" aria-label="Version switcher">
+  <button data-v="new" class="active">New</button>
+  <button data-v="old">Old</button>
+</div>
+
+<script>
+  document.querySelectorAll('.version-toggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const v = btn.dataset.v;
+      document.querySelectorAll('.version-toggle button').forEach(b =>
+        b.classList.toggle('active', b.dataset.v === v));
+      document.querySelectorAll('iframe').forEach(iframe => {
+        const url = new URL(iframe.src, location.href);
+        if (v === 'old') url.searchParams.set('v', 'old');
+        else url.searchParams.delete('v');
+        iframe.src = url.toString();
+      });
+      document.body.classList.toggle('legacy', v === 'old');
+    });
+  });
+</script>
 
 </body>
 </html>

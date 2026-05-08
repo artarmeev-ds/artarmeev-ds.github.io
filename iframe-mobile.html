@@ -235,6 +235,18 @@
     border: 1px solid var(--ds-color-stroke-neutral);
   }
 
+  /* ============== LEGACY MODE OVERRIDES (?v=old) ============== */
+  /* Old mobile View rooms / Share access — light grey filled, no border */
+  body.legacy .pill-btn-outline {
+    background: #e2e0d3;
+    border: none;
+  }
+  /* Yellow Open 360° gets dark text/icon (already handled by tokens for pill-btn) */
+  body.legacy .pill-btn { color: #1a1905; }
+  /* Active hero badge only shown in legacy */
+  .legacy-only { display: none !important; }
+  body.legacy .legacy-only { display: flex !important; }
+
   /* Section card (sketches, sow, estimates) */
   .section-card {
     padding: 16px;
@@ -336,6 +348,9 @@
     <!-- Project hero card -->
     <div class="card">
       <div class="hero-img">
+        <div class="hero-badges legacy-only">
+          <span class="mini-badge success">Active</span>
+        </div>
         <div class="hero-loss">
           <img class="icon" src="icons/icon-water-outline-small.svg" alt="">
           <span>Water</span>
@@ -429,8 +444,10 @@
   </div>
 
 <script>
-  const p = new URLSearchParams(location.search).get('p') || '1';
-  document.body.className = 'proposal-' + p;
+  const params = new URLSearchParams(location.search);
+  const p = params.get('p') || '1';
+  const isLegacy = params.get('v') === 'old';
+  document.body.className = 'proposal-' + p + (isLegacy ? ' legacy' : '');
 </script>
 </body>
 </html>
