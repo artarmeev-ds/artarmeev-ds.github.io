@@ -57,16 +57,10 @@
     height: 3px;
     background: var(--ds-color-bg-promo);
   }
-  .app-header nav.main a.has-caret::after {
-    content: '';
-    display: inline-block;
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-top: 4px solid var(--ds-color-text-primary);
-    margin-left: 6px;
-    position: static;
-    height: auto;
-    background: none;
+  .app-header nav.main a.has-caret { gap: 6px; }
+  .app-header nav.main a.has-caret .caret-down {
+    width: 16px; height: 16px;
+    color: var(--ds-color-text-primary);
   }
   .app-header .header-right { display: flex; align-items: center; }
   .app-header .header-right a {
@@ -124,15 +118,16 @@
     align-items: center;
     margin-bottom: 16px;
   }
+  /* Match the project-name h2 — Test Project 360 */
   .toolbar h1 {
-    font-size: 24px;
-    line-height: 28px;
+    font-size: 18px;
+    line-height: 24px;
     font-weight: 500;
     letter-spacing: -0.018em;
     margin: 0;
   }
   .toolbar .archived-btn {
-    height: 32px;
+    height: 36px;
     padding: 0 14px;
     border-radius: 8px;
     border: 1px solid var(--ds-color-stroke-neutral);
@@ -146,6 +141,8 @@
     cursor: pointer;
     font-family: inherit;
   }
+  .toolbar .archived-btn:hover  { background: var(--ds-color-bg-neutral); }
+  .toolbar .archived-btn:active { background: var(--ds-color-bg-neutral-dark); }
   .toolbar .archived-btn img { width: 16px; height: 16px; }
   .toolbar .spacer { /* takes 1fr */ }
   .btn-create {
@@ -239,8 +236,9 @@
     background: none;
     border: none;
     padding: 0;
-    color: var(--ds-color-text-secondary);
+    color: var(--ds-color-text-primary);
     font-size: 14px;
+    font-weight: 500;
     text-decoration: underline;
     cursor: pointer;
     font-family: inherit;
@@ -286,6 +284,7 @@
   .pager .pg-btn.active {
     background: var(--ds-color-bg-neutral-dark);
     text-decoration: none;
+    border-radius: 50%;
   }
   .sort-by {
     color: var(--ds-color-text-secondary);
@@ -308,16 +307,26 @@
   .counter-row a { color: var(--ds-color-text-primary); text-decoration: underline; }
 
   /* =========== PROJECT ROW CARD =========== */
+  /* DS 2.1 — flat row, separator between rows. Legacy keeps the card style. */
   .project-row {
     display: grid;
     grid-template-columns: 232px minmax(0, 2.4fr) auto auto;
     gap: 16px;
     background: var(--ds-color-bg-white);
-    border-radius: 12px;
-    border: 1px solid var(--ds-color-stroke-neutral);
     padding: 16px;
-    margin-bottom: 12px;
     align-items: stretch;
+  }
+  .project-row + .project-row {
+    border-top: 1px solid var(--ds-color-stroke-neutral);
+  }
+  body.legacy .project-row {
+    border: 1px solid var(--ds-color-stroke-neutral);
+    border-radius: 12px;
+    margin-bottom: 12px;
+  }
+  body.legacy .project-row + .project-row {
+    /* every row has its own border in legacy — no extra separator needed */
+    border-top: 1px solid var(--ds-color-stroke-neutral);
   }
 
   .row-photo {
@@ -383,6 +392,8 @@
   }
 
   body.legacy .pbadge.done   { background: #64b56e; color: #fff; }
+  /* Force pure white verisk icon on the saturated green Done badge */
+  body.legacy .pbadge.done img { filter: brightness(0) invert(1); }
   body.legacy .pbadge.sow    { background: #c0bc90; color: #1a1905; }
   body.legacy .pbadge.public { background: #64b56e; color: #fff; }
 
@@ -400,7 +411,7 @@
   .row-info {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     gap: 6px;
     min-width: 0;
     font-size: 14px;
@@ -415,17 +426,18 @@
   .row-info .ids {
     display: flex; flex-wrap: nowrap; gap: 6px;
     color: var(--ds-color-text-secondary);
-    font-size: 13px;
+    font-size: 14px;
     overflow: hidden;
   }
   .row-info .ids > * { flex-shrink: 0; }
   .row-info .ids strong { color: var(--ds-color-text-primary); font-weight: 500; }
   .row-info .ids .ico {
     display: inline-flex;
-    width: 14px; height: 14px;
+    width: 16px; height: 16px;
     color: var(--ds-color-text-muted);
     cursor: pointer;
   }
+  .row-info .ids .ico img { width: 16px; height: 16px; }
   .row-info h3 {
     margin: 2px 0;
     font-size: 18px;
@@ -438,73 +450,83 @@
     color: var(--ds-color-text-primary);
   }
   .row-info .meta-loss { display: flex; align-items: center; gap: 4px; }
-  .row-info .meta-loss img { width: 14px; height: 14px; }
+  .row-info .meta-loss img { width: 16px; height: 16px; }
   .row-info .timestamps {
     color: var(--ds-color-text-secondary);
-    font-size: 13px;
+    font-size: 14px;
   }
   .row-info .address {
     display: flex; align-items: center; gap: 4px;
     color: var(--ds-color-text-primary);
-    font-size: 13px;
+    font-size: 14px;
   }
-  .row-info .address img { width: 14px; height: 14px; }
+  .row-info .address img { width: 16px; height: 16px; }
   .row-info .division {
     display: flex; align-items: center; gap: 4px;
     color: var(--ds-color-text-secondary);
-    font-size: 13px;
+    font-size: 14px;
   }
+  .row-info .division img { width: 16px; height: 16px; }
 
-  /* Stats column */
+  /* Stats column — number on top, label below; 3-column grid, vertically centered */
   .row-stats {
     display: grid;
-    grid-template-columns: repeat(2, auto);
-    column-gap: 24px;
-    row-gap: 4px;
-    align-content: start;
-    min-width: 200px;
+    grid-template-columns: repeat(3, auto);
+    column-gap: 28px;
+    row-gap: 18px;
+    align-content: center;
+    min-width: 280px;
   }
   .stat {
-    font-size: 13px;
-    line-height: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
   }
-  .stat strong {
-    display: inline-block;
-    margin-right: 6px;
+  .stat-num {
+    font-size: 16px;
     font-weight: 500;
+    line-height: 20px;
     color: var(--ds-color-text-primary);
-    min-width: 28px;
     font-variant-numeric: tabular-nums;
   }
   .stat-label {
-    color: var(--ds-color-text-secondary);
+    font-size: 14px;
+    line-height: 18px;
+    color: var(--ds-color-text-muted);
   }
-  .stat .icons {
+  /* Comments stat — number + colored icon circles inline, label below */
+  .stat-comments-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .comment-icons {
+    display: flex;
+    gap: 4px;
+  }
+  .ci {
+    width: 16px; height: 16px;
+    border-radius: 50%;
     display: inline-flex;
     align-items: center;
-    gap: 1px;
-    margin-left: 6px;
+    justify-content: center;
+    flex-shrink: 0;
   }
-  .stat .icons span {
-    width: 12px; height: 12px;
-    border-radius: 50%;
-    display: inline-block;
-  }
-  .ic-r { background: #e92f2f; }
-  .ic-y { background: #dfbb3a; }
-  .ic-g { background: #64b56e; }
-  .ic-b { background: #549cd3; }
-  .ic-p { background: #d76493; }
+  .ci img { width: 10px; height: 10px; display: block; }
+  .ci-note      { background: #d4d1c6; }
+  .ci-alert     { background: #ffd6bd; }
+  .ci-water     { background: #d4e6f4; }
+  .ci-equipment { background: #dceea0; }
+  .ci-contents  { background: #f1d5e0; }
 
   /* Actions column */
   .row-actions {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     gap: 6px;
     min-width: 220px;
   }
-  .row-stats { align-content: space-between; }
   .action-btn {
     height: 32px;
     padding: 0 12px;
@@ -512,7 +534,7 @@
     border: 1px solid var(--ds-color-stroke-neutral);
     background: var(--ds-color-bg-white);
     color: var(--ds-color-text-primary);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
     display: inline-flex;
     align-items: center;
@@ -521,7 +543,7 @@
     cursor: pointer;
     font-family: inherit;
   }
-  .action-btn img { width: 14px; height: 14px; }
+  .action-btn img { width: 16px; height: 16px; }
   /* Outline action — match Project Overview hover/active */
   .action-btn:hover  { background: var(--ds-color-bg-neutral); }
   .action-btn:active { background: var(--ds-color-bg-neutral-dark); }
@@ -558,7 +580,7 @@
       <a href="#">Estimates Without Tours</a>
       <a href="#">Users</a>
       <a href="#">Offices</a>
-      <a href="#" class="has-caret">Company</a>
+      <a href="#" class="has-caret">Company <img class="caret-down" src="icons/icon-chevron-down.svg" alt=""></a>
     </nav>
     <div class="header-right">
       <a href="#"><img class="icon" src="icons/icon-feedback.svg" alt=""> Feedback</a>
@@ -566,13 +588,6 @@
       <span class="avatar">RG</span>
     </div>
   </header>
-
-  <!-- Notification -->
-  <div class="notification-banner">
-    <img class="icon" src="icons/icon-information.svg" alt="">
-    <span class="label">Explore:</span>
-    <span>Enhance your work with Scoping service and Extended ESX</span>
-  </div>
 
   <!-- Page -->
   <main class="page">
@@ -629,7 +644,7 @@
 
     <!-- Counter -->
     <div class="counter-row">
-      <span><strong>All projects:</strong> 234</span>
+      <span>All projects: 234</span>
       <a href="#">Select projects</a>
     </div>
 
@@ -637,7 +652,7 @@
     <div class="project-row">
       <div class="row-photo">
         <div class="badges">
-          <span class="pbadge done"><img src="icons/icon-checkmark.svg" alt="">Done</span>
+          <span class="pbadge done"><img src="icons/icon-veriskSmall.svg" alt="">Done</span>
           <span class="pbadge sow"><img src="icons/icon-sow.svg" alt="">SOW</span>
           <span class="pbadge archive" aria-label="Archived"><img src="icons/icon-archive.svg" alt=""></span>
           <span class="pbadge psa-count">4</span>
@@ -651,13 +666,13 @@
       </div>
       <div class="row-info">
         <div class="ids">
-          <span><strong>Job number</strong> BPGG-BAI.ERQ5-6.001</span>
+          <span>Job number BPGG-BAI.ERQ5-6.001</span>
           <span class="ico"><img src="icons/icon-copy-small.svg" alt=""></span>
           <span>·</span>
-          <span><strong>ID</strong> 993411532</span>
+          <span>ID 993411532</span>
           <span class="ico"><img src="icons/icon-copy-small.svg" alt=""></span>
           <span>·</span>
-          <span><strong>Ext ID</strong> 13000024</span>
+          <span>Ext ID 13000024</span>
           <span class="ico"><img src="icons/icon-copy-small.svg" alt=""></span>
         </div>
         <h3>Madison Thompson</h3>
@@ -681,20 +696,28 @@
         </div>
       </div>
       <div class="row-stats">
-        <div class="stat"><strong>3</strong><span class="stat-label">Floors</span></div>
-        <div class="stat"><strong>24</strong><span class="stat-label">Rooms</span></div>
-        <div class="stat"><strong>41</strong><span class="stat-label">360° images</span></div>
-        <div class="stat"></div>
-        <div class="stat">
-          <strong>72</strong><span class="stat-label">Comments</span>
-          <span class="icons"><span class="ic-r"></span><span class="ic-y"></span><span class="ic-g"></span><span class="ic-b"></span><span class="ic-p"></span></span>
+        <div class="stat"><span class="stat-num">3</span><span class="stat-label">Floors</span></div>
+        <div class="stat"><span class="stat-num">24</span><span class="stat-label">Rooms</span></div>
+        <div class="stat"><span class="stat-num">41</span><span class="stat-label">360° images</span></div>
+        <div class="stat stat-comments">
+          <div class="stat-comments-row">
+            <span class="stat-num">72</span>
+            <div class="comment-icons">
+              <span class="ci ci-note"><img src="icons/icon-note-outline.svg" alt=""></span>
+              <span class="ci ci-alert"><img src="icons/icon-alert.svg" alt=""></span>
+              <span class="ci ci-water"><img src="icons/icon-water-outline-small.svg" alt=""></span>
+              <span class="ci ci-equipment"><img src="icons/icon-air-mover.svg" alt=""></span>
+              <span class="ci ci-contents"><img src="icons/icon-contents.svg" alt=""></span>
+            </div>
+          </div>
+          <span class="stat-label">Comments</span>
         </div>
-        <div class="stat"><strong>2</strong><span class="stat-label">Links</span></div>
+        <div class="stat"><span class="stat-num">2</span><span class="stat-label">Links</span></div>
       </div>
       <div class="row-actions">
-        <button class="action-btn"><img src="icons/icon-sketch.svg" alt="">View sketch <strong style="margin-left:4px">1/2</strong></button>
-        <button class="action-btn action-btn-primary"><img src="icons/icon-estimate.svg" alt="">Request estimate <strong style="margin-left:4px">4</strong></button>
-        <button class="action-btn action-btn-primary"><img src="icons/icon-note-outline.svg" alt="">Generate report <strong style="margin-left:4px">12</strong></button>
+        <button class="action-btn"><img src="icons/icon-sketch.svg" alt="">View sketch <span style="margin-left:4px">1/2</span></button>
+        <button class="action-btn action-btn-primary"><img src="icons/icon-estimate.svg" alt="">Request estimate <span style="margin-left:4px">4</span></button>
+        <button class="action-btn action-btn-primary"><img src="icons/icon-note-outline.svg" alt="">Generate report <span style="margin-left:4px">12</span></button>
         <div class="action-row-trio">
           <button class="action-btn"><img src="icons/icon-download.svg" alt="">Download</button>
           <button class="action-btn"><img src="icons/icon-share.svg" alt="">Share</button>
@@ -714,10 +737,10 @@
       </div>
       <div class="row-info">
         <div class="ids">
-          <span><strong>Job number</strong> BPGG-BAI.ERQ5-6.001</span>
+          <span>Job number BPGG-BAI.ERQ5-6.001</span>
           <span class="ico"><img src="icons/icon-copy-small.svg" alt=""></span>
           <span>·</span>
-          <span><strong>ID</strong> 993411532</span>
+          <span>ID 993411532</span>
           <span class="ico"><img src="icons/icon-copy-small.svg" alt=""></span>
         </div>
         <h3>Madison Thompson</h3>
@@ -732,15 +755,23 @@
         </div>
       </div>
       <div class="row-stats">
-        <div class="stat"><strong>3</strong><span class="stat-label">Floors</span></div>
-        <div class="stat"><strong>24</strong><span class="stat-label">Rooms</span></div>
-        <div class="stat"><strong>41</strong><span class="stat-label">360° images</span></div>
-        <div class="stat"></div>
-        <div class="stat">
-          <strong>72</strong><span class="stat-label">Comments</span>
-          <span class="icons"><span class="ic-r"></span><span class="ic-y"></span><span class="ic-g"></span><span class="ic-b"></span><span class="ic-p"></span></span>
+        <div class="stat"><span class="stat-num">3</span><span class="stat-label">Floors</span></div>
+        <div class="stat"><span class="stat-num">24</span><span class="stat-label">Rooms</span></div>
+        <div class="stat"><span class="stat-num">41</span><span class="stat-label">360° images</span></div>
+        <div class="stat stat-comments">
+          <div class="stat-comments-row">
+            <span class="stat-num">72</span>
+            <div class="comment-icons">
+              <span class="ci ci-note"><img src="icons/icon-note-outline.svg" alt=""></span>
+              <span class="ci ci-alert"><img src="icons/icon-alert.svg" alt=""></span>
+              <span class="ci ci-water"><img src="icons/icon-water-outline-small.svg" alt=""></span>
+              <span class="ci ci-equipment"><img src="icons/icon-air-mover.svg" alt=""></span>
+              <span class="ci ci-contents"><img src="icons/icon-contents.svg" alt=""></span>
+            </div>
+          </div>
+          <span class="stat-label">Comments</span>
         </div>
-        <div class="stat"><strong>2</strong><span class="stat-label">Links</span></div>
+        <div class="stat"><span class="stat-num">2</span><span class="stat-label">Links</span></div>
       </div>
       <div class="row-actions">
         <div class="action-row-trio">

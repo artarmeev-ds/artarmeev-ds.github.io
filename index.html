@@ -247,10 +247,11 @@
     border: 1px solid var(--ds-color-stroke-neutral);
     background: var(--ds-color-bg-white);
   }
+  /* Always Base new beige — never tracks the toggle (per the rule). */
   .sample-btn-accent {
-    background: var(--ds-color-bg-action);
-    color: var(--ds-color-text-primary);
-    border-color: var(--ds-color-bg-action);
+    background: #d2cfa9;
+    color: #1a1905;
+    border-color: #d2cfa9;
     box-shadow: none;
   }
   .sample-btn-yellow {
@@ -362,7 +363,7 @@
 
 <header class="page-header">
   <h1>Phoenix · DS 2.1 Design Update</h1>
-  <p>Companion page for the May 8 design proposal (<a href="https://www.figma.com/design/uWPtoRCtbBAnOqzJVNhYr3/3.0-Design-system?node-id=17411-20553">Figma node 17411-20553</a>). Each card below states one decision. The iframes at the bottom render the Project Overview with DS 2.1 applied — use the toggle in the bottom-right to compare with the old version.</p>
+  <p>Twelve decisions from the DS 2.1 proposal applied across two Phoenix screens. Each card below states one rule. Live previews of the Project Overview and the Projects list sit at the bottom — flip the toggle in the bottom-right corner to compare against the current production design, and use the page tabs to switch between screens.</p>
   <div class="page-meta">
     <span class="pill">Reference · docusketch-frontend</span>
     <span class="pill">Tokens · CSS variables</span>
@@ -453,7 +454,12 @@
       </div>
       <h3>8px gap between icon and text</h3>
       <p>On web buttons, the gap between leading icon and label is <code>8px</code>. Equivalent to <code>me-2</code> / <code>ms-2</code> on a projected <code>&lt;svg-icon&gt;</code>.</p>
-      <div style="margin-top:4px"><span class="sample-btn sample-btn-accent" style="gap:8px">▢ Open 360°</span></div>
+      <div style="margin-top:4px">
+        <span class="sample-btn sample-btn-accent" style="gap:8px">
+          <img src="icons/icon-360.svg" alt="" width="16" height="16">
+          Open 360°
+        </span>
+      </div>
     </div>
 
     <!-- 7 — Main actions with icons; others without -->
@@ -465,10 +471,10 @@
       <p>Primary CTAs — Open 360°, Edit, Share, Request estimate — carry a leading icon. Subtle utility actions like Generate and More stay text-only so secondary surfaces read calmer.</p>
     </div>
 
-    <!-- 7b — Less important / frequent actions are less prominent -->
+    <!-- 8 — Frequent utility actions stay quiet -->
     <div class="decision-card">
       <div class="decision-card-head">
-        <span class="num">7b</span>
+        <span class="num">8</span>
       </div>
       <h3>Frequent utility actions stay quiet</h3>
       <p>Per-row download and edit actions render as icon-only 32×32 squares. The action is still recognisable, the row keeps more horizontal room for content, and the surface stays calm.</p>
@@ -479,32 +485,10 @@
       </div>
     </div>
 
-    <!-- 8 — Grey secondary text -->
-    <div class="decision-card">
-      <div class="decision-card-head">
-        <span class="num">8</span>
-      </div>
-      <h3>Grey secondary text</h3>
-      <p>Density rail labels, section subtitles, sidebar IDs and copy badges use grey. Recipe: <code>#1A1905</code> at <code>opacity 0.65</code> with <code>plus-darker</code> blend — equivalent to <code>#6a6a66</code> for secondary and <code>#5a5a55</code> for muted.</p>
-      <div class="card-swatches">
-        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#6a6a66"></div><span class="mini-swatch-name">secondary</span><span class="mini-swatch-value">#6a6a66</span></div>
-        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#5a5a55"></div><span class="mini-swatch-name">muted</span><span class="mini-swatch-value">#5a5a55</span></div>
-      </div>
-    </div>
-
-    <!-- 9 — 14px minimum -->
+    <!-- 9 — Lemon-lime for rare promos / decorations (closes the action block) -->
     <div class="decision-card">
       <div class="decision-card-head">
         <span class="num">9</span>
-      </div>
-      <h3>14px minimum body text</h3>
-      <p>No 12px or 13px body copy on web. Body-sm is <code>14px</code>. Badges keep the 12px caption size as the only documented exception.</p>
-    </div>
-
-    <!-- 9b — Lemon-lime for rare promos / decorations -->
-    <div class="decision-card">
-      <div class="decision-card-head">
-        <span class="num">9b</span>
       </div>
       <h3>Lemon-lime <code>#EAE658</code> — promos &amp; decoration only</h3>
       <p>The pale lemon-lime tone replaces the old chartreuse <code>#E5DF00</code> for very rare cases: marketing-style banners, promotional CTAs (e.g. the Initial Estimate banner's "Try it out"), and decorative emphasis. It is never used for primary actions or status. In legacy mode the token reverts to the old chartreuse.</p>
@@ -516,10 +500,31 @@
       </div>
     </div>
 
-    <!-- 10 — NEW tag is always green -->
+    <!-- 10 — Grey secondary text -->
     <div class="decision-card">
       <div class="decision-card-head">
         <span class="num">10</span>
+      </div>
+      <h3>Grey secondary text</h3>
+      <p>Density rail labels, section subtitles, sidebar IDs and copy badges use grey. Recipe: <code>#1A1905</code> at <code>opacity 0.65</code> with <code>plus-darker</code> blend — equivalent to <code>#6a6a66</code>.</p>
+      <div class="card-swatches">
+        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#6a6a66"></div><span class="mini-swatch-name">secondary</span><span class="mini-swatch-value">#6a6a66</span></div>
+      </div>
+    </div>
+
+    <!-- 11 — 14px minimum -->
+    <div class="decision-card">
+      <div class="decision-card-head">
+        <span class="num">11</span>
+      </div>
+      <h3>14px minimum body text</h3>
+      <p>No 12px or 13px body copy on web. Body-sm is <code>14px</code>. Badges keep the 12px caption size as the only documented exception.</p>
+    </div>
+
+    <!-- 12 — NEW tag is always green -->
+    <div class="decision-card">
+      <div class="decision-card-head">
+        <span class="num">12</span>
       </div>
       <h3>"NEW" tag is always green</h3>
       <p>Any NEW label flagging a freshly added item — sidebar Initial Estimate, future modules — uses the green badge style. Green is the most prominent tone in the palette and reads as "first time here". Other badge colours stay reserved for status (Done, In progress) or category (SOW, Latest).</p>

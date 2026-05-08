@@ -73,13 +73,10 @@
     height: 3px;
     background: var(--ds-color-bg-promo);
   }
-  .app-header nav.main a.has-caret::after {
-    content: '';
-    display: inline-block;
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-top: 4px solid var(--ds-color-text-primary);
-    margin-left: 6px;
+  .app-header nav.main a.has-caret { gap: 6px; }
+  .app-header nav.main a.has-caret .caret-down {
+    width: 16px; height: 16px;
+    color: var(--ds-color-text-primary);
   }
   .app-header .header-right {
     display: flex;
@@ -913,8 +910,7 @@
       <a href="#">Estimates Without Tours</a>
       <a href="#">Users</a>
       <a href="#">Offices</a>
-      <a href="#" class="has-caret">Company</a>
-      <a href="#" class="has-caret">Admin</a>
+      <a href="#" class="has-caret">Company <img class="caret-down" src="icons/icon-chevron-down.svg" alt=""></a>
     </nav>
     <div class="header-right">
       <a href="#"><img class="icon" src="icons/icon-feedback.svg" alt=""> Feedback</a>
@@ -922,13 +918,6 @@
       <span class="avatar">IM</span>
     </div>
   </header>
-
-  <!-- =================== NOTIFICATION =================== -->
-  <div class="notification-banner">
-    <img class="icon" src="icons/icon-information.svg" alt="">
-    <span>Update billing info</span>
-    <button class="close-btn" aria-label="Close"><img src="icons/icon-close.svg" alt=""></button>
-  </div>
 
   <!-- =================== LAYOUT =================== -->
   <div class="layout">
