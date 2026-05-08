@@ -299,7 +299,8 @@
     line-height: 14px;
   }
 
-  /* Floating version toggle — bottom right */
+  /* Floating version toggle — bottom right.
+     Single button: clicking anywhere on the pill flips the mode. */
   .version-toggle {
     position: fixed;
     bottom: 24px;
@@ -307,25 +308,25 @@
     z-index: 100;
     background: var(--ds-color-bg-white);
     border: 1px solid var(--ds-color-stroke-neutral);
-    border-radius: 24px;
+    border-radius: 32px;
     padding: 4px;
-    display: flex;
-    gap: 0;
+    display: inline-flex;
     box-shadow: 0 4px 16px rgba(26, 25, 5, 0.12);
     font-family: var(--ds-font-family);
-  }
-  .version-toggle button {
-    padding: 6px 16px;
-    border: none;
-    background: transparent;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 500;
     cursor: pointer;
-    color: var(--ds-color-text-secondary);
-    font-family: inherit;
+    user-select: none;
   }
-  .version-toggle button.active {
+  .version-toggle .opt {
+    padding: 10px 22px;
+    border-radius: 28px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ds-color-text-secondary);
+    pointer-events: none; /* let the wrapper own the click */
+    transition: background 150ms, color 150ms;
+  }
+  .version-toggle[data-v="new"] .opt-new,
+  .version-toggle[data-v="old"] .opt-old {
     background: var(--ds-color-bg-action);
     color: var(--ds-color-text-primary);
   }
@@ -530,26 +531,28 @@
   Tokens live in <code>tokens.css</code>. Static HTML; the Angular components are simulated. DS 2.1 reference: <a href="https://www.figma.com/design/uWPtoRCtbBAnOqzJVNhYr3/3.0-Design-system?node-id=17411-20553">Figma frame 17411-20553</a>.
 </footer>
 
-<!-- Floating version toggle: switches both iframes between New (DS 2.1) and Old (legacy) -->
-<div class="version-toggle" role="group" aria-label="Version switcher">
-  <button data-v="new" class="active">New</button>
-  <button data-v="old">Old</button>
+<!-- Floating version toggle: clicking anywhere on the pill flips between New and Old -->
+<div class="version-toggle" data-v="new" role="button" tabindex="0" aria-label="Toggle DS 2.1 vs legacy">
+  <span class="opt opt-new">New</span>
+  <span class="opt opt-old">Old</span>
 </div>
 
 <script>
-  document.querySelectorAll('.version-toggle button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const v = btn.dataset.v;
-      document.querySelectorAll('.version-toggle button').forEach(b =>
-        b.classList.toggle('active', b.dataset.v === v));
-      document.querySelectorAll('iframe').forEach(iframe => {
-        const url = new URL(iframe.src, location.href);
-        if (v === 'old') url.searchParams.set('v', 'old');
-        else url.searchParams.delete('v');
-        iframe.src = url.toString();
-      });
-      document.body.classList.toggle('legacy', v === 'old');
+  const toggle = document.querySelector('.version-toggle');
+  function flip() {
+    const next = toggle.dataset.v === 'new' ? 'old' : 'new';
+    toggle.dataset.v = next;
+    document.querySelectorAll('iframe').forEach(iframe => {
+      const url = new URL(iframe.src, location.href);
+      if (next === 'old') url.searchParams.set('v', 'old');
+      else url.searchParams.delete('v');
+      iframe.src = url.toString();
     });
+    document.body.classList.toggle('legacy', next === 'old');
+  }
+  toggle.addEventListener('click', flip);
+  toggle.addEventListener('keydown', e => {
+    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flip(); }
   });
 </script>
 

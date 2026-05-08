@@ -61,6 +61,17 @@
     font-weight: 500;
     letter-spacing: -0.07px;
     color: var(--ds-color-text-primary);
+    position: relative;
+  }
+  /* Active nav decoration — chartreuse in legacy, lemon-lime in DS 2.1 */
+  .app-header nav.main a.active::after {
+    content: '';
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 0;
+    height: 3px;
+    background: var(--ds-color-bg-promo);
   }
   .app-header nav.main a.has-caret::after {
     content: '';
@@ -389,9 +400,13 @@
     text-transform: uppercase;
     align-self: flex-start;
   }
+  /* Match the sidebar Initial Estimate "New" tag dimensions in legacy */
   body.legacy .ie-banner-tag {
     background: #c0bc90;
     color: #1a1905;
+    height: 16px;
+    padding: 0 6px;
+    font-size: 11px;
   }
   /* Match the project-name h2 — Test Project 360 */
   .ie-banner-title {
@@ -889,7 +904,7 @@
   <header class="app-header">
     <div class="logo">DocuSketch<sup>°</sup></div>
     <nav class="main">
-      <a href="#">Projects</a>
+      <a href="#" class="active">Projects</a>
       <a href="#">Estimates Without Tours</a>
       <a href="#">Users</a>
       <a href="#">Offices</a>
