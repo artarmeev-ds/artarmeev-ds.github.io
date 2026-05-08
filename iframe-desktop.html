@@ -102,9 +102,10 @@
   /* =====================================================
      NOTIFICATION BANNER (33px, sage)
   ===================================================== */
+  /* Banner stays beige in every mode — not affected by token swaps */
   .notification-banner {
     height: 33px;
-    background: var(--ds-color-bg-button-primary);
+    background: #d2cfa9;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -211,6 +212,86 @@
     text-align: center;
   }
 
+  /* What's new section — disabled preview items with NEW tag */
+  .whats-new {
+    margin-top: 4px;
+    padding-top: 16px;
+    border-top: 1px solid var(--ds-color-stroke-neutral);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .whats-new-label {
+    margin: 0 0 0 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ds-color-text-secondary);
+  }
+  /* Same shape as a regular menu item — bg only on hover */
+  .whats-new-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 32px;
+    padding: 0 8px;
+    border-radius: 8px;
+    background: transparent;
+    cursor: default;
+  }
+  .whats-new-item:hover { background: var(--ds-color-bg-neutral-dark); }
+  .whats-new-item img.icon { width: 24px; height: 24px; }
+  .whats-new-item .label {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ds-color-text-primary);
+  }
+  /* NEW tag — green in DS 2.1 (matches new badge spec), olive sage in legacy */
+  .new-tag {
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
+    padding: 0 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background: #ebfac1;
+    color: #15803d;
+    flex-shrink: 0;
+  }
+  body.legacy .new-tag {
+    background: #c0bc90;
+    color: #1a1905;
+    /* Match Latest badge paddings in legacy (16h × 6px) */
+    height: 16px;
+    padding: 0 6px;
+    font-size: 11px;
+  }
+
+  /* Legacy-only text labels next to icons. In DS 2.1 these icon buttons are
+     intentionally label-less (less prominent for frequent / utility actions);
+     in legacy mode the text reappears next to the icon. */
+  .legacy-text { display: none; }
+  body.legacy .legacy-text { display: inline; }
+  body.legacy .btn-icon {
+    width: auto;
+    padding: 0 12px;
+    gap: 6px;
+  }
+  body.legacy .icon-btn-32 {
+    width: auto;
+    padding: 0 12px;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ds-color-text-primary);
+    font-family: inherit;
+  }
+
   .sidebar-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
   /* DS 2.1 — Base new (regular) → Light (hover) → Dark new (pressed). Text stays dark. */
   .sidebar-btn-primary {
@@ -306,21 +387,17 @@
   body.legacy .btn-accent { color: #1a1905; }
   body.legacy .btn-accent img { filter: none; }
   /* Other web primary actions — Request estimate, Generate, sidebar Open 360° tour
-     — use the OLD dark beige #6f6d41 with white foreground */
+     — use the OLD beige Base #c0bc90 with dark text */
   body.legacy .btn-primary,
   body.legacy .sidebar-btn-primary {
-    background: #6f6d41 !important;
-    border-color: #6f6d41 !important;
-    color: #ffffff !important;
+    background: #c0bc90 !important;
+    border-color: #c0bc90 !important;
+    color: #1a1905 !important;
   }
   body.legacy .btn-primary:hover,
   body.legacy .sidebar-btn-primary:hover {
-    background: #54522e !important;
-    border-color: #54522e !important;
-  }
-  body.legacy .btn-primary img,
-  body.legacy .sidebar-btn-primary img {
-    filter: invert(1);
+    background: #a39f7a !important;
+    border-color: #a39f7a !important;
   }
 
   .section-row {
@@ -768,6 +845,16 @@
         </a>
       </nav>
 
+      <!-- What's new — disabled preview items with NEW tag -->
+      <div class="whats-new">
+        <h4 class="whats-new-label">What's new</h4>
+        <div class="whats-new-item" aria-disabled="true">
+          <img class="icon" src="icons/icon-sow.svg" alt="">
+          <span class="label">Initial Estimate</span>
+          <span class="new-tag">New</span>
+        </div>
+      </div>
+
       <div class="sidebar-actions">
         <button class="sidebar-btn-primary">
           <img class="icon" src="icons/icon-360.svg" alt="">
@@ -794,7 +881,7 @@
               <p class="address">16000, Amphitheatre Pkwy, Mountain View, CA, 94043</p>
             </div>
             <div class="title-actions">
-              <button class="btn btn-icon" aria-label="Edit"><img class="icon" src="icons/icon-edit.svg" alt=""></button>
+              <button class="btn btn-icon" aria-label="Edit"><img class="icon" src="icons/icon-edit.svg" alt=""><span class="legacy-text">Edit</span></button>
               <button class="btn"><img class="icon" src="icons/icon-share.svg" alt=""> Share</button>
               <button class="btn btn-accent"><img class="icon" src="icons/icon-360.svg" alt=""> Open 360°</button>
             </div>
@@ -854,7 +941,7 @@
               <span class="row-tail">
                 <span class="date-meta">04/06/2026</span>
                 <span class="badge badge-done"><svg class="badge-icon" aria-hidden="true"><use href="#sym-sketch" fill="#15803d"/></svg>Done</span>
-                <button class="icon-btn-32" aria-label="Download"><img class="icon" src="icons/icon-download.svg" alt=""></button>
+                <button class="icon-btn-32" aria-label="Download"><img class="icon" src="icons/icon-download.svg" alt=""><span class="legacy-text">Download</span></button>
               </span>
             </li>
             <li class="ds-row">
@@ -884,7 +971,7 @@
               <span class="row-tail">
                 <span class="date-meta">04/06/2026</span>
                 <span class="badge badge-done"><svg class="badge-icon" aria-hidden="true"><use href="#sym-estimate" fill="#15803d"/></svg>Done</span>
-                <button class="icon-btn-32" aria-label="Download"><img class="icon" src="icons/icon-download.svg" alt=""></button>
+                <button class="icon-btn-32" aria-label="Download"><img class="icon" src="icons/icon-download.svg" alt=""><span class="legacy-text">Download</span></button>
               </span>
             </li>
             <li class="ds-row">
@@ -952,14 +1039,14 @@
               <span class="row-tail">
                 <span class="date-meta">05/04/2026</span>
                 <span class="badge">Latest</span>
-                <button class="icon-btn-32" aria-label="Download"><img class="icon" src="icons/icon-download.svg" alt=""></button>
+                <button class="icon-btn-32" aria-label="Download"><img class="icon" src="icons/icon-download.svg" alt=""><span class="legacy-text">Download</span></button>
               </span>
             </li>
             <li class="ds-row">
               <span class="row-body">DETAILED CLAIM REPORT</span>
               <span class="row-tail">
                 <span class="date-meta">05/04/2026</span>
-                <button class="icon-btn-32" aria-label="Download"><img class="icon" src="icons/icon-download.svg" alt=""></button>
+                <button class="icon-btn-32" aria-label="Download"><img class="icon" src="icons/icon-download.svg" alt=""><span class="legacy-text">Download</span></button>
               </span>
             </li>
           </ul>
