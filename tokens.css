@@ -30,7 +30,9 @@
   /* DS 2.1 — pale lemon-lime for very rare promotions / decorations only.
      Replaces the old chartreuse #e5df00. Reserved for marketing-style banners
      and decorative emphasis — never primary CTAs. */
-  --ds-color-bg-promo: #eae658;
+  --ds-color-bg-promo:         #eae658;     /* regular */
+  --ds-color-bg-promo-hover:   #f3f1a3;     /* tint — lighter on hover */
+  --ds-color-bg-promo-pressed: #c2bd35;     /* shade — darker on press */
 
   /* ---------- Text — DS 2.1: beige → grey
      Recipe: #1A1905 (Ash) at opacity 0.65, blend-mode plus-darker.
@@ -141,6 +143,8 @@ body.legacy {
   --ds-color-status-info:       #ffffff;
   --ds-color-status-info-bg:    #549cd3;
 
-  /* Old promo / decoration colour reverts to chartreuse */
-  --ds-color-bg-promo: #e5df00;
+  /* Old promo / decoration colour reverts to chartreuse + its tint/shade */
+  --ds-color-bg-promo:         #e5df00;
+  --ds-color-bg-promo-hover:   #f9f6bf;
+  --ds-color-bg-promo-pressed: #999300;
 }

@@ -240,7 +240,7 @@
     text-transform: uppercase;
     color: var(--ds-color-text-secondary);
   }
-  /* Same shape as a regular menu item — bg only on hover */
+  /* Same shape & hover as a regular menu item */
   .whats-new-item {
     display: flex;
     align-items: center;
@@ -251,7 +251,7 @@
     background: transparent;
     cursor: default;
   }
-  .whats-new-item:hover { background: var(--ds-color-bg-neutral-dark); }
+  .whats-new-item:hover { background: var(--ds-color-bg-neutral); }
   .whats-new-item img.icon { width: 24px; height: 24px; }
   .whats-new-item .label {
     flex: 1;
@@ -440,6 +440,8 @@
     font-variant-numeric: tabular-nums;
   }
   .ie-banner-steps .arr { color: var(--ds-color-text-muted); }
+  /* Three-state palette mirroring .btn-accent: regular / hover / pressed.
+     Tokens swap with the version toggle (lemon-lime ↔ chartreuse). */
   .btn-promo {
     align-self: flex-start;
     background: var(--ds-color-bg-promo);
@@ -452,7 +454,10 @@
     cursor: pointer;
     font-family: inherit;
     margin-top: auto;
+    transition: background 150ms;
   }
+  .btn-promo:hover  { background: var(--ds-color-bg-promo-hover); }
+  .btn-promo:active { background: var(--ds-color-bg-promo-pressed); }
   .ie-banner-right {
     background: var(--ds-color-bg-white);
     border: 1px solid var(--ds-color-stroke-neutral);
@@ -462,12 +467,13 @@
   .ie-banner-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 14px;
+    font-size: 12px;
+    line-height: 16px;
   }
   .ie-banner-table th {
     text-align: left;
-    padding: 2px 0 8px;
-    font-size: 11px;
+    padding: 0 0 6px;
+    font-size: 10px;
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -477,7 +483,7 @@
   .ie-banner-table th:nth-child(2),
   .ie-banner-table th:nth-child(3) { text-align: right; }
   .ie-banner-table td {
-    padding: 6px 0;
+    padding: 4px 0;
     font-weight: 500;
     vertical-align: top;
   }
