@@ -8,490 +8,954 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="tokens.css">
 <style>
+  /* Aligned with Figma node 17327-52363 (3.0 Design System / Phoenix) */
+
   * { box-sizing: border-box; }
   html, body {
     margin: 0;
     padding: 0;
-    background: var(--ds-color-bg-neutral);
+    background: var(--ds-color-bg-white);
     font-family: var(--ds-font-family);
     color: var(--ds-color-text-primary);
-    font-size: var(--ds-font-size-body);
+    font-size: 14px;
+    line-height: 18px;
+    -webkit-font-smoothing: antialiased;
   }
-  body { padding: 20px 28px; }
+  img.icon { display: block; flex-shrink: 0; }
+  a { color: inherit; text-decoration: none; }
 
-  /* App-shell tabs (Project Overview top bar) */
-  .app-tabs {
+  /* =====================================================
+     APP HEADER (60px, cream)
+  ===================================================== */
+  .app-header {
+    height: 60px;
+    background: var(--ds-color-bg-neutral);
     display: flex;
-    gap: 24px;
-    border-bottom: 1px solid var(--ds-color-stroke-neutral);
-    margin-bottom: 16px;
-    padding-bottom: 0;
+    align-items: center;
+    padding: 0 32px 0 0;
   }
-  .app-tab {
-    padding: 10px 0;
-    color: var(--ds-color-text-secondary);
-    font-weight: var(--ds-font-weight-medium);
-    font-size: var(--ds-font-size-body);
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    margin-bottom: -1px;
+  .app-header .logo {
+    width: 184px;
+    padding-left: 32px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.4px;
   }
-  .app-tab.active {
+  .app-header .logo sup {
+    font-size: 11px;
+    vertical-align: top;
+    margin-left: 1px;
+  }
+  .app-header nav.main {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex: 1;
+  }
+  .app-header nav.main a {
+    padding: 0 16px;
+    height: 60px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.07px;
     color: var(--ds-color-text-primary);
-    border-bottom-color: var(--ds-color-text-primary);
+  }
+  .app-header nav.main a.has-caret::after {
+    content: '';
+    display: inline-block;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid var(--ds-color-text-primary);
+    margin-left: 6px;
+  }
+  .app-header .header-right {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .app-header .header-right a {
+    height: 60px;
+    padding: 0 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ds-color-text-primary);
+  }
+  .app-header .header-right img.icon { width: 20px; height: 20px; }
+  .app-header .avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--ds-color-bg-neutral-dark);
+    color: var(--ds-color-text-primary);
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
   }
 
-  /* Two-column overview grid */
-  .overview-grid {
+  /* =====================================================
+     NOTIFICATION BANNER (33px, sage)
+  ===================================================== */
+  .notification-banner {
+    height: 33px;
+    background: var(--ds-color-bg-button-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ds-color-text-primary);
+    border-bottom: 1px solid var(--ds-color-stroke-neutral);
+  }
+  .notification-banner img.icon { width: 16px; height: 16px; }
+  .notification-banner .close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: inline-flex;
+    color: var(--ds-color-text-primary);
+  }
+  .notification-banner .close-btn img { width: 16px; height: 16px; }
+
+  /* =====================================================
+     PAGE LAYOUT (sidebar + content)
+  ===================================================== */
+  .layout {
+    display: grid;
+    grid-template-columns: 272px minmax(0, 1fr);
+    min-height: calc(100vh - 93px);
+  }
+
+  /* =====================================================
+     SIDEBAR
+  ===================================================== */
+  .sidebar {
+    background: var(--ds-color-bg-white);
+    border-right: 1px solid var(--ds-color-stroke-neutral);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .sidebar-info { display: flex; flex-direction: column; gap: 8px; }
+  .info-ids {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--ds-color-text-muted);
+  }
+  .info-ids .copy-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--ds-color-text-muted);
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .info-ids .copy-btn img { width: 14px; height: 14px; opacity: 0.7; }
+  .info-ids .dot { color: var(--ds-color-text-muted); }
+  .info-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ds-color-text-primary);
+    margin: 0;
+  }
+
+  .project-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 32px;
+    padding: 0 8px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ds-color-text-primary);
+    cursor: pointer;
+    position: relative;
+  }
+  .menu-item:hover { background: var(--ds-color-bg-neutral); }
+  .menu-item.active {
+    background: var(--ds-color-bg-neutral-dark);
+  }
+  .menu-item img.icon { width: 24px; height: 24px; }
+  .menu-item .label { flex: 1; }
+  .menu-badge {
+    min-width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    padding: 0 7px;
+    background: var(--ds-color-bg-primary);
+    color: var(--ds-color-text-primary);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 20px;
+    text-align: center;
+  }
+
+  .sidebar-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+  /* DS 2.1 — Base new (regular) → Light (hover) → Dark new (pressed). Text stays dark. */
+  .sidebar-btn-primary {
+    height: 34px;
+    background: var(--ds-color-bg-action);
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ds-color-text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: inherit;
+  }
+  .sidebar-btn-primary img { width: 16px; height: 16px; }
+  .sidebar-btn-primary:hover  { background: var(--ds-color-bg-action-hover); }
+  .sidebar-btn-primary:active { background: var(--ds-color-bg-action-pressed); }
+  .sidebar-btn-link {
+    height: 34px;
+    background: var(--ds-color-bg-white);
+    border: 1px solid var(--ds-color-stroke-neutral);
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ds-color-text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: inherit;
+  }
+  .sidebar-btn-link svg { width: 16px; height: 16px; }
+
+  /* =====================================================
+     MAIN CONTENT
+  ===================================================== */
+  .content {
+    background: var(--ds-color-bg-white);
+    padding: 20px 28px;
     display: grid;
     grid-template-columns: minmax(0, 1fr) 304px;
     gap: 28px;
     align-items: start;
   }
-  .content { display: flex; flex-direction: column; min-width: 0; }
-
-  /* Section base */
-  .section {
-    border-top: 1px solid var(--ds-color-stroke-neutral);
-    padding: 16px 0;
+  .content-col {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
   }
-  .section:first-child { border-top: none; padding-top: 4px; }
-  .section-head {
+
+  /* =====================================================
+     SECTIONS
+  ===================================================== */
+  /* DS 2.1 — no dividers between sections, vertical rhythm only */
+  .section { padding: 20px 0; }
+  .section.first { padding-top: 0; }
+
+  .section-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 12px;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
   }
-  .section-title {
-    font-size: var(--ds-font-size-h3);
-    font-weight: var(--ds-font-weight-medium);
-    color: var(--ds-color-text-primary);
+  .section-row h3 {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
     margin: 0;
-  }
-  .section-title a { color: inherit; text-decoration: none; }
-  .section-sub {
-    font-size: var(--ds-font-size-body-sm);
-    color: var(--ds-color-text-secondary);
-    margin: 0;
-  }
-
-  /* Buttons */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 12px;
-    border-radius: var(--ds-radius-sm);
-    border: 1px solid var(--ds-color-stroke-neutral);
-    background: var(--ds-color-bg-white);
-    font-size: var(--ds-font-size-body-sm);
-    font-weight: var(--ds-font-weight-medium);
-    color: var(--ds-color-text-primary);
-    cursor: pointer;
-    transition: background 150ms;
-  }
-  .btn:hover { background: var(--ds-color-bg-neutral); }
-  .btn-primary {
-    background: var(--ds-color-bg-primary);
-    border-color: var(--ds-color-bg-primary);
-    color: var(--ds-color-text-primary);
-  }
-  .btn-primary:hover { background: var(--ds-color-bg-dark); color: var(--ds-color-text-white); }
-  .btn-link {
-    background: none;
-    border: none;
-    color: var(--ds-color-text-secondary);
     text-decoration: underline;
-    font-size: var(--ds-font-size-body-sm);
-    padding: 0;
+    text-underline-offset: 4px;
   }
-  .icon-btn {
-    width: 28px; height: 28px;
-    display: inline-flex;
-    align-items: center; justify-content: center;
-    background: none;
-    border: none;
-    border-radius: var(--ds-radius-sm);
-    cursor: pointer;
-    color: var(--ds-color-text-secondary);
+  .section-row .subtitle {
+    font-size: 14px;
+    line-height: 18px;
+    color: var(--ds-color-text-muted);
+    flex: 1;
   }
-  .icon-btn:hover { background: var(--ds-color-bg-neutral-dark); }
 
-  /* Project header (general info) */
+  /* =====================================================
+     PROJECT HEADER
+  ===================================================== */
   .project-header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 20px;
+    gap: 16px;
     margin-bottom: 8px;
   }
-  .project-title {
-    font-size: var(--ds-font-size-h1);
-    font-weight: var(--ds-font-weight-medium);
+  .title-block .project-name {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: -0.32px;
     margin: 0 0 4px;
-    letter-spacing: -0.5px;
   }
-  .project-address {
-    font-size: var(--ds-font-size-body);
-    color: var(--ds-color-text-secondary);
+  .title-block .address {
+    font-size: 14px;
+    line-height: 18px;
+    color: var(--ds-color-text-primary);
     margin: 0;
   }
-  .project-actions { display: flex; gap: 8px; flex-shrink: 0; }
+  .title-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  /* Outline button — 1px stroke #e2e0d3 (per Figma 17411-38483) */
+  .btn {
+    height: 32px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 1px solid var(--ds-color-stroke-neutral);
+    background: var(--ds-color-bg-white);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ds-color-text-primary);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ds-button-icon-gap); /* DS 2.1 — wider icon/text gap on web */
+    font-family: inherit;
+  }
+  .btn img { width: 16px; height: 16px; }
+  .btn:hover { background: var(--ds-color-bg-neutral); }
+  .btn-icon {
+    width: 32px; height: 32px;
+    padding: 0;
+    justify-content: center;
+  }
+  /* DS 2.1 — chartreuse deleted. Primary action uses the new beige palette:
+     regular = Base new, hover = Light, pressed = Dark new. Text stays dark in all states. */
+  .btn-accent {
+    background: var(--ds-color-bg-action);
+    border-color: var(--ds-color-bg-action);
+    color: var(--ds-color-text-primary);
+    box-shadow: none;
+  }
+  .btn-accent:hover {
+    background: var(--ds-color-bg-action-hover);
+    border-color: var(--ds-color-bg-action-hover);
+  }
+  .btn-accent:active {
+    background: var(--ds-color-bg-action-pressed);
+    border-color: var(--ds-color-bg-action-pressed);
+  }
+  /* DS 2.1 — Request estimate / Generate / sidebar Open 360° tour share the
+     same three-state palette as .btn-accent (Base new / Light / Dark new). */
+  .btn-primary {
+    background: var(--ds-color-bg-action);
+    border-color: var(--ds-color-bg-action);
+    color: var(--ds-color-text-primary);
+    box-shadow: none;
+  }
+  .btn-primary:hover {
+    background: var(--ds-color-bg-action-hover);
+    border-color: var(--ds-color-bg-action-hover);
+  }
+  .btn-primary:active {
+    background: var(--ds-color-bg-action-pressed);
+    border-color: var(--ds-color-bg-action-pressed);
+  }
 
-  /* Meta strip with badges */
+  /* meta strip */
   .meta-strip {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-    padding: 8px 0 12px;
-    font-size: var(--ds-font-size-body-sm);
-    color: var(--ds-color-text-secondary);
-  }
-  .meta-divider {
-    width: 1px; height: 14px;
-    background: var(--ds-color-stroke-neutral);
-  }
-  .meta-strip strong {
+    gap: 8px;
+    font-size: 14px;
+    line-height: 18px;
     color: var(--ds-color-text-primary);
-    font-weight: var(--ds-font-weight-medium);
   }
+  .meta-strip .dot { color: var(--ds-color-text-muted); }
 
-  /* Badges */
+  /* =====================================================
+     BADGES
+  ===================================================== */
+  /* DS 2.1 (Figma 17411-37773) — 20px tall, 4px padding all sides, 16px icon, 4px gap */
   .badge {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    padding: 2px 10px;
-    border-radius: var(--ds-radius-pill);
-    font-size: var(--ds-font-size-caption);
-    font-weight: var(--ds-font-weight-medium);
+    height: var(--ds-badge-height);
+    padding: 0 var(--ds-badge-padding-x);
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 14px;
+    letter-spacing: 0.144px;
     background: var(--ds-color-status-neutral-bg);
     color: var(--ds-color-status-neutral-text);
-    line-height: 18px;
   }
-  .badge-success { background: var(--ds-color-status-success-bg); color: var(--ds-color-status-success); }
-  .badge-warning { background: var(--ds-color-status-warning-bg); color: var(--ds-color-status-warning); }
-  .badge-error   { background: var(--ds-color-status-error-bg);   color: var(--ds-color-status-error); }
-  .badge-info    { background: var(--ds-color-status-info-bg);    color: var(--ds-color-status-info); }
+  /* DS 2.1 — saturated olive .badge-sow deleted; SOW now uses neutral grey + sow icon */
+  .badge-done {
+    background: #ebfac1;
+    color: #243805;
+  }
+  .badge-progress {
+    background: #d4e6f4;
+    color: #165d77;
+  }
+  .badge svg.badge-icon {
+    width: var(--ds-badge-icon-size);
+    height: var(--ds-badge-icon-size);
+    margin-right: var(--ds-badge-icon-gap);
+    flex-shrink: 0;
+  }
 
-  /* Tour cards (3-col) */
-  .tour-grid {
+  /* =====================================================
+     360° TOUR
+  ===================================================== */
+  .tabs {
+    display: flex;
+    gap: 24px;
+    border-bottom: 1px solid var(--ds-color-stroke-neutral);
+    margin-bottom: 12px;
+  }
+  .tab {
+    padding: 8px 0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    color: var(--ds-color-text-muted);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    cursor: pointer;
+    background: none;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    font-family: inherit;
+  }
+  .tab.active {
+    color: var(--ds-color-text-primary);
+    border-bottom-color: var(--ds-color-text-primary);
+  }
+  .compact-card-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 12px;
   }
-  .tour-card {
+  .compact-card-grid.col-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .compact-card {
     background: var(--ds-color-bg-white);
     border: 1px solid var(--ds-color-stroke-neutral);
-    border-radius: var(--ds-radius-card);
-    padding: 14px;
+    border-radius: 8px;
+    padding: 11px 13px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    cursor: pointer;
-    transition: border-color 150ms;
-  }
-  .tour-card:hover { border-color: var(--ds-color-bg-primary); }
-  .tour-card-title {
-    font-weight: var(--ds-font-weight-medium);
-    font-size: var(--ds-font-size-body);
-    margin: 0 0 2px;
-  }
-  .tour-card-meta {
-    font-size: var(--ds-font-size-caption);
-    color: var(--ds-color-text-secondary);
-    margin: 0;
-  }
-  .chevron { color: var(--ds-color-text-secondary); flex-shrink: 0; }
-
-  /* List rows (sketches, estimates, reports) */
-  .row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 0;
-    border-top: 1px solid var(--ds-color-stroke-neutral);
-  }
-  .row:first-of-type { border-top: none; }
-  .row-icon {
-    width: 28px; height: 28px;
-    display: flex; align-items: center; justify-content: center;
-    background: var(--ds-color-bg-neutral);
-    border-radius: var(--ds-radius-sm);
-    color: var(--ds-color-text-secondary);
-    flex-shrink: 0;
-  }
-  .row-main { flex: 1; min-width: 0; }
-  .row-title {
-    font-weight: var(--ds-font-weight-medium);
-    font-size: var(--ds-font-size-body);
-    margin: 0 0 2px;
-  }
-  .row-meta {
-    font-size: var(--ds-font-size-caption);
-    color: var(--ds-color-text-secondary);
-    margin: 0;
-  }
-  .row-tail {
-    display: flex; align-items: center; gap: 12px;
-    flex-shrink: 0;
-  }
-
-  /* Density rail (sidebar) */
-  .rail {
-    position: sticky; top: 20px;
-    background: var(--ds-color-bg-neutral);
-    border-radius: var(--ds-radius-md);
-    padding: 16px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  .rail-block { }
-  .rail-block h4 {
-    font-size: var(--ds-font-size-body-sm);
-    font-weight: var(--ds-font-weight-semibold);
-    margin: 0 0 8px;
-    color: var(--ds-color-text-primary);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  .rail-row {
-    display: flex;
     justify-content: space-between;
     gap: 8px;
-    padding: 6px 0;
-    border-top: 1px solid var(--ds-color-stroke-neutral);
-    font-size: var(--ds-font-size-body-sm);
+    cursor: pointer;
+    height: 58px;
+    transition: border-color 150ms;
   }
-  .rail-row:first-of-type { border-top: none; }
-  .rail-row dt { color: var(--ds-color-text-secondary); margin: 0; }
-  .rail-row dd { color: var(--ds-color-text-primary); margin: 0; font-variant-numeric: tabular-nums; font-weight: var(--ds-font-weight-medium); }
-  .rail-row dd a { color: inherit; }
-
-  /* Banners */
-  .banner {
-    background: var(--ds-color-status-info-bg);
-    border-left: 3px solid var(--ds-color-status-info);
-    padding: 10px 12px;
-    border-radius: var(--ds-radius-sm);
-    font-size: var(--ds-font-size-body-sm);
-    margin-bottom: 8px;
+  .compact-card:hover { border-color: var(--ds-color-bg-primary); }
+  .compact-card .body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .compact-card .body .title {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
     color: var(--ds-color-text-primary);
+  }
+  .compact-card .body .meta {
+    font-size: 14px;
+    line-height: 18px;
+    color: var(--ds-color-text-muted);
+  }
+  .chevron-css {
+    color: var(--ds-color-text-muted);
+    font-size: 16px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  /* =====================================================
+     LIST ROWS (sketches, estimates, reports)
+  ===================================================== */
+  .ds-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    border-top: 1px solid var(--ds-color-stroke-neutral);
+    padding: 6px 0;
+  }
+  .ds-row:first-of-type { border-top: none; }
+  .ds-row .row-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+  .ds-row .row-body {
+    flex: 1;
+    min-width: 0;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 500;
+    color: var(--ds-color-text-primary);
+  }
+  .ds-row .row-tail {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .ds-row .date-meta {
+    font-size: 14px;
+    line-height: 18px;
+    color: var(--ds-color-text-muted);
+  }
+  .icon-btn-32 {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--ds-color-stroke-neutral);
+    background: var(--ds-color-bg-white);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .icon-btn-32 img { width: 16px; height: 16px; }
+  .icon-btn-32:hover { background: var(--ds-color-bg-neutral); }
+
+  /* =====================================================
+     ALERT BANNER (chat msg, action needed)
+     Variants: .alert-info, .alert-warning, .alert-error, .alert-success
+     Icons get colored via CSS mask so each alert type has a
+     distinct icon hue.
+  ===================================================== */
+  .alert {
+    border-radius: 8px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 18px;
+    color: var(--ds-color-text-primary);
+  }
+  .alert svg.alert-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+  /* Orange — used for both chat-message and action-needed alerts */
+  .alert-warning { background: #fef3e0; }
+  .alert-info    { background: #d4e6f4; }
+  .alert-error   { background: #ffd6bd; }
+  .alert-success { background: #ebfac1; }
+
+  /* =====================================================
+     DENSITY RAIL
+  ===================================================== */
+  .density-rail {
+    background: var(--ds-color-bg-neutral);
+    border-radius: 8px;
+    padding: 16px 20px;
+    position: sticky;
+    top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .rail-group {}
+  .rail-group .rail-label {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    color: var(--ds-color-text-primary);
+    margin: 0 0 8px;
+    letter-spacing: -0.07px;
+  }
+  .kv-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  }
+  .kv-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 5px 0;
+    border-top: 1px solid var(--ds-color-stroke-neutral);
+    font-size: 14px;
+    line-height: 18px;
+  }
+  .kv-row:first-child { border-top: none; }
+  .kv-row dt {
+    margin: 0;
+    color: var(--ds-color-text-muted);
+    flex-shrink: 0;
+  }
+  .kv-row dd {
+    margin: 0;
+    color: var(--ds-color-text-primary);
+    text-align: right;
+    word-break: break-word;
+  }
+  .kv-row dd a {
+    color: var(--ds-color-text-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 </style>
 </head>
 <body class="proposal-1">
 
-  <div class="app-tabs">
-    <div class="app-tab active">Overview</div>
-    <div class="app-tab">Tour</div>
-    <div class="app-tab">Sketches</div>
-    <div class="app-tab">Estimates</div>
-    <div class="app-tab">Reports</div>
-    <div class="app-tab">Evidence</div>
-    <div class="app-tab">Files</div>
+  <!-- Reusable icon symbols. Use via <svg><use href="#sym-..." fill="..."/></svg> -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <symbol id="sym-sketch" viewBox="0 0 24 24"><path d="M19.5 3.25C20.1904 3.25 20.75 3.80964 20.75 4.5V19.5C20.75 20.1903 20.1903 20.75 19.5 20.75H17V19.25H19.25V10.25H16.5V8.75H19.25V4.75H9.75V8.75H12.5V10.25H9.75V13H8.25V4.75H4.75V19.25H8.25V16.5H9.75V19.25H11.7559C11.8863 16.4666 14.1843 14.25 17 14.25V15.75C14.9289 15.75 13.25 17.4289 13.25 19.5V19.7998C13.25 20.3245 12.8245 20.75 12.2998 20.75H4.5C3.80964 20.75 3.25 20.1904 3.25 19.5V4.5C3.25 3.80965 3.80966 3.25001 4.5 3.25H19.5Z"/></symbol>
+    <symbol id="sym-estimate" viewBox="0 0 24 24"><path d="M17.5 2.75C18.1903 2.75001 18.75 3.30965 18.75 4V20C18.75 20.6904 18.1904 21.25 17.5 21.25H6.5C5.80964 21.25 5.25 20.6904 5.25 20V4C5.25 3.30965 5.80964 2.75 6.5 2.75H17.5ZM6.75 19.75H17.25V4.25H6.75V19.75ZM9.5 17.75H8V16.25H9.5V17.75ZM12.75 17.75H11.25V16.25H12.75V17.75ZM16 17.75H14.5V16.25H16V17.75ZM9.5 14.75H8V13.25H9.5V14.75ZM12.75 14.75H11.25V13.25H12.75V14.75ZM16 14.75H14.5V13.25H16V14.75ZM9.5 11.75H8V10.25H9.5V11.75ZM12.75 11.75H11.25V10.25H12.75V11.75ZM16 11.75H14.5V10.25H16V11.75ZM16 7.75H8V6.25H16V7.75Z"/></symbol>
+    <symbol id="sym-alert" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5M12 16h.01"/></symbol>
+    <symbol id="sym-sow" viewBox="0 0 24 24"><path d="M17.8154 2.25977C18.5457 2.30315 19.2372 2.49581 19.8584 2.80859L20.7852 3.27539L17.5605 6.5L18.5 7.43945L21.7246 4.21484L22.1914 5.1416C22.5489 5.85155 22.75 6.65337 22.75 7.5C22.75 10.3088 20.5442 12.6023 17.7705 12.7432L17.5 12.75C16.8482 12.75 16.224 12.629 15.6475 12.4111L15.0596 12.999L19.1768 17.1162C19.6648 17.6043 19.6648 18.3957 19.1768 18.8838L17.8838 20.1768C17.3957 20.6649 16.6044 20.6648 16.1162 20.1768L11.999 16.0596L7.88379 20.1768C7.42602 20.6345 6.70179 20.663 6.21094 20.2627L6.11621 20.1768L4.82324 18.8838C4.33509 18.3956 4.33509 17.6044 4.82324 17.1162L8.93848 12.999L6.49121 10.5518C6.45792 10.5952 6.42291 10.6376 6.38379 10.6768L5.38379 11.6768C4.92604 12.1345 4.2018 12.163 3.71094 11.7627L3.61621 11.6768L1.32324 9.38379C0.835085 8.89563 0.835089 8.10437 1.32324 7.61621L2.32324 6.61621C2.63734 6.35107 2.91682 6.25 3.20703 6.25H3.25V6.20703C3.28439 5.79698 3.41126 5.52819 3.61621 5.32324L5.33984 3.59961C5.61667 3.36128 5.86042 3.259 6.12012 3.2373L11.9375 2.75293L12.75 2.68457V4.31055L9.56055 7.5L11.999 9.93848L12.5869 9.35059C12.3697 8.77449 12.25 8.15076 12.25 7.5C12.25 4.6005 14.6005 2.25 17.5 2.25L17.8154 2.25977ZM13.0605 15L17 18.9395L17.9395 18L14 14.0605L13.0605 15ZM17.5 3.75C15.4289 3.75 13.75 5.42893 13.75 7.5C13.75 8.10658 13.8939 8.67793 14.1484 9.18359L14.3926 9.66699L14.0088 10.0508L13.0596 10.999L13.0605 11L10 14.0605L6.05957 17.999L6.99902 18.9385L14.9482 10.9902L15.332 10.6064L15.8164 10.8506C16.3225 11.1055 16.8935 11.25 17.5 11.25C19.6745 11.1444 21.25 9.50617 21.25 7.5C21.25 7.283 21.2305 7.07076 21.1953 6.86426L19.3838 8.67676C18.926 9.13454 18.2018 9.16299 17.7109 8.7627L16.3232 7.38379C15.8351 6.89563 15.8351 6.10437 16.3232 5.61621L18.1348 3.80371C18.0007 3.78089 17.8642 3.76504 17.7256 3.75684L17.5 3.75ZM7.56055 9.5L9.99902 11.9385L10.9385 10.999L8.5 8.56055L7.56055 9.5Z"/></symbol>
+  </svg>
+
+  <!-- =================== APP HEADER =================== -->
+  <header class="app-header">
+    <div class="logo">DocuSketch<sup>°</sup></div>
+    <nav class="main">
+      <a href="#">Projects</a>
+      <a href="#">Estimates Without Tours</a>
+      <a href="#">Users</a>
+      <a href="#">Offices</a>
+      <a href="#" class="has-caret">Company</a>
+      <a href="#" class="has-caret">Admin</a>
+    </nav>
+    <div class="header-right">
+      <a href="#"><img class="icon" src="icons/icon-feedback.svg" alt=""> Feedback</a>
+      <a href="#"><img class="icon" src="icons/icon-help.svg" alt=""> Help</a>
+      <span class="avatar">IM</span>
+    </div>
+  </header>
+
+  <!-- =================== NOTIFICATION =================== -->
+  <div class="notification-banner">
+    <img class="icon" src="icons/icon-information.svg" alt="">
+    <span>Update billing info</span>
+    <button class="close-btn" aria-label="Close"><img src="icons/icon-close.svg" alt=""></button>
   </div>
 
-  <div class="overview-grid">
-    <div class="content">
+  <!-- =================== LAYOUT =================== -->
+  <div class="layout">
 
-      <!-- General Info Section -->
-      <div class="section">
-        <div class="project-header">
-          <div>
-            <h1 class="project-title">201025 Washington</h1>
-            <p class="project-address">Stoney Ridge Bnd 12821, Del Valle, Texas, 78617</p>
-          </div>
-          <div class="project-actions">
-            <button class="btn">✎ Edit</button>
-            <button class="btn">⤴ Share</button>
-            <button class="btn btn-primary">▶ Open 360°</button>
-          </div>
+    <!-- ================ SIDEBAR ================ -->
+    <aside class="sidebar">
+      <div class="sidebar-info">
+        <div class="info-ids">
+          <button class="copy-btn">Job number 001 <img class="icon" src="icons/icon-copy-small.svg" alt=""></button>
+          <span class="dot">·</span>
+          <button class="copy-btn">ID 262574 <img class="icon" src="icons/icon-copy-small.svg" alt=""></button>
         </div>
-        <div class="meta-strip">
-          <span><strong>Loss:</strong> Water</span>
-          <span class="meta-divider"></span>
-          <span><strong>Created:</strong> 01/12/2022</span>
-          <span class="meta-divider"></span>
-          <span><strong>Owner:</strong> Mike Wallace</span>
-          <span class="meta-divider"></span>
-          <span class="badge">SOW</span>
-          <span class="badge badge-info">PSA</span>
-          <span class="badge badge-success">Public</span>
-        </div>
+        <h2 class="info-name">Test Project 360</h2>
       </div>
 
-      <!-- 360° Tour Section -->
-      <div class="section">
-        <div class="section-head">
-          <h3 class="section-title"><a href="#">360° Tour</a></h3>
-          <p class="section-sub">01/12/2022 · Initial</p>
-        </div>
-        <div class="tour-grid">
-          <div class="tour-card">
-            <div>
-              <p class="tour-card-title">Living room</p>
-              <p class="tour-card-meta">8 panoramas · 3 comments</p>
-            </div>
-            <span class="chevron">›</span>
-          </div>
-          <div class="tour-card">
-            <div>
-              <p class="tour-card-title">Hallway</p>
-              <p class="tour-card-meta">4 panoramas · 1 field note</p>
-            </div>
-            <span class="chevron">›</span>
-          </div>
-          <div class="tour-card">
-            <div>
-              <p class="tour-card-title">Kitchen</p>
-              <p class="tour-card-meta">6 panoramas · 0 comments</p>
-            </div>
-            <span class="chevron">›</span>
-          </div>
-        </div>
-      </div>
+      <nav class="project-sections">
+        <a class="menu-item active" href="#">
+          <img class="icon" src="icons/icon-residential.svg" alt="">
+          <span class="label">Overview</span>
+        </a>
+        <a class="menu-item" href="#">
+          <img class="icon" src="icons/icon-sketch.svg" alt="">
+          <span class="label">Sketches</span>
+          <span class="menu-badge">2</span>
+        </a>
+        <a class="menu-item" href="#">
+          <img class="icon" src="icons/icon-estimate.svg" alt="">
+          <span class="label">Estimates</span>
+          <span class="menu-badge">6</span>
+        </a>
+        <a class="menu-item" href="#">
+          <img class="icon" src="icons/icon-water.svg" alt="">
+          <span class="label">Water mitigation</span>
+          <span class="menu-badge">2</span>
+        </a>
+        <a class="menu-item" href="#">
+          <img class="icon" src="icons/icon-billing.svg" alt="">
+          <span class="label">Line Items</span>
+          <span class="menu-badge">1</span>
+        </a>
+        <a class="menu-item" href="#">
+          <img class="icon" src="icons/icon-photo-camera.svg" alt="">
+          <span class="label">Evidence</span>
+        </a>
+        <a class="menu-item" href="#">
+          <img class="icon" src="icons/icon-note-outline.svg" alt="">
+          <span class="label">Reports</span>
+        </a>
+        <a class="menu-item" href="#">
+          <img class="icon" src="icons/icon-download.svg" alt="">
+          <span class="label">Downloads</span>
+        </a>
+        <a class="menu-item" href="#">
+          <img class="icon" src="icons/icon-share.svg" alt="">
+          <span class="label">Share</span>
+        </a>
+      </nav>
 
-      <!-- Sketches Section -->
-      <div class="section">
-        <div class="section-head">
-          <h3 class="section-title"><a href="#">Sketches</a></h3>
-          <p class="section-sub">2 sketches · Last updated 01/14/2022</p>
-        </div>
-        <div class="row">
-          <div class="row-icon">⬚</div>
-          <div class="row-main">
-            <p class="row-title">Interior sketch</p>
-            <p class="row-meta">Delivered 01/13/2022</p>
-          </div>
-          <div class="row-tail">
-            <span class="badge badge-success">Done</span>
-            <button class="btn">↓ Download</button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="row-icon">⬛</div>
-          <div class="row-main">
-            <p class="row-title">Exterior sketch</p>
-            <p class="row-meta">Requested 01/12/2022</p>
-          </div>
-          <div class="row-tail">
-            <span class="badge badge-warning">In progress</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Estimates Section -->
-      <div class="section">
-        <div class="section-head">
-          <div>
-            <h3 class="section-title"><a href="#">Estimates</a></h3>
-            <p class="section-sub">3 estimates · 1 unread message</p>
-          </div>
-          <button class="btn btn-primary">+ Request estimate</button>
-        </div>
-        <div class="banner">💬 1 new message in chat from Sarah K.</div>
-        <div class="row">
-          <div class="row-icon">$</div>
-          <div class="row-main">
-            <p class="row-title">Estimate v3 — Mitigation</p>
-            <p class="row-meta">$12,840.50 · Updated 01/15/2022</p>
-          </div>
-          <div class="row-tail">
-            <span class="badge badge-success">Approved</span>
-            <button class="btn">↓</button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="row-icon">$</div>
-          <div class="row-main">
-            <p class="row-title">Estimate v2 — Repairs</p>
-            <p class="row-meta">$28,420.00 · Updated 01/14/2022</p>
-          </div>
-          <div class="row-tail">
-            <span class="badge badge-info">Revision</span>
-            <button class="btn">↓</button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="row-icon">$</div>
-          <div class="row-main">
-            <p class="row-title">Estimate v1 — Initial</p>
-            <p class="row-meta">$24,100.00 · Created 01/12/2022</p>
-          </div>
-          <div class="row-tail">
-            <span class="badge">New</span>
-            <button class="btn">↓</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Reports Section -->
-      <div class="section">
-        <div class="section-head">
-          <div>
-            <h3 class="section-title"><a href="#">Reports</a></h3>
-            <p class="section-sub">2 generated reports</p>
-          </div>
-          <button class="btn">+ Generate</button>
-        </div>
-        <div class="row">
-          <div class="row-icon">▤</div>
-          <div class="row-main">
-            <p class="row-title">Mitigation summary</p>
-            <p class="row-meta">01/15/2022</p>
-          </div>
-          <div class="row-tail">
-            <span class="badge">Latest</span>
-            <button class="btn-link">↓ Download</button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="row-icon">▤</div>
-          <div class="row-main">
-            <p class="row-title">Initial assessment</p>
-            <p class="row-meta">01/12/2022</p>
-          </div>
-          <div class="row-tail">
-            <button class="btn-link">↓ Download</button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Density Rail / Sidebar -->
-    <aside class="rail">
-      <div class="rail-block">
-        <h4>Project</h4>
-        <dl class="rail-row"><dt>Status</dt><dd><span class="badge badge-success">Active</span></dd></dl>
-        <dl class="rail-row"><dt>Loss type</dt><dd>Water · Cat 2</dd></dl>
-        <dl class="rail-row"><dt>Loss date</dt><dd>01/10/2022</dd></dl>
-        <dl class="rail-row"><dt>Carrier</dt><dd>State Farm</dd></dl>
-        <dl class="rail-row"><dt>Claim #</dt><dd>SF-9821-A</dd></dl>
-      </div>
-      <div class="rail-block">
-        <h4>Property</h4>
-        <dl class="rail-row"><dt>Rooms</dt><dd>1</dd></dl>
-        <dl class="rail-row"><dt>Floors</dt><dd>1</dd></dl>
-        <dl class="rail-row"><dt>Year built</dt><dd>1998</dd></dl>
-        <dl class="rail-row"><dt>Sq ft</dt><dd>1,420</dd></dl>
-      </div>
-      <div class="rail-block">
-        <h4>Team</h4>
-        <dl class="rail-row"><dt>Owner</dt><dd><a href="#">Mike Wallace</a></dd></dl>
-        <dl class="rail-row"><dt>Adjuster</dt><dd><a href="#">Sarah K.</a></dd></dl>
-        <dl class="rail-row"><dt>Office</dt><dd>Austin, TX</dd></dl>
+      <div class="sidebar-actions">
+        <button class="sidebar-btn-primary">
+          <img class="icon" src="icons/icon-360.svg" alt="">
+          Open 360° tour
+        </button>
+        <button class="sidebar-btn-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18.5 9L12 15.5L5.5 9"/>
+          </svg>
+          More
+        </button>
       </div>
     </aside>
+
+    <!-- ================ MAIN CONTENT ================ -->
+    <main class="content">
+      <div class="content-col">
+
+        <!-- General info -->
+        <div class="section first">
+          <div class="project-header">
+            <div class="title-block">
+              <h2 class="project-name">Test Project 360</h2>
+              <p class="address">16000, Amphitheatre Pkwy, Mountain View, CA, 94043</p>
+            </div>
+            <div class="title-actions">
+              <button class="btn btn-icon" aria-label="Edit"><img class="icon" src="icons/icon-edit.svg" alt=""></button>
+              <button class="btn"><img class="icon" src="icons/icon-share.svg" alt=""> Share</button>
+              <button class="btn btn-accent"><img class="icon" src="icons/icon-360.svg" alt=""> Open 360°</button>
+            </div>
+          </div>
+          <div class="meta-strip">
+            <span>Water · Cat 2 · Class 1</span>
+            <span class="dot">·</span>
+            <span>Residential</span>
+            <span class="dot">·</span>
+            <span>Loss 11/12/2025</span>
+            <span class="badge"><svg class="badge-icon" aria-hidden="true"><use href="#sym-sow" fill="#1a1905"/></svg>SOW</span>
+          </div>
+        </div>
+
+        <!-- 360° Tour -->
+        <div class="section">
+          <div class="section-row">
+            <h3><a href="#">360° Tour</a></h3>
+          </div>
+          <div class="tabs">
+            <button class="tab active">Initial 360° tour</button>
+            <button class="tab">Timeline #1</button>
+          </div>
+          <div class="compact-card-grid">
+            <a class="compact-card" href="#">
+              <div class="body">
+                <span class="title">Basement</span>
+                <span class="meta">7 rooms · 9 images · 19 notes</span>
+              </div>
+              <span class="chevron-css">›</span>
+            </a>
+            <a class="compact-card" href="#">
+              <div class="body">
+                <span class="title">1st floor</span>
+                <span class="meta">7 rooms · 7 images · 10 notes</span>
+              </div>
+              <span class="chevron-css">›</span>
+            </a>
+            <a class="compact-card" href="#">
+              <div class="body">
+                <span class="title">Roof</span>
+                <span class="meta">1 room · 1 image</span>
+              </div>
+              <span class="chevron-css">›</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Sketches -->
+        <div class="section">
+          <div class="section-row">
+            <h3><a href="#">Sketches</a></h3>
+          </div>
+          <ul style="list-style:none;margin:0;padding:0">
+            <li class="ds-row">
+              <span class="row-body">Interior</span>
+              <span class="row-tail">
+                <span class="date-meta">04/06/2026</span>
+                <span class="badge badge-done"><svg class="badge-icon" aria-hidden="true"><use href="#sym-sketch" fill="#15803d"/></svg>Done</span>
+                <button class="icon-btn-32" aria-label="Download"><img class="icon" src="icons/icon-download.svg" alt=""></button>
+              </span>
+            </li>
+            <li class="ds-row">
+              <span class="row-body">Exterior</span>
+              <span class="row-tail">
+                <span class="badge badge-progress"><svg class="badge-icon" aria-hidden="true"><use href="#sym-sketch" fill="#165d77"/></svg>In progress</span>
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Estimates -->
+        <div class="section">
+          <div class="section-row">
+            <h3><a href="#">Estimates</a></h3>
+            <span class="subtitle">4 estimates</span>
+            <button class="btn btn-primary">Request estimate</button>
+          </div>
+          <div class="alert alert-warning">
+            <svg class="alert-icon" aria-hidden="true"><use href="#sym-alert" stroke="#b45309"/></svg>
+            <span>1 unread message in chat</span>
+          </div>
+          <ul style="list-style:none;margin:0;padding:0">
+            <li class="ds-row">
+              <img class="icon row-icon" src="icons/icon-emergency.svg" alt="">
+              <span class="row-body">Emergency/Mitigation</span>
+              <span class="row-tail">
+                <span class="date-meta">04/06/2026</span>
+                <span class="badge badge-done"><svg class="badge-icon" aria-hidden="true"><use href="#sym-estimate" fill="#15803d"/></svg>Done</span>
+                <button class="icon-btn-32" aria-label="Download"><img class="icon" src="icons/icon-download.svg" alt=""></button>
+              </span>
+            </li>
+            <li class="ds-row">
+              <img class="icon row-icon" src="icons/icon-residential.svg" alt="">
+              <span class="row-body">Reconstruction/General/Other</span>
+              <span class="row-tail">
+                <span class="badge badge-progress"><svg class="badge-icon" aria-hidden="true"><use href="#sym-estimate" fill="#165d77"/></svg>In progress</span>
+              </span>
+            </li>
+            <li class="ds-row">
+              <img class="icon row-icon" src="icons/icon-contents.svg" alt="">
+              <span class="row-body">Contents</span>
+              <span class="row-tail">
+                <span class="badge badge-progress"><svg class="badge-icon" aria-hidden="true"><use href="#sym-estimate" fill="#165d77"/></svg>In progress</span>
+              </span>
+            </li>
+            <li class="ds-row">
+              <img class="icon row-icon" src="icons/icon-emergency.svg" alt="">
+              <span class="row-body">Emergency/Mitigation</span>
+              <span class="row-tail">
+                <span class="badge badge-progress"><svg class="badge-icon" aria-hidden="true"><use href="#sym-estimate" fill="#165d77"/></svg>In progress</span>
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Water mitigation -->
+        <div class="section">
+          <div class="section-row">
+            <h3><a href="#">Water mitigation</a></h3>
+            <span class="subtitle">2 affected areas · 9 equipment · 10 readings</span>
+          </div>
+          <div class="alert alert-warning">
+            <svg class="alert-icon" aria-hidden="true"><use href="#sym-alert" stroke="#b45309"/></svg>
+            <span>Action needed — 5 issues require attention</span>
+          </div>
+          <div class="compact-card-grid col-2">
+            <a class="compact-card" href="#">
+              <div class="body">
+                <span class="title">DC222</span>
+                <span class="meta">Floor 1 · 3 rooms · Cat CAT_1 · Class CLASS_4</span>
+              </div>
+              <span class="chevron-css">›</span>
+            </a>
+            <a class="compact-card" href="#">
+              <div class="body">
+                <span class="title">DC-RRR</span>
+                <span class="meta">Floor 1 · 2 rooms · Cat CAT_3 · Class CLASS_2</span>
+              </div>
+              <span class="chevron-css">›</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Recent reports -->
+        <div class="section">
+          <div class="section-row">
+            <h3><a href="#">Recent reports</a></h3>
+            <span class="subtitle">14 reports</span>
+            <button class="btn btn-primary">Generate</button>
+          </div>
+          <ul style="list-style:none;margin:0;padding:0">
+            <li class="ds-row">
+              <span class="row-body">DETAILED CLAIM REPORT</span>
+              <span class="row-tail">
+                <span class="date-meta">05/04/2026</span>
+                <span class="badge">Latest</span>
+                <button class="icon-btn-32" aria-label="Download"><img class="icon" src="icons/icon-download.svg" alt=""></button>
+              </span>
+            </li>
+            <li class="ds-row">
+              <span class="row-body">DETAILED CLAIM REPORT</span>
+              <span class="row-tail">
+                <span class="date-meta">05/04/2026</span>
+                <button class="icon-btn-32" aria-label="Download"><img class="icon" src="icons/icon-download.svg" alt=""></button>
+              </span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- =================== DENSITY RAIL =================== -->
+      <aside class="density-rail">
+        <section class="rail-group">
+          <h3 class="rail-label">Project details</h3>
+          <dl class="kv-list">
+            <div class="kv-row"><dt>Carrier</dt><dd>AARP Insurance</dd></div>
+            <div class="kv-row"><dt>Claim number</dt><dd>98765</dd></div>
+            <div class="kv-row"><dt>Adjuster</dt><dd>Adjuster 1</dd></div>
+            <div class="kv-row"><dt>Adjuster email</dt><dd><a href="#">adjuster@mail.com</a></dd></div>
+            <div class="kv-row"><dt>Creator</dt><dd><a href="#">ilija.miljevic+3@docusketch.com</a></dd></div>
+            <div class="kv-row"><dt>Office</dt><dd>DocuSketch · ID 1006682</dd></div>
+            <div class="kv-row"><dt>Created</dt><dd>12/03/2025</dd></div>
+            <div class="kv-row"><dt>Modified</dt><dd>05/04/2026</dd></div>
+          </dl>
+        </section>
+
+        <section class="rail-group">
+          <h3 class="rail-label">Capture progress</h3>
+          <dl class="kv-list">
+            <div class="kv-row"><dt>Floors</dt><dd>3</dd></div>
+            <div class="kv-row"><dt>Rooms</dt><dd>15</dd></div>
+            <div class="kv-row"><dt>360° images</dt><dd>17</dd></div>
+            <div class="kv-row"><dt>Field notes</dt><dd>26</dd></div>
+          </dl>
+        </section>
+
+        <section class="rail-group">
+          <h3 class="rail-label">Scope progress</h3>
+          <dl class="kv-list">
+            <div class="kv-row"><dt>Sketches</dt><dd>2</dd></div>
+            <div class="kv-row"><dt>Estimates</dt><dd>6</dd></div>
+            <div class="kv-row"><dt>Reports</dt><dd>14</dd></div>
+          </dl>
+        </section>
+      </aside>
+
+    </main>
   </div>
 
 <script>
-  // Apply proposal class from query string
   const p = new URLSearchParams(location.search).get('p') || '1';
   document.body.className = 'proposal-' + p;
 </script>

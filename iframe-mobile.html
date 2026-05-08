@@ -21,6 +21,8 @@
   }
   body { width: 390px; min-height: 100vh; margin: 0 auto; }
 
+  img.icon { display: block; }
+
   /* iOS-style status bar */
   .status-bar {
     height: 62px;
@@ -30,14 +32,22 @@
     padding: 6px 24px 4px;
   }
   .status-time { font-weight: 600; font-size: 17px; letter-spacing: -0.4px; }
-  .status-icons { display: flex; align-items: center; gap: 6px; font-size: 14px; }
-  .status-icons span { display: inline-block; }
+  .status-icons { display: flex; align-items: center; gap: 6px; }
   .signal-bar { display: inline-flex; gap: 2px; align-items: flex-end; height: 12px; }
   .signal-bar i { width: 3px; background: var(--ds-color-text-primary); border-radius: 1px; display: inline-block; }
   .signal-bar i:nth-child(1) { height: 4px; }
   .signal-bar i:nth-child(2) { height: 7px; }
   .signal-bar i:nth-child(3) { height: 10px; }
   .signal-bar i:nth-child(4) { height: 12px; }
+  .wifi-glyph {
+    width: 16px; height: 12px;
+    display: inline-block;
+    background:
+      radial-gradient(circle at 50% 100%, var(--ds-color-text-primary) 0 2px, transparent 2.5px),
+      radial-gradient(circle at 50% 100%, transparent 0 4px, var(--ds-color-text-primary) 4.5px 6px, transparent 6.5px),
+      radial-gradient(circle at 50% 100%, transparent 0 8px, var(--ds-color-text-primary) 8.5px 10px, transparent 10.5px),
+      radial-gradient(circle at 50% 100%, transparent 0 12px, var(--ds-color-text-primary) 12.5px 14px, transparent 14.5px);
+  }
   .battery {
     width: 28px; height: 14px;
     border: 1.5px solid var(--ds-color-text-primary);
@@ -80,9 +90,8 @@
     border: none;
     cursor: pointer;
     color: var(--ds-color-text-primary);
-    font-size: 20px;
-    line-height: 1;
   }
+  .nav-btn img { width: 24px; height: 24px; }
   .nav-title {
     position: absolute;
     left: 50%; top: 50%;
@@ -108,31 +117,12 @@
     border: 0.5px solid var(--ds-color-stroke-neutral);
   }
 
-  /* Project hero card */
+  /* Project hero card — uses 360 panorama image */
   .hero-img {
     height: 180px;
-    background:
-      linear-gradient(135deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 50%),
-      linear-gradient(180deg, #b8a591 0%, #6e5a48 35%, #4a3a2e 70%, #2c2218 100%);
+    background: url('resources/360%20images.png') center/cover no-repeat;
     border-bottom: 0.5px solid var(--ds-color-stroke-neutral);
     position: relative;
-  }
-  .hero-img::before {
-    /* fake door/wall hints */
-    content: '';
-    position: absolute;
-    inset: 30% 35% 0 50%;
-    background: linear-gradient(180deg, rgba(255,255,255,0.18), rgba(0,0,0,0.25));
-    transform: skewY(2deg);
-    border-radius: 4px 4px 0 0;
-  }
-  .hero-img::after {
-    content: '';
-    position: absolute;
-    inset: 50% 5% 0 5%;
-    background:
-      radial-gradient(ellipse at center top, rgba(255,255,255,0.12), transparent 60%),
-      linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.3) 100%);
   }
   .hero-badges {
     position: absolute;
@@ -147,19 +137,14 @@
     background: var(--ds-color-bg-white);
     border: 0.5px solid var(--ds-color-stroke-neutral);
     border-radius: var(--ds-radius-pill);
-    padding: 3px 8px;
+    padding: 3px 8px 3px 4px;
     display: inline-flex;
     align-items: center;
     gap: 4px;
     font-size: 14px;
     font-weight: 400;
   }
-  .hero-loss-icon {
-    display: inline-flex;
-    width: 16px; height: 16px;
-    align-items: center; justify-content: center;
-    color: var(--ds-color-text-primary);
-  }
+  .hero-loss img { width: 16px; height: 16px; }
 
   .hero-title-row {
     display: flex;
@@ -182,9 +167,9 @@
     display: inline-flex;
     align-items: center; justify-content: center;
     cursor: pointer;
-    color: var(--ds-color-text-primary);
     flex-shrink: 0;
   }
+  .round-icon-btn img { width: 16px; height: 16px; }
   .hero-info {
     padding: 0 16px 16px;
     font-size: 14px;
@@ -223,11 +208,11 @@
     letter-spacing: -0.1px;
   }
 
-  /* Pill button */
+  /* Pill button — DS 2.1 three-state palette: Base new / Light / Dark new */
   .pill-btn {
     height: 44px;
     border-radius: var(--ds-radius-pill);
-    background: var(--ds-color-bg-button-primary);
+    background: var(--ds-color-bg-action);
     border: none;
     display: flex;
     align-items: center;
@@ -242,6 +227,9 @@
     padding: 12px 8px;
     font-family: inherit;
   }
+  .pill-btn img { width: 24px; height: 24px; }
+  .pill-btn:hover  { background: var(--ds-color-bg-action-hover); }
+  .pill-btn:active { background: var(--ds-color-bg-action-pressed); }
   .pill-btn-outline {
     background: var(--ds-color-bg-white);
     border: 1px solid var(--ds-color-stroke-neutral);
@@ -305,7 +293,7 @@
     background: #ededed;
     color: var(--ds-color-text-primary);
   }
-  .tab-icon { font-size: 18px; line-height: 1; }
+  .tab img { width: 24px; height: 24px; }
   .home-indicator {
     height: 5px;
     width: 134px;
@@ -314,7 +302,7 @@
     margin-top: 14px;
   }
 
-  /* Mobile-only badges within the meta strip on hero */
+  /* Mini badges (status, hero overlay) */
   .mini-badge {
     background: var(--ds-color-status-neutral-bg);
     color: var(--ds-color-status-neutral-text);
@@ -333,15 +321,14 @@
     <span class="status-time">9:41</span>
     <div class="status-icons">
       <span class="signal-bar"><i></i><i></i><i></i><i></i></span>
-      <span>📶</span>
       <span class="battery"><i></i></span>
     </div>
   </div>
 
   <div class="top-nav">
-    <button class="nav-btn">‹</button>
+    <button class="nav-btn" aria-label="Back"><img class="icon" src="icons/icon-chevron-left.svg" alt=""></button>
     <span class="nav-title">201025 Washington</span>
-    <button class="nav-btn">⋯</button>
+    <button class="nav-btn" aria-label="More"><img class="icon" src="icons/icon-more.svg" alt=""></button>
   </div>
 
   <div class="content">
@@ -349,17 +336,14 @@
     <!-- Project hero card -->
     <div class="card">
       <div class="hero-img">
-        <div class="hero-badges">
-          <span class="mini-badge success">Active</span>
-        </div>
         <div class="hero-loss">
-          <span class="hero-loss-icon">💧</span>
+          <img class="icon" src="icons/icon-water-outline-small.svg" alt="">
           <span>Water</span>
         </div>
       </div>
       <div class="hero-title-row">
         <h2 class="hero-title">201025 Washington</h2>
-        <button class="round-icon-btn">✎</button>
+        <button class="round-icon-btn" aria-label="Edit"><img class="icon" src="icons/icon-edit.svg" alt=""></button>
       </div>
       <div class="hero-info">
         <p>Stoney Ridge Bnd 12821, Del Valle, Texas, 78617</p>
@@ -374,7 +358,10 @@
         <div class="stat"><span class="stat-num">1</span><span class="stat-label">Floors</span></div>
         <div class="stat"><span class="stat-num">0</span><span class="stat-label">Comments</span></div>
       </div>
-      <button class="pill-btn pill-btn-outline">▤ View rooms</button>
+      <button class="pill-btn pill-btn-outline">
+        <img class="icon" src="icons/icon-projects-list.svg" alt="">
+        View rooms
+      </button>
     </div>
 
     <!-- Sketches card -->
@@ -382,7 +369,10 @@
       <div class="section-card-head">
         <h3 class="section-card-title">Sketches</h3>
       </div>
-      <button class="pill-btn">⬚ Request sketch</button>
+      <button class="pill-btn">
+        <img class="icon" src="icons/icon-sketch.svg" alt="">
+        Request sketch
+      </button>
     </div>
 
     <!-- Scope of work card -->
@@ -390,7 +380,10 @@
       <div class="section-card-head">
         <h3 class="section-card-title">Scope of work</h3>
       </div>
-      <button class="pill-btn">⚒ Add Scope of work</button>
+      <button class="pill-btn">
+        <img class="icon" src="icons/icon-sow.svg" alt="">
+        Add Scope of work
+      </button>
     </div>
 
     <!-- Estimates card -->
@@ -398,11 +391,17 @@
       <div class="section-card-head">
         <h3 class="section-card-title">Estimates</h3>
       </div>
-      <button class="pill-btn">$ Request estimate</button>
+      <button class="pill-btn">
+        <img class="icon" src="icons/icon-estimate.svg" alt="">
+        Request estimate
+      </button>
     </div>
 
     <!-- Share access -->
-    <button class="pill-btn pill-btn-outline">⤴ Share access</button>
+    <button class="pill-btn pill-btn-outline">
+      <img class="icon" src="icons/icon-share.svg" alt="">
+      Share access
+    </button>
 
   </div>
 
@@ -410,19 +409,19 @@
   <div class="tab-bar-wrap">
     <div class="tab-bar">
       <div class="tab active">
-        <span class="tab-icon">⌂</span>
+        <img class="icon" src="icons/icon-residential.svg" alt="">
         <span>Projects</span>
       </div>
       <div class="tab">
-        <span class="tab-icon">📷</span>
+        <img class="icon" src="icons/icon-360.svg" alt="">
         <span>Camera</span>
       </div>
       <div class="tab">
-        <span class="tab-icon">?</span>
+        <img class="icon" src="icons/icon-help.svg" alt="">
         <span>Support</span>
       </div>
       <div class="tab">
-        <span class="tab-icon">⚙</span>
+        <img class="icon" src="icons/icon-settings.svg" alt="">
         <span>Settings</span>
       </div>
     </div>

@@ -1,53 +1,72 @@
-/* Phoenix design tokens — copy of src/styles/tokens/_design-tokens.scss
-   Each proposal class on <body> overrides a subset of tokens. */
+/* Phoenix design tokens — DS 2.1 update applied
+   Mirrors src/styles/tokens/_design-tokens.scss with the changes from
+   the May 8 proposal (Figma node 17411-20553). */
 
 :root {
-  /* Colors — semantic (bg) */
+  /* ---------- Surface ---------- */
   --ds-color-bg-white: #ffffff;
-  --ds-color-bg-primary: #c0bc90;
+  --ds-color-bg-primary: #d2cfa9;          /* DS 2.1 "Base new" — was #c0bc90 */
   --ds-color-bg-neutral: #f4f3ea;
   --ds-color-bg-neutral-dark: #e2e0d3;
   --ds-color-bg-black: #1a1905;
-  --ds-color-bg-dark: #6f6d41;
+  --ds-color-bg-dark: #a9a67c;             /* DS 2.1 "Dark new" — was #6f6d41 */
   --ds-color-bg-gray: #87867f;
-  --ds-color-bg-accent: #e5df00;
-  --ds-color-bg-accent-dark: #999300;
-  --ds-color-bg-accent-light: #f9f6bf;
+
+  /* DS 2.1 — yellow accent deleted, replaced by the new beige palette.
+     Old: --ds-color-bg-accent: #e5df00 (chartreuse) — DELETED
+     States: regular = Base new, hover = Light, pressed = Dark new. */
+  --ds-color-bg-action:         #d2cfa9;   /* Base new — regular */
+  --ds-color-bg-action-hover:   #e6e4d2;   /* Light    — hover (no change from old Light) */
+  --ds-color-bg-action-pressed: #a9a67c;   /* Dark new — pressed/active */
+
   --ds-color-bg-success: #64b56e;
   --ds-color-bg-progress: #549cd3;
   --ds-color-bg-rejected: #87867f;
   --ds-color-bg-error: #e92f2f;
   --ds-color-bg-warning: #dfbb3a;
   --ds-color-bg-info: #549cd3;
-  --ds-color-bg-beige: #c8a96e;
-  --ds-color-bg-button-primary: #d2cfa9;
+  --ds-color-bg-button-primary: #d2cfa9;   /* DS 2.1 "Base new" */
 
-  /* Text */
-  --ds-color-text-primary: #1a1905;
-  --ds-color-text-secondary: #6f6d41;
-  --ds-color-text-muted: #5a5932;
+  /* ---------- Text — DS 2.1: beige → grey
+     Recipe: #1A1905 (Ash) at opacity 0.65, blend-mode plus-darker.
+     Practical equivalent below. ---------- */
+  --ds-color-text-primary: #1a1905;        /* unchanged — main copy */
+  --ds-color-text-secondary: #6a6a66;      /* was #6f6d41 (beige) */
+  --ds-color-text-muted: #5a5a55;          /* was #5a5932 (beige) */
   --ds-color-text-white: #ffffff;
-  --ds-color-text-success: #64b56e;
-  --ds-color-text-error: #e92f2f;
+  --ds-color-text-success: #15803d;
+  --ds-color-text-error: #b91c1c;
 
-  /* Stroke */
-  --ds-color-stroke-neutral: #e2e0d3;
+  /* ---------- Stroke ---------- */
+  --ds-color-stroke-neutral: #e2e0d3;      /* outline buttons + standalone strokes */
   --ds-color-stroke-black: #1a1905;
-  --ds-color-stroke-primary: #c0bc90;
+  --ds-color-stroke-primary: #d2cfa9;
 
-  /* Status / badge */
-  --ds-color-status-success: #64b56e;
+  /* ---------- Status / badge ----------
+     DS 2.1: bigger paddings on web; soft bg colors retained. */
+  --ds-color-status-success: #15803d;
   --ds-color-status-success-bg: #ebfac1;
-  --ds-color-status-warning: #dfbb3a;
-  --ds-color-status-warning-bg: #fef2c3;
-  --ds-color-status-error: #e92f2f;
+  --ds-color-status-warning: #c2830a;
+  --ds-color-status-warning-bg: #fef3e0;
+  --ds-color-status-error: #b91c1c;
   --ds-color-status-error-bg: #ffd6bd;
-  --ds-color-status-info: #549cd3;
+  --ds-color-status-info: #165d77;
   --ds-color-status-info-bg: #d4e6f4;
-  --ds-color-status-neutral-bg: #e6e4d2;
+  /* DS 2.1 — beige neutral → soft grey
+     Recipe: #1A1905 (Ash) opacity 0.80 + blend-mode plus-darker, flattened. */
+  --ds-color-status-neutral-bg: #d4d1c6;       /* was #e6e4d2 (eucalyptus) */
   --ds-color-status-neutral-text: #1a1905;
 
-  /* Spacing */
+  /* Badge sizing — DS 2.1 (Figma 17411-37773): 20×4px box with 16px icon */
+  --ds-badge-height: 20px;
+  --ds-badge-padding-x: 4px;               /* per new badge spec */
+  --ds-badge-icon-size: 16px;              /* was 12, now matches Figma */
+  --ds-badge-icon-gap: 4px;                /* gap between badge icon and text */
+
+  /* ---------- Button gap — DS 2.1 more space between icon and text on web ---------- */
+  --ds-button-icon-gap: 8px;               /* was 6px */
+
+  /* ---------- Spacing ---------- */
   --ds-spacing-4: 4px;
   --ds-spacing-8: 8px;
   --ds-spacing-12: 12px;
@@ -57,109 +76,32 @@
   --ds-spacing-28: 28px;
   --ds-spacing-32: 32px;
 
-  /* Radius */
+  /* ---------- Radius ---------- */
   --ds-radius-sm: 4px;
   --ds-radius-md: 8px;
   --ds-radius-lg: 12px;
   --ds-radius-xl: 16px;
   --ds-radius-pill: 24px;
-  --ds-radius-card: 8px; /* desktop cards */
-  --ds-radius-card-mobile: 24px; /* mobile cards from Figma */
+  --ds-radius-card: 8px;
+  --ds-radius-card-mobile: 24px;
 
-  /* Shadows */
+  /* ---------- Shadows ---------- */
   --ds-shadow-1: 0 1px 3px rgba(0, 0, 0, 0.08);
   --ds-shadow-2: 0 3px 6px rgba(0, 0, 0, 0.12);
 
-  /* Typography */
+  /* ---------- Typography ----------
+     DS 2.1: 14px is the smallest standalone plain text (badges exempt). */
   --ds-font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --ds-font-size-h1: 24px;
-  --ds-font-size-h2: 20px;
+  --ds-font-size-h2: 18px;
   --ds-font-size-h3: 16px;
-  --ds-font-size-body: 14px;
-  --ds-font-size-body-sm: 13px;
-  --ds-font-size-caption: 12px;
+  --ds-font-size-body: 14px;               /* DS 2.1 minimum standalone */
+  --ds-font-size-body-sm: 14px;            /* DS 2.1 — was 13, bumped to floor */
+  --ds-font-size-caption: 12px;            /* badges exempt from 14px floor */
   --ds-font-weight-regular: 400;
   --ds-font-weight-medium: 500;
   --ds-font-weight-semibold: 600;
 }
 
-/* ====================================================================
-   PROPOSAL 1 — Baseline (Phoenix current tokens)
-   ==================================================================== */
-body.proposal-1 {
-  /* no overrides — uses :root defaults */
-}
-
-/* ====================================================================
-   PROPOSAL 2 — Phoenix Palette: Warm Terracotta
-   Replaces the olive/yellow accent family with warm coral/terracotta
-   ==================================================================== */
-body.proposal-2 {
-  --ds-color-bg-primary: #d4a896;
-  --ds-color-bg-neutral: #faf3f0;
-  --ds-color-bg-neutral-dark: #eed8cc;
-  --ds-color-bg-dark: #8b4a36;
-  --ds-color-bg-accent: #e87b50;
-  --ds-color-bg-accent-dark: #b35a35;
-  --ds-color-bg-accent-light: #fce5da;
-  --ds-color-bg-button-primary: #f0c4b1;
-  --ds-color-text-secondary: #8b4a36;
-  --ds-color-text-muted: #6b3a2b;
-  --ds-color-stroke-neutral: #eed8cc;
-  --ds-color-stroke-primary: #d4a896;
-  --ds-color-status-neutral-bg: #f5e2d8;
-}
-
-/* ====================================================================
-   PROPOSAL 3 — Badge color system: refined status palette
-   Differentiated, accessible badge colors with stronger contrast
-   ==================================================================== */
-body.proposal-3 {
-  --ds-color-status-success: #15803d;
-  --ds-color-status-success-bg: #dcfce7;
-  --ds-color-status-warning: #b45309;
-  --ds-color-status-warning-bg: #fef3c7;
-  --ds-color-status-error: #b91c1c;
-  --ds-color-status-error-bg: #fee2e2;
-  --ds-color-status-info: #1d4ed8;
-  --ds-color-status-info-bg: #dbeafe;
-  --ds-color-status-neutral-bg: #e2e8f0;
-  --ds-color-status-neutral-text: #334155;
-}
-
-/* ====================================================================
-   PROPOSAL 4 — Page layout density: tighter spacing, larger radii
-   Cards get more breathing room, but inter-section gap shrinks
-   ==================================================================== */
-body.proposal-4 {
-  --ds-spacing-8: 6px;
-  --ds-spacing-12: 10px;
-  --ds-spacing-16: 14px;
-  --ds-spacing-20: 16px;
-  --ds-spacing-24: 20px;
-  --ds-spacing-28: 24px;
-  --ds-spacing-32: 28px;
-  --ds-radius-sm: 6px;
-  --ds-radius-md: 10px;
-  --ds-radius-lg: 16px;
-  --ds-radius-xl: 20px;
-  --ds-radius-card: 16px;
-  --ds-radius-card-mobile: 20px;
-  --ds-shadow-1: 0 2px 8px rgba(26, 25, 5, 0.06);
-  --ds-shadow-2: 0 4px 16px rgba(26, 25, 5, 0.1);
-}
-
-/* ====================================================================
-   PROPOSAL 5 — Typography scale: refined hierarchy
-   Larger headings, slightly larger body for readability
-   ==================================================================== */
-body.proposal-5 {
-  --ds-font-size-h1: 28px;
-  --ds-font-size-h2: 22px;
-  --ds-font-size-h3: 18px;
-  --ds-font-size-body: 15px;
-  --ds-font-size-body-sm: 14px;
-  --ds-font-size-caption: 13px;
-  --ds-font-weight-medium: 600;
-  --ds-font-weight-semibold: 700;
-}
+/* Proposal class kept for compatibility — :root already has DS 2.1 applied. */
+body.proposal-1 { /* no overrides — DS 2.1 baseline lives on :root */ }
