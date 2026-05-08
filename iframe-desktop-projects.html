@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Projects — Desktop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--ds-color-bg-white);
+    font-family: var(--ds-font-family);
+    color: var(--ds-color-text-primary);
+    font-size: 14px;
+    line-height: 18px;
+    -webkit-font-smoothing: antialiased;
+  }
+  img.icon { display: block; flex-shrink: 0; }
+  a { color: inherit; text-decoration: none; }
+
+  /* =========== APP HEADER (reused) =========== */
+  .app-header {
+    height: 60px;
+    background: var(--ds-color-bg-neutral);
+    display: flex;
+    align-items: center;
+    padding: 0 32px 0 0;
+  }
+  .app-header .logo {
+    width: 184px;
+    padding-left: 32px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.4px;
+  }
+  .app-header .logo sup { font-size: 11px; vertical-align: top; margin-left: 1px; }
+  .app-header nav.main { display: flex; align-items: center; flex: 1; }
+  .app-header nav.main a {
+    padding: 0 16px;
+    height: 60px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.07px;
+    color: var(--ds-color-text-primary);
+    position: relative;
+  }
+  .app-header nav.main a.active::after {
+    content: '';
+    position: absolute;
+    left: 16px; right: 16px; bottom: 0;
+    height: 3px;
+    background: var(--ds-color-bg-promo);
+  }
+  .app-header nav.main a.has-caret::after {
+    content: '';
+    display: inline-block;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid var(--ds-color-text-primary);
+    margin-left: 6px;
+    position: static;
+    height: auto;
+    background: none;
+  }
+  .app-header .header-right { display: flex; align-items: center; }
+  .app-header .header-right a {
+    height: 60px;
+    padding: 0 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ds-color-text-primary);
+  }
+  .app-header .header-right img.icon { width: 20px; height: 20px; }
+  .app-header .avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--ds-color-bg-neutral-dark);
+    color: var(--ds-color-text-primary);
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+  }
+
+  /* =========== NOTIFICATION =========== */
+  .notification-banner {
+    height: 33px;
+    background: #d2cfa9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ds-color-text-primary);
+    border-bottom: 1px solid var(--ds-color-stroke-neutral);
+  }
+  .notification-banner img.icon { width: 16px; height: 16px; }
+  .notification-banner .label { font-weight: 600; margin-right: 4px; }
+
+  /* =========== PAGE =========== */
+  .page {
+    padding: 24px 28px 40px;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  /* Top toolbar */
+  .toolbar {
+    display: grid;
+    grid-template-columns: auto auto 1fr auto auto;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .toolbar h1 {
+    font-size: 24px;
+    line-height: 28px;
+    font-weight: 500;
+    letter-spacing: -0.018em;
+    margin: 0;
+  }
+  .toolbar .archived-btn {
+    height: 32px;
+    padding: 0 14px;
+    border-radius: 8px;
+    border: 1px solid var(--ds-color-stroke-neutral);
+    background: var(--ds-color-bg-white);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ds-color-text-primary);
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .toolbar .archived-btn img { width: 16px; height: 16px; }
+  .toolbar .spacer { /* takes 1fr */ }
+  .btn-create {
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 8px;
+    background: var(--ds-color-bg-action);
+    border: none;
+    color: var(--ds-color-text-primary);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  /* Old: yellow chartreuse */
+  body.legacy .btn-create {
+    background: #e5df00;
+  }
+  .btn-create:hover { background: var(--ds-color-bg-action-hover); }
+  .btn-create:active { background: var(--ds-color-bg-action-pressed); }
+
+  .search-input {
+    min-width: 480px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid var(--ds-color-stroke-neutral);
+    background: var(--ds-color-bg-white);
+    display: inline-flex;
+    align-items: center;
+    padding: 0 14px;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--ds-color-text-secondary);
+    white-space: nowrap;
+  }
+  .search-input img { width: 18px; height: 18px; flex-shrink: 0; }
+
+  /* Filter dropdowns */
+  .filter-row {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .filter {
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid var(--ds-color-stroke-neutral);
+    background: var(--ds-color-bg-white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    font-size: 14px;
+    color: var(--ds-color-text-secondary);
+    cursor: pointer;
+  }
+  .filter:hover { background: var(--ds-color-bg-neutral); }
+  .chev-down {
+    width: 16px; height: 16px;
+    flex-shrink: 0;
+    color: var(--ds-color-text-secondary);
+  }
+
+  /* Bottom of filters row */
+  .pagination-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .date-picker {
+    width: 220px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid var(--ds-color-stroke-neutral);
+    background: var(--ds-color-bg-white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    font-size: 14px;
+    color: var(--ds-color-text-secondary);
+  }
+  .date-picker img { width: 18px; height: 18px; }
+  .clear-filters-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--ds-color-text-secondary);
+    font-size: 14px;
+    text-decoration: underline;
+    cursor: pointer;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .pagination-spacer { flex: 1; }
+  .page-size {
+    width: 76px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid var(--ds-color-stroke-neutral);
+    background: var(--ds-color-bg-white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .page-size:hover { background: var(--ds-color-bg-neutral); }
+  .pager {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .pager .pg-btn {
+    width: 32px; height: 32px;
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--ds-color-text-primary);
+    text-decoration: underline;
+    font-family: inherit;
+  }
+  .pager .pg-btn:hover { background: var(--ds-color-bg-neutral); }
+  .pager .pg-btn img { width: 16px; height: 16px; }
+  .pager .pg-btn.active {
+    background: var(--ds-color-bg-neutral-dark);
+    text-decoration: none;
+  }
+  .sort-by {
+    color: var(--ds-color-text-secondary);
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .sort-by a { color: var(--ds-color-text-primary); text-decoration: underline; }
+
+  /* Counter row */
+  .counter-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: var(--ds-color-text-secondary);
+  }
+  .counter-row a { color: var(--ds-color-text-primary); text-decoration: underline; }
+
+  /* =========== PROJECT ROW CARD =========== */
+  .project-row {
+    display: grid;
+    grid-template-columns: 232px minmax(0, 2.4fr) auto auto;
+    gap: 16px;
+    background: var(--ds-color-bg-white);
+    border-radius: 12px;
+    border: 1px solid var(--ds-color-stroke-neutral);
+    padding: 16px;
+    margin-bottom: 12px;
+    align-items: stretch;
+  }
+
+  .row-photo {
+    position: relative;
+    min-height: 168px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: url('resources/360%20images.png') center/cover no-repeat;
+  }
+  .row-photo .badges {
+    position: absolute;
+    inset: 8px 8px auto 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .row-photo .photo-actions {
+    position: absolute;
+    bottom: 8px; left: 8px; right: 8px;
+    display: flex;
+    gap: 6px;
+  }
+  .photo-btn {
+    flex: 1;
+    height: 28px;
+    border-radius: 6px;
+    border: 1px solid var(--ds-color-stroke-neutral);
+    background: var(--ds-color-bg-white);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ds-color-text-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .photo-btn img { width: 14px; height: 14px; }
+  /* Same hover/active recipe as Project Overview's outline buttons */
+  .photo-btn:hover  { background: var(--ds-color-bg-neutral); }
+  .photo-btn:active { background: var(--ds-color-bg-neutral-dark); }
+
+  /* Photo overlay badges */
+  .pbadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .pbadge img { width: 12px; height: 12px; }
+  .pbadge.done   { background: #ebfac1; color: #15803d; }
+  .pbadge.sow    { background: var(--ds-color-bg-white); color: var(--ds-color-text-primary); }
+  .pbadge.public { background: #d4d1c6; color: #1a1905; }
+  .pbadge.archive { width: 20px; padding: 0; justify-content: center; background: var(--ds-color-bg-white); }
+  .pbadge.psa-count {
+    background: var(--ds-color-bg-white);
+    color: var(--ds-color-text-primary);
+  }
+
+  body.legacy .pbadge.done   { background: #64b56e; color: #fff; }
+  body.legacy .pbadge.sow    { background: #c0bc90; color: #1a1905; }
+  body.legacy .pbadge.public { background: #64b56e; color: #fff; }
+
+  /* Outside, on the left edge — archive icon */
+  .row-outside-archive {
+    width: 32px; height: 32px;
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    align-self: center;
+    color: var(--ds-color-text-muted);
+  }
+  .row-outside-archive img { width: 18px; height: 18px; }
+
+  /* Info column */
+  .row-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 6px;
+    min-width: 0;
+    font-size: 14px;
+    line-height: 18px;
+  }
+  .row-info > * {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .row-info .ids {
+    display: flex; flex-wrap: nowrap; gap: 6px;
+    color: var(--ds-color-text-secondary);
+    font-size: 13px;
+    overflow: hidden;
+  }
+  .row-info .ids > * { flex-shrink: 0; }
+  .row-info .ids strong { color: var(--ds-color-text-primary); font-weight: 500; }
+  .row-info .ids .ico {
+    display: inline-flex;
+    width: 14px; height: 14px;
+    color: var(--ds-color-text-muted);
+    cursor: pointer;
+  }
+  .row-info h3 {
+    margin: 2px 0;
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 500;
+    letter-spacing: -0.018em;
+    color: var(--ds-color-text-primary);
+  }
+  .row-info .meta {
+    color: var(--ds-color-text-primary);
+  }
+  .row-info .meta-loss { display: flex; align-items: center; gap: 4px; }
+  .row-info .meta-loss img { width: 14px; height: 14px; }
+  .row-info .timestamps {
+    color: var(--ds-color-text-secondary);
+    font-size: 13px;
+  }
+  .row-info .address {
+    display: flex; align-items: center; gap: 4px;
+    color: var(--ds-color-text-primary);
+    font-size: 13px;
+  }
+  .row-info .address img { width: 14px; height: 14px; }
+  .row-info .division {
+    display: flex; align-items: center; gap: 4px;
+    color: var(--ds-color-text-secondary);
+    font-size: 13px;
+  }
+
+  /* Stats column */
+  .row-stats {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    column-gap: 24px;
+    row-gap: 4px;
+    align-content: start;
+    min-width: 200px;
+  }
+  .stat {
+    font-size: 13px;
+    line-height: 18px;
+  }
+  .stat strong {
+    display: inline-block;
+    margin-right: 6px;
+    font-weight: 500;
+    color: var(--ds-color-text-primary);
+    min-width: 28px;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-label {
+    color: var(--ds-color-text-secondary);
+  }
+  .stat .icons {
+    display: inline-flex;
+    align-items: center;
+    gap: 1px;
+    margin-left: 6px;
+  }
+  .stat .icons span {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .ic-r { background: #e92f2f; }
+  .ic-y { background: #dfbb3a; }
+  .ic-g { background: #64b56e; }
+  .ic-b { background: #549cd3; }
+  .ic-p { background: #d76493; }
+
+  /* Actions column */
+  .row-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 6px;
+    min-width: 220px;
+  }
+  .row-stats { align-content: space-between; }
+  .action-btn {
+    height: 32px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 1px solid var(--ds-color-stroke-neutral);
+    background: var(--ds-color-bg-white);
+    color: var(--ds-color-text-primary);
+    font-size: 13px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .action-btn img { width: 14px; height: 14px; }
+  /* Outline action — match Project Overview hover/active */
+  .action-btn:hover  { background: var(--ds-color-bg-neutral); }
+  .action-btn:active { background: var(--ds-color-bg-neutral-dark); }
+  .action-btn-primary {
+    background: var(--ds-color-bg-action);
+    border-color: var(--ds-color-bg-action);
+  }
+  .action-btn-primary:hover  { background: var(--ds-color-bg-action-hover); border-color: var(--ds-color-bg-action-hover); }
+  .action-btn-primary:active { background: var(--ds-color-bg-action-pressed); border-color: var(--ds-color-bg-action-pressed); }
+  /* Old keeps Request estimate / Generate report sage olive (NOT yellow — yellow only on Create project) */
+  body.legacy .action-btn-primary {
+    background: #c0bc90;
+    border-color: #c0bc90;
+  }
+  body.legacy .action-btn-primary:hover { background: #a39f7a; border-color: #a39f7a; }
+
+  .action-row-trio {
+    display: flex;
+    gap: 6px;
+  }
+  .action-row-trio .action-btn {
+    flex: 1;
+    padding: 0 8px;
+  }
+</style>
+</head>
+<body class="proposal-1">
+
+  <!-- App header -->
+  <header class="app-header">
+    <div class="logo">DocuSketch<sup>°</sup></div>
+    <nav class="main">
+      <a href="#" class="active">Projects</a>
+      <a href="#">Estimates Without Tours</a>
+      <a href="#">Users</a>
+      <a href="#">Offices</a>
+      <a href="#" class="has-caret">Company</a>
+    </nav>
+    <div class="header-right">
+      <a href="#"><img class="icon" src="icons/icon-feedback.svg" alt=""> Feedback</a>
+      <a href="#"><img class="icon" src="icons/icon-help.svg" alt=""> Help</a>
+      <span class="avatar">RG</span>
+    </div>
+  </header>
+
+  <!-- Notification -->
+  <div class="notification-banner">
+    <img class="icon" src="icons/icon-information.svg" alt="">
+    <span class="label">Explore:</span>
+    <span>Enhance your work with Scoping service and Extended ESX</span>
+  </div>
+
+  <!-- Page -->
+  <main class="page">
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <h1>Active Projects</h1>
+      <button class="archived-btn">
+        <img class="icon" src="icons/icon-archive.svg" alt="">
+        Archived
+      </button>
+      <span class="spacer"></span>
+      <button class="btn-create">
+        <img class="icon" src="icons/icon-plus.svg" alt="">
+        Create project
+      </button>
+      <span class="search-input">
+        <img class="icon" src="icons/icon-search.svg" alt="">
+        Search by name, address, email, ID or job number
+      </span>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-row">
+      <span class="filter">Visibility <img class="chev-down" src="icons/icon-chevron-down.svg" alt=""></span>
+      <span class="filter">Loss type <img class="chev-down" src="icons/icon-chevron-down.svg" alt=""></span>
+      <span class="filter">Property type <img class="chev-down" src="icons/icon-chevron-down.svg" alt=""></span>
+      <span class="filter">Requested service <img class="chev-down" src="icons/icon-chevron-down.svg" alt=""></span>
+      <span class="filter">Office <img class="chev-down" src="icons/icon-chevron-down.svg" alt=""></span>
+    </div>
+
+    <!-- Pagination row -->
+    <div class="pagination-row">
+      <span class="date-picker">
+        Choose period…
+        <img src="icons/icon-calendar.svg" alt="">
+      </span>
+      <button class="clear-filters-btn">✕ Clear filters</button>
+      <span class="pagination-spacer"></span>
+      <span class="page-size">25 <img class="chev-down" src="icons/icon-chevron-down.svg" alt=""></span>
+      <div class="pager">
+        <button class="pg-btn" aria-label="First"><img src="icons/icon-double-chevron-left.svg" alt=""></button>
+        <button class="pg-btn" aria-label="Previous"><img src="icons/icon-chevron-left.svg" alt=""></button>
+        <button class="pg-btn active">1</button>
+        <button class="pg-btn">2</button>
+        <button class="pg-btn">3</button>
+        <button class="pg-btn">4</button>
+        <button class="pg-btn">5</button>
+        <button class="pg-btn" aria-label="Next"><img src="icons/icon-chevron-right.svg" alt=""></button>
+        <button class="pg-btn" aria-label="Last"><img src="icons/icon-double-chevron-right.svg" alt=""></button>
+      </div>
+      <span class="sort-by">Sort by: <a href="#">Modification date (From new to old)</a> <img class="chev-down" src="icons/icon-chevron-down.svg" alt="" style="width:14px;height:14px;vertical-align:middle"></span>
+    </div>
+
+    <!-- Counter -->
+    <div class="counter-row">
+      <span><strong>All projects:</strong> 234</span>
+      <a href="#">Select projects</a>
+    </div>
+
+    <!-- Project row 1 -->
+    <div class="project-row">
+      <div class="row-photo">
+        <div class="badges">
+          <span class="pbadge done"><img src="icons/icon-checkmark.svg" alt="">Done</span>
+          <span class="pbadge sow"><img src="icons/icon-sow.svg" alt="">SOW</span>
+          <span class="pbadge archive" aria-label="Archived"><img src="icons/icon-archive.svg" alt=""></span>
+          <span class="pbadge psa-count">4</span>
+          <span class="pbadge sow">PSA</span>
+          <span class="pbadge public">Public</span>
+        </div>
+        <div class="photo-actions">
+          <button class="photo-btn"><img src="icons/icon-360.svg" alt="">Open 360°</button>
+          <button class="photo-btn"><img src="icons/icon-edit.svg" alt="">Edit</button>
+        </div>
+      </div>
+      <div class="row-info">
+        <div class="ids">
+          <span><strong>Job number</strong> BPGG-BAI.ERQ5-6.001</span>
+          <span class="ico"><img src="icons/icon-copy-small.svg" alt=""></span>
+          <span>·</span>
+          <span><strong>ID</strong> 993411532</span>
+          <span class="ico"><img src="icons/icon-copy-small.svg" alt=""></span>
+          <span>·</span>
+          <span><strong>Ext ID</strong> 13000024</span>
+          <span class="ico"><img src="icons/icon-copy-small.svg" alt=""></span>
+        </div>
+        <h3>Madison Thompson</h3>
+        <div class="meta meta-loss">
+          <img src="icons/icon-water-outline-small.svg" alt="">
+          Water CAT 3, Class 1 · <img src="icons/icon-residential-small.svg" alt=""> Residential
+        </div>
+        <div class="timestamps">
+          Created 06/27/2025, 07:11 PM · Modified 06/27/2025, 07:11 PM · Loss date 06/24/2025
+        </div>
+        <div class="address">
+          <img src="icons/icon-environment-small.svg" alt="">
+          311 East Morse Boulevard #B6-2, Winter Park FL, 32789
+          <img src="icons/icon-copy-small.svg" alt="">
+        </div>
+        <div class="division">
+          <img src="icons/icon-residential-small.svg" alt="">
+          New York division
+          <span>·</span>
+          <span>joshua@servprowestlakeca</span>
+        </div>
+      </div>
+      <div class="row-stats">
+        <div class="stat"><strong>3</strong><span class="stat-label">Floors</span></div>
+        <div class="stat"><strong>24</strong><span class="stat-label">Rooms</span></div>
+        <div class="stat"><strong>41</strong><span class="stat-label">360° images</span></div>
+        <div class="stat"></div>
+        <div class="stat">
+          <strong>72</strong><span class="stat-label">Comments</span>
+          <span class="icons"><span class="ic-r"></span><span class="ic-y"></span><span class="ic-g"></span><span class="ic-b"></span><span class="ic-p"></span></span>
+        </div>
+        <div class="stat"><strong>2</strong><span class="stat-label">Links</span></div>
+      </div>
+      <div class="row-actions">
+        <button class="action-btn"><img src="icons/icon-sketch.svg" alt="">View sketch <strong style="margin-left:4px">1/2</strong></button>
+        <button class="action-btn action-btn-primary"><img src="icons/icon-estimate.svg" alt="">Request estimate <strong style="margin-left:4px">4</strong></button>
+        <button class="action-btn action-btn-primary"><img src="icons/icon-note-outline.svg" alt="">Generate report <strong style="margin-left:4px">12</strong></button>
+        <div class="action-row-trio">
+          <button class="action-btn"><img src="icons/icon-download.svg" alt="">Download</button>
+          <button class="action-btn"><img src="icons/icon-share.svg" alt="">Share</button>
+          <button class="action-btn">More…</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project row 2 (no badges, archived) -->
+    <div class="project-row" style="grid-template-columns:32px 232px minmax(0,2.4fr) auto auto">
+      <div class="row-outside-archive"><img src="icons/icon-archive.svg" alt=""></div>
+      <div class="row-photo">
+        <div class="photo-actions">
+          <button class="photo-btn"><img src="icons/icon-360.svg" alt="">Open 360°</button>
+          <button class="photo-btn"><img src="icons/icon-edit.svg" alt="">Edit</button>
+        </div>
+      </div>
+      <div class="row-info">
+        <div class="ids">
+          <span><strong>Job number</strong> BPGG-BAI.ERQ5-6.001</span>
+          <span class="ico"><img src="icons/icon-copy-small.svg" alt=""></span>
+          <span>·</span>
+          <span><strong>ID</strong> 993411532</span>
+          <span class="ico"><img src="icons/icon-copy-small.svg" alt=""></span>
+        </div>
+        <h3>Madison Thompson</h3>
+        <div class="timestamps">
+          Created 06/27/2025, 07:11 PM · Modified 06/27/2025, 07:11 PM
+        </div>
+        <div class="division">
+          <img src="icons/icon-residential-small.svg" alt="">
+          New York division
+          <span>·</span>
+          <span>joshua@servprowestlakeca</span>
+        </div>
+      </div>
+      <div class="row-stats">
+        <div class="stat"><strong>3</strong><span class="stat-label">Floors</span></div>
+        <div class="stat"><strong>24</strong><span class="stat-label">Rooms</span></div>
+        <div class="stat"><strong>41</strong><span class="stat-label">360° images</span></div>
+        <div class="stat"></div>
+        <div class="stat">
+          <strong>72</strong><span class="stat-label">Comments</span>
+          <span class="icons"><span class="ic-r"></span><span class="ic-y"></span><span class="ic-g"></span><span class="ic-b"></span><span class="ic-p"></span></span>
+        </div>
+        <div class="stat"><strong>2</strong><span class="stat-label">Links</span></div>
+      </div>
+      <div class="row-actions">
+        <div class="action-row-trio">
+          <button class="action-btn"><img src="icons/icon-download.svg" alt="">Download</button>
+          <button class="action-btn"><img src="icons/icon-share.svg" alt="">Share</button>
+          <button class="action-btn">More…</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+<script>
+  const params = new URLSearchParams(location.search);
+  const p = params.get('p') || '1';
+  const isLegacy = params.get('v') === 'old';
+  document.body.className = 'proposal-' + p + (isLegacy ? ' legacy' : '');
+</script>
+</body>
+</html>
