@@ -20,6 +20,10 @@
     -webkit-font-smoothing: antialiased;
   }
   body { width: 390px; min-height: 100vh; margin: 0 auto; }
+  /* Mobile body is fixed 390px wide — when body.dark applies, html still
+     uses the light value (CSS variables on body don't propagate up).
+     Pin html bg to match body in dark mode. */
+  html:has(body.dark) { background: #0f0f0f; }
 
   img.icon { display: block; }
 
@@ -206,10 +210,11 @@
     letter-spacing: -0.1px;
   }
 
-  /* Pill button — DS 2.1 three-state palette: Base new / Light / Dark new */
+  /* Action button — DS 2.1 three-state palette: Base new / Light / Dark new
+     12px radius on mobile — no pill buttons per the new rule. */
   .pill-btn {
     height: 44px;
-    border-radius: var(--ds-radius-pill);
+    border-radius: var(--ds-radius-btn-mobile);
     background: var(--ds-color-bg-action);
     border: none;
     display: flex;
@@ -504,7 +509,11 @@
   const params = new URLSearchParams(location.search);
   const p = params.get('p') || '1';
   const isLegacy = params.get('v') === 'old';
-  document.body.className = 'proposal-' + p + (isLegacy ? ' legacy' : '');
+  const isDark   = params.get('theme') === 'dark';
+  document.body.className =
+    'proposal-' + p
+    + (isLegacy ? ' legacy' : '')
+    + (isDark   ? ' dark'   : '');
 </script>
 </body>
 </html>

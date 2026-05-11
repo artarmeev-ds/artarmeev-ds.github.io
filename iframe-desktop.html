@@ -306,7 +306,7 @@
     height: 34px;
     background: var(--ds-color-bg-action);
     border: none;
-    border-radius: 8px;
+    border-radius: var(--ds-radius-btn);
     font-size: 14px;
     font-weight: 500;
     color: var(--ds-color-text-primary);
@@ -324,7 +324,7 @@
     height: 34px;
     background: var(--ds-color-bg-white);
     border: 1px solid var(--ds-color-stroke-neutral);
-    border-radius: 8px;
+    border-radius: var(--ds-radius-btn);
     font-size: 14px;
     font-weight: 500;
     color: var(--ds-color-text-primary);
@@ -444,7 +444,7 @@
     background: var(--ds-color-bg-promo);
     border: none;
     padding: 8px 16px;
-    border-radius: 8px;
+    border-radius: var(--ds-radius-btn);
     font-size: 14px;
     font-weight: 500;
     color: #1a1905;
@@ -592,7 +592,7 @@
   .btn {
     height: 32px;
     padding: 0 12px;
-    border-radius: 8px;
+    border-radius: var(--ds-radius-btn);
     border: 1px solid var(--ds-color-stroke-neutral);
     background: var(--ds-color-bg-white);
     font-size: 14px;
@@ -797,7 +797,7 @@
   }
   .icon-btn-32 {
     width: 32px; height: 32px;
-    border-radius: 8px;
+    border-radius: var(--ds-radius-btn);
     border: 1px solid var(--ds-color-stroke-neutral);
     background: var(--ds-color-bg-white);
     cursor: pointer;
@@ -1258,7 +1258,11 @@
   const params = new URLSearchParams(location.search);
   const p = params.get('p') || '1';
   const isLegacy = params.get('v') === 'old';
-  document.body.className = 'proposal-' + p + (isLegacy ? ' legacy' : '');
+  const isDark   = params.get('theme') === 'dark';
+  document.body.className =
+    'proposal-' + p
+    + (isLegacy ? ' legacy' : '')
+    + (isDark   ? ' dark'   : '');
 </script>
 </body>
 </html>

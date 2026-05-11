@@ -129,7 +129,7 @@
   .toolbar .archived-btn {
     height: 36px;
     padding: 0 14px;
-    border-radius: 8px;
+    border-radius: var(--ds-radius-btn);
     border: 1px solid var(--ds-color-stroke-neutral);
     background: var(--ds-color-bg-white);
     display: inline-flex;
@@ -148,7 +148,7 @@
   .btn-create {
     height: 36px;
     padding: 0 16px;
-    border-radius: 8px;
+    border-radius: var(--ds-radius-btn);
     background: var(--ds-color-bg-action);
     border: none;
     color: var(--ds-color-text-primary);
@@ -170,7 +170,7 @@
   .search-input {
     min-width: 480px;
     height: 36px;
-    border-radius: 8px;
+    border-radius: var(--ds-radius-btn);
     border: 1px solid var(--ds-color-stroke-neutral);
     background: var(--ds-color-bg-white);
     display: inline-flex;
@@ -192,7 +192,7 @@
   }
   .filter {
     height: 36px;
-    border-radius: 8px;
+    border-radius: var(--ds-radius-btn);
     border: 1px solid var(--ds-color-stroke-neutral);
     background: var(--ds-color-bg-white);
     display: flex;
@@ -221,7 +221,7 @@
   .date-picker {
     width: 220px;
     height: 36px;
-    border-radius: 8px;
+    border-radius: var(--ds-radius-btn);
     border: 1px solid var(--ds-color-stroke-neutral);
     background: var(--ds-color-bg-white);
     display: flex;
@@ -250,7 +250,7 @@
   .page-size {
     width: 76px;
     height: 36px;
-    border-radius: 8px;
+    border-radius: var(--ds-radius-btn);
     border: 1px solid var(--ds-color-stroke-neutral);
     background: var(--ds-color-bg-white);
     display: flex;
@@ -272,7 +272,7 @@
     align-items: center; justify-content: center;
     background: transparent;
     border: none;
-    border-radius: 6px;
+    border-radius: var(--ds-radius-btn);
     cursor: pointer;
     font-size: 14px;
     color: var(--ds-color-text-primary);
@@ -332,7 +332,7 @@
   .row-photo {
     position: relative;
     min-height: 168px;
-    border-radius: 8px;
+    border-radius: var(--ds-radius-btn);
     overflow: hidden;
     background: url('resources/360%20images.png') center/cover no-repeat;
   }
@@ -352,7 +352,7 @@
   .photo-btn {
     flex: 1;
     height: 28px;
-    border-radius: 6px;
+    border-radius: var(--ds-radius-btn);
     border: 1px solid var(--ds-color-stroke-neutral);
     background: var(--ds-color-bg-white);
     font-size: 12px;
@@ -530,7 +530,7 @@
   .action-btn {
     height: 32px;
     padding: 0 12px;
-    border-radius: 8px;
+    border-radius: var(--ds-radius-btn);
     border: 1px solid var(--ds-color-stroke-neutral);
     background: var(--ds-color-bg-white);
     color: var(--ds-color-text-primary);
@@ -788,7 +788,11 @@
   const params = new URLSearchParams(location.search);
   const p = params.get('p') || '1';
   const isLegacy = params.get('v') === 'old';
-  document.body.className = 'proposal-' + p + (isLegacy ? ' legacy' : '');
+  const isDark   = params.get('theme') === 'dark';
+  document.body.className =
+    'proposal-' + p
+    + (isLegacy ? ' legacy' : '')
+    + (isDark   ? ' dark'   : '');
 </script>
 </body>
 </html>

@@ -27,12 +27,11 @@
   --ds-color-bg-info: #549cd3;
   --ds-color-bg-button-primary: #d2cfa9;   /* DS 2.1 "Base new" */
 
-  /* DS 2.1 — pale lemon-lime for very rare promotions / decorations only.
-     Replaces the old chartreuse #e5df00. Reserved for marketing-style banners
-     and decorative emphasis — never primary CTAs. */
-  --ds-color-bg-promo:         #eae658;     /* regular */
-  --ds-color-bg-promo-hover:   #f3f1a3;     /* tint — lighter on hover */
-  --ds-color-bg-promo-pressed: #c2bd35;     /* shade — darker on press */
+  /* DS 2.1 — no yellow anywhere in actions or promos.
+     Promo surfaces collapse onto the same beige palette as primary actions. */
+  --ds-color-bg-promo:         #d2cfa9;     /* Base new — same as bg-action */
+  --ds-color-bg-promo-hover:   #e6e4d2;     /* Light */
+  --ds-color-bg-promo-pressed: #a9a67c;     /* Dark new */
 
   /* ---------- Text — DS 2.1: beige → grey
      Recipe: #1A1905 (Ash) at opacity 0.65, blend-mode plus-darker.
@@ -90,7 +89,9 @@
   --ds-radius-xl: 16px;
   --ds-radius-pill: 24px;
   --ds-radius-card: 8px;
-  --ds-radius-card-mobile: 24px;
+  --ds-radius-card-mobile: 16px;          /* DS 2.1 — was 24px */
+  --ds-radius-btn: 8px;                   /* Web action buttons */
+  --ds-radius-btn-mobile: 12px;           /* Mobile action buttons (no pills) */
 
   /* ---------- Shadows ---------- */
   --ds-shadow-1: 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -112,6 +113,111 @@
 
 /* Proposal class kept for compatibility — :root already has DS 2.1 applied. */
 body.proposal-1 { /* no overrides — DS 2.1 baseline lives on :root */ }
+
+/* ==================================================================
+   DARK THEME — values sampled from mobile references (Figma file
+   GbsCnjHD2ErEEJ3YGrIadk). Applies only to the NEW (DS 2.1) version.
+   Status badges intentionally NOT overridden — pastel bgs stay so we
+   can evaluate whether they read OK on the dark surfaces.
+   ================================================================== */
+body.dark {
+  /* Surfaces — three depth levels.
+     bg-neutral is the darkest (page + header + density rail).
+     bg-white sits one shade lighter (cards / main surface).
+     bg-neutral-dark is the lightest (input fields / active rows). */
+  --ds-color-bg-white:        #1a1a1a;
+  --ds-color-bg-neutral:      #0f0f0f;
+  --ds-color-bg-neutral-dark: #2a2a2a;
+
+  /* Action palette — neutral light grey in dark mode (mobile reference shows
+     "Request sketch", "Add comment", "Request" CTA all as neutral greys, not
+     the beige sage from light theme). Primary text stays dark on the button. */
+  --ds-color-bg-action:         #a8a8a8;     /* regular */
+  --ds-color-bg-action-hover:   #bcbcbc;     /* lighter */
+  --ds-color-bg-action-pressed: #888888;     /* darker */
+  --ds-color-bg-primary:        #a8a8a8;
+  --ds-color-bg-button-primary: #a8a8a8;
+  --ds-color-bg-dark:           #888888;
+
+  /* Text */
+  --ds-color-text-primary:   #ffffff;
+  --ds-color-text-secondary: #a8a8a8;
+  --ds-color-text-muted:     #a8a8a8;
+
+  /* Stroke — dark hairline */
+  --ds-color-stroke-neutral: #2a2a2a;
+
+  /* Promo collapses onto action (no yellow in NEW dark either) */
+  --ds-color-bg-promo:         #a8a8a8;
+  --ds-color-bg-promo-hover:   #bcbcbc;
+  --ds-color-bg-promo-pressed: #888888;
+}
+
+/* Text + counts stay DARK on the light-grey action surface in dark mode.
+   Excludes .pill-btn-outline because its background flips to a dark surface. */
+body.dark .btn-accent,
+body.dark .btn-primary,
+body.dark .sidebar-btn-primary,
+body.dark .pill-btn:not(.pill-btn-outline),
+body.dark .pill-btn-promo,
+body.dark .btn-promo,
+body.dark .btn-create,
+body.dark .action-btn-primary,
+body.dark .menu-badge {
+  color: #1a1905;
+}
+body.dark .btn-accent img,
+body.dark .btn-primary img,
+body.dark .sidebar-btn-primary img,
+body.dark .pill-btn:not(.pill-btn-outline) img,
+body.dark .btn-promo img,
+body.dark .btn-create img,
+body.dark .action-btn-primary img {
+  filter: none;
+}
+
+/* Generic dark-mode icon inversion — applies to icons that ship dark by default.
+   Icons that sit on LIGHT surfaces (badges, filled action buttons) are opted out
+   so they stay dark and match the dark text on the same surface. */
+body.dark img.icon {
+  filter: brightness(0) invert(1);
+}
+body.dark .badge img,
+body.dark .pbadge img,
+body.dark .status-pill img,
+body.dark .ci img,
+body.dark .new-tag img,
+body.dark .ie-banner-tag img,
+body.dark .photo-btn img,
+body.dark .btn-accent img,
+body.dark .btn-primary img,
+body.dark .btn-create img,
+body.dark .btn-promo img,
+body.dark .sidebar-btn-primary img,
+body.dark .action-btn-primary img,
+body.dark .pill-btn:not(.pill-btn-outline) img {
+  filter: none;
+}
+
+/* Alerts have a fixed light pastel bg (cream/yellow) regardless of theme,
+   so text + inline SVG stroke must stay DARK in dark mode too. */
+body.dark .alert {
+  color: #1a1905;
+}
+
+/* Mobile system controls — translucent light backgrounds that don't follow
+   the theme. Their text + icons must stay dark to remain legible. */
+body.dark .nav-btn,
+body.dark .nav-btn-square,
+body.dark .nav-action,
+body.dark .tab {
+  color: #1a1905;
+}
+body.dark .nav-btn img,
+body.dark .nav-btn-square img,
+body.dark .tab img {
+  filter: none;
+}
 
 /* ==================================================================
    LEGACY MODE — pre DS 2.1 (current production)
@@ -147,4 +253,8 @@ body.legacy {
   --ds-color-bg-promo:         #e5df00;
   --ds-color-bg-promo-hover:   #f9f6bf;
   --ds-color-bg-promo-pressed: #999300;
+
+  /* Old mobile radii — pills back, larger card radius */
+  --ds-radius-btn-mobile:  24px;
+  --ds-radius-card-mobile: 24px;
 }

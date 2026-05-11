@@ -20,6 +20,10 @@
     -webkit-font-smoothing: antialiased;
   }
   body { width: 390px; min-height: 100vh; margin: 0 auto; }
+  /* Mobile body is fixed 390px wide — when body.dark applies, html still
+     uses the light value (CSS variables on body don't propagate up).
+     Pin html bg to match body in dark mode. */
+  html:has(body.dark) { background: #0f0f0f; }
   img.icon { display: block; flex-shrink: 0; }
 
   /* ---------- Status bar ---------- */
@@ -89,7 +93,7 @@
   .nav-action {
     height: 32px;
     padding: 0 14px;
-    border-radius: var(--ds-radius-pill);
+    border-radius: var(--ds-radius-btn-mobile);
     background: rgba(247, 247, 247, 0.85);
     backdrop-filter: blur(20px);
     border: none;
@@ -116,17 +120,17 @@
     height: 44px;
     padding: 0 16px;
     background: var(--ds-color-bg-white);
-    border-radius: var(--ds-radius-pill);
+    border-radius: var(--ds-radius-btn-mobile);
     color: var(--ds-color-text-secondary);
     font-size: 16px;
   }
   .search-bar img.icon { width: 20px; height: 20px; }
 
-  /* ---------- Pill tabs ---------- */
+  /* ---------- Segmented tabs ---------- */
   .pill-tabs {
     display: flex;
     background: var(--ds-color-bg-white);
-    border-radius: var(--ds-radius-pill);
+    border-radius: var(--ds-radius-btn-mobile);
     padding: 4px;
     gap: 0;
   }
@@ -135,7 +139,7 @@
     height: 36px;
     border: none;
     background: transparent;
-    border-radius: var(--ds-radius-pill);
+    border-radius: var(--ds-radius-btn);
     font-size: 14px;
     font-weight: 500;
     color: var(--ds-color-text-secondary);
@@ -146,6 +150,8 @@
     background: var(--ds-color-bg-neutral-dark);
     color: var(--ds-color-text-primary);
   }
+  /* In legacy, inner tabs are pill-rounded too (matches container) */
+  body.legacy .pill-tab { border-radius: var(--ds-radius-btn-mobile); }
 
   /* ---------- Project card ---------- */
   .project-card {
@@ -454,7 +460,11 @@
   const params = new URLSearchParams(location.search);
   const p = params.get('p') || '1';
   const isLegacy = params.get('v') === 'old';
-  document.body.className = 'proposal-' + p + (isLegacy ? ' legacy' : '');
+  const isDark   = params.get('theme') === 'dark';
+  document.body.className =
+    'proposal-' + p
+    + (isLegacy ? ' legacy' : '')
+    + (isDark   ? ' dark'   : '');
 </script>
 </body>
 </html>
