@@ -206,16 +206,17 @@ body.dark .alert {
 }
 
 /* Mobile system controls — translucent light backgrounds that don't follow
-   the theme. Their text + icons must stay dark to remain legible. */
+   the theme. Their text + icons must stay dark to remain legible.
+   Scoped to .tab-bar so we don't catch the desktop tour tabs. */
 body.dark .nav-btn,
 body.dark .nav-btn-square,
 body.dark .nav-action,
-body.dark .tab {
+body.dark .tab-bar .tab {
   color: #1a1905;
 }
 body.dark .nav-btn img,
 body.dark .nav-btn-square img,
-body.dark .tab img {
+body.dark .tab-bar .tab img {
   filter: none;
 }
 
