@@ -166,6 +166,31 @@ body.dark .action-btn-primary,
 body.dark .menu-badge {
   color: #1a1905;
 }
+
+/* Generic dark-mode icon inversion — applies to ALL imgs (photos are CSS
+   bg-images in this codebase, never <img>) so icons read on dark surfaces.
+   Surfaces that stay light (pastel pills, primary actions on #a8a8a8) are
+   opted out below. */
+body.dark img {
+  filter: brightness(0) invert(1);
+}
+/* Opt-outs MUST come after the generic invert rule above so they win
+   (same specificity → source order decides). Light surfaces keep dark icons. */
+body.dark .badge img,
+body.dark .pbadge.upload img,
+body.dark .pbadge.done img,
+body.dark .pbadge.estimate img,
+body.dark .pbadge.latest img,
+body.dark .status-pill.upload img,
+body.dark .status-pill.done img,
+body.dark .status-pill.estimate img,
+body.dark .status-pill.latest img,
+body.dark .new-tag img,
+body.dark .ie-banner-tag img,
+/* .hero-loss / .overlay-loss (Water badge, mobile only) intentionally OMITTED —
+   their bg flips to dark (#1a1a1a) in dark mode, so the icon must invert to white. */
+body.dark .alert img,
+/* Primary actions on light-grey #a8a8a8 — icons stay dark to match dark text. */
 body.dark .btn-accent img,
 body.dark .btn-primary img,
 body.dark .sidebar-btn-primary img,
@@ -173,29 +198,6 @@ body.dark .pill-btn:not(.pill-btn-outline) img,
 body.dark .btn-promo img,
 body.dark .btn-create img,
 body.dark .action-btn-primary img {
-  filter: none;
-}
-
-/* Generic dark-mode icon inversion — applies to icons that ship dark by default.
-   Icons that sit on LIGHT surfaces (badges, filled action buttons) are opted out
-   so they stay dark and match the dark text on the same surface. */
-body.dark img.icon {
-  filter: brightness(0) invert(1);
-}
-body.dark .badge img,
-body.dark .pbadge img,
-body.dark .status-pill img,
-body.dark .ci img,
-body.dark .new-tag img,
-body.dark .ie-banner-tag img,
-body.dark .photo-btn img,
-body.dark .btn-accent img,
-body.dark .btn-primary img,
-body.dark .btn-create img,
-body.dark .btn-promo img,
-body.dark .sidebar-btn-primary img,
-body.dark .action-btn-primary img,
-body.dark .pill-btn:not(.pill-btn-outline) img {
   filter: none;
 }
 

@@ -249,8 +249,8 @@ body.dark .status-pill.estimate img,
 body.dark .status-pill.latest img,
 body.dark .new-tag img,
 body.dark .ie-banner-tag img,
-body.dark .overlay-loss img,
-body.dark .hero-loss img,
+/* .hero-loss / .overlay-loss (Water badge, mobile only) intentionally OMITTED —
+   their bg flips to dark (#1a1a1a) in dark mode, so the icon must invert to white. */
 body.dark .alert img,
 /* Primary actions in dark theme sit on LIGHT GREY #a8a8a8 — icons stay dark. */
 body.dark .btn-accent img,
