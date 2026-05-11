@@ -388,7 +388,7 @@
 
 <header class="page-header">
   <h1>Phoenix · DS 2.1 Design Update</h1>
-  <p>Alternative direction from a colleague. Same Old reference (today's production) but a different set of New rules — Ash <code>#1a1905</code> primary + light beige <code>#e2e0d3</code> secondary in light theme; light grey <code>#a8a8a8</code> primary + dark grey <code>#2a2a2a</code> secondary in dark theme. Pill buttons on mobile, edge-to-edge mobile cards. Aligned to Figma references 18005-16473 (light) and 18209-47926 (dark). Use the version toggle in the top menu to compare against today's design, and the page tabs to switch between screens.</p>
+  <p>Alternative direction from a colleague. Same Old reference (today's production) but a different set of New rules — warm charcoal <code>#2a2810</code> primary + light beige <code>#e2e0d3</code> secondary in light theme; light grey <code>#a8a8a8</code> primary + dark grey <code>#2a2a2a</code> secondary in dark theme. Pill buttons on mobile, edge-to-edge mobile cards. Aligned to Figma references 18005-16473 (light) and 18209-47926 (dark), with the light-theme primary lifted one step off pure Ash so it reads less harsh on white. Use the top menu to switch between options, themes, and pages.</p>
   <div class="page-meta">
     <span class="pill">Reference · docusketch-frontend</span>
     <span class="pill">Tokens · CSS variables</span>
@@ -448,16 +448,16 @@
       <div class="decision-card-head">
         <span class="num">4</span>
       </div>
-      <h3>Theme-aware actions — Ash/Beige light, Grey dark</h3>
-      <p>Primary and secondary actions flip with the theme. <strong>Light theme</strong> (Figma 18005-16473): dark Ash <code>#1a1905</code> primary (white text/icons) + light beige <code>#e2e0d3</code> secondary (dark text/icons). <strong>Dark theme</strong> (Figma 18209-47926): light grey <code>#a8a8a8</code> primary (dark text/icons) + dark grey <code>#2a2a2a</code> secondary (white text/icons). Each theme inverts which surface is light vs dark, so primary and secondary always sit on opposite sides of the contrast. Clearest fork from option 1, which keeps a single beige palette across both themes.</p>
+      <h3>Theme-aware actions — Charcoal/Beige light, Grey dark</h3>
+      <p>Primary and secondary actions flip with the theme. <strong>Light theme</strong> (Figma 18005-16473, softened): warm charcoal <code>#2a2810</code> primary (white text/icons) + light beige <code>#e2e0d3</code> secondary (dark text/icons). <strong>Dark theme</strong> (Figma 18209-47926): light grey <code>#a8a8a8</code> primary (dark text/icons) + dark grey <code>#2a2a2a</code> secondary (white text/icons). Each theme inverts which surface is light vs dark, so primary and secondary always sit on opposite sides of the contrast. Clearest fork from option 1, which keeps a single beige palette across both themes.</p>
       <div style="display:flex;gap:8px;align-items:center;margin-top:4px;flex-wrap:wrap">
-        <span class="sample-btn sample-btn-accent" style="background:#1a1905;color:#fff;border-color:#1a1905">Light · primary</span>
+        <span class="sample-btn sample-btn-accent" style="background:#2a2810;color:#fff;border-color:#2a2810">Light · primary</span>
         <span class="sample-btn" style="background:#e2e0d3;border-color:#e2e0d3;color:#1a1905">Light · secondary</span>
         <span class="sample-btn sample-btn-accent" style="background:#a8a8a8;color:#1a1905;border-color:#a8a8a8">Dark · primary</span>
         <span class="sample-btn" style="background:#2a2a2a;border-color:#2a2a2a;color:#fff">Dark · secondary</span>
       </div>
       <div class="card-swatches">
-        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#1a1905"></div><span class="mini-swatch-name">Light · primary</span><span class="mini-swatch-value">#1a1905</span></div>
+        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#2a2810"></div><span class="mini-swatch-name">Light · primary</span><span class="mini-swatch-value">#2a2810</span></div>
         <div class="mini-swatch"><div class="mini-swatch-color" style="background:#e2e0d3"></div><span class="mini-swatch-name">Light · secondary</span><span class="mini-swatch-value">#e2e0d3</span></div>
         <div class="mini-swatch"><div class="mini-swatch-color" style="background:#a8a8a8"></div><span class="mini-swatch-name">Dark · primary</span><span class="mini-swatch-value">#a8a8a8</span></div>
         <div class="mini-swatch"><div class="mini-swatch-color" style="background:#2a2a2a"></div><span class="mini-swatch-name">Dark · secondary</span><span class="mini-swatch-value">#2a2a2a</span></div>
@@ -487,8 +487,8 @@
       <h3>Pill mobile · square web</h3>
       <p>Mobile action buttons stay full pills at <code>24px</code> radius — matches the Figma reference and reinforces the iOS-native feel option 2 leans into. Web action buttons stay at <code>8px</code> radius (square corners stay calmer on a denser desktop surface). Mobile cards round to <code>16px</code>; round icon nav buttons and badges keep their existing shapes.</p>
       <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
-        <span class="sample-btn sample-btn-accent" style="border-radius:8px;background:#1a1905;color:#fff;border-color:#1a1905">Web 8px</span>
-        <span class="sample-btn sample-btn-accent" style="border-radius:24px;background:#1a1905;color:#fff;border-color:#1a1905">Mobile 24px pill</span>
+        <span class="sample-btn sample-btn-accent" style="border-radius:8px;background:#2a2810;color:#fff;border-color:#2a2810">Web 8px</span>
+        <span class="sample-btn sample-btn-accent" style="border-radius:24px;background:#2a2810;color:#fff;border-color:#2a2810">Mobile 24px pill</span>
       </div>
     </div>
 

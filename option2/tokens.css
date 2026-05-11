@@ -12,11 +12,12 @@
   --ds-color-bg-dark: #a9a67c;             /* DS 2.1 "Dark new" — was #6f6d41 */
   --ds-color-bg-gray: #87867f;
 
-  /* OPTION 2 LIGHT THEME — primary actions match Figma reference 18005-16473:
-     dark Ash #1a1905 with white text + icons. */
-  --ds-color-bg-action:         #1a1905;   /* Ash — primary regular */
-  --ds-color-bg-action-hover:   #2a2810;   /* lighter Ash */
-  --ds-color-bg-action-pressed: #000000;   /* pressed */
+  /* OPTION 2 LIGHT THEME — primary actions match Figma reference 18005-16473
+     (dark on white) but softened from pure Ash #1a1905 → warm charcoal #2a2810
+     to feel less harsh on cream/white surfaces. White text + icons. */
+  --ds-color-bg-action:         #2a2810;   /* warm charcoal — primary regular */
+  --ds-color-bg-action-hover:   #3a3820;   /* lifted */
+  --ds-color-bg-action-pressed: #1a1905;   /* deep Ash on press */
 
   /* OPTION 2 — secondary action palette: Light #e2e0d3 (matches Figma 18005-16473
      and 18209-47926 where Reshoot / Add additional 360° / round edit / Set as
@@ -31,12 +32,12 @@
   --ds-color-bg-error: #e92f2f;
   --ds-color-bg-warning: #dfbb3a;
   --ds-color-bg-info: #549cd3;
-  --ds-color-bg-button-primary: #1a1905;   /* OPTION 2 LIGHT — Ash primary on mobile too */
+  --ds-color-bg-button-primary: #2a2810;   /* OPTION 2 LIGHT — warm charcoal primary on mobile too */
 
-  /* OPTION 2 LIGHT — promo collapses onto the Ash primary. */
-  --ds-color-bg-promo:         #1a1905;
-  --ds-color-bg-promo-hover:   #2a2810;
-  --ds-color-bg-promo-pressed: #000000;
+  /* OPTION 2 LIGHT — promo collapses onto the warm charcoal primary. */
+  --ds-color-bg-promo:         #2a2810;
+  --ds-color-bg-promo-hover:   #3a3820;
+  --ds-color-bg-promo-pressed: #1a1905;
 
   /* ---------- Text — DS 2.1: beige → grey
      Recipe: #1A1905 (Ash) at opacity 0.65, blend-mode plus-darker.
@@ -121,11 +122,12 @@ body.proposal-1 { /* no overrides — DS 2.1 baseline lives on :root */ }
 
 /* ==================================================================
    OPTION 2 — Action treatment
-   LIGHT theme (Figma 18005-16473): primary Ash #1a1905 + white content.
-   DARK theme (Figma 18209-47926):  primary Olive #c0bc90 + white content.
-   Secondary actions (both themes): light beige #e2e0d3 + dark content.
+   LIGHT theme (Figma 18005-16473, softened): primary warm charcoal
+     #2a2810 + white content; secondary light beige #e2e0d3 + dark content.
+   DARK  theme (Figma 18209-47926): primary light grey #a8a8a8 + dark
+     content; secondary dark grey #2a2a2a + white content.
    Outline buttons (white + grey stroke) are gone in option 2;
-   they're repurposed as beige secondary fills.
+   they're repurposed as filled secondaries.
    ================================================================== */
 
 /* Primary actions text + icons → white on Ash/Olive */
