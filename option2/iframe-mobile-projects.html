@@ -104,9 +104,9 @@
     font-family: inherit;
   }
 
-  /* ---------- Content ---------- */
+  /* ---------- Content — option 2: edge-to-edge cards, no horizontal gutter ---------- */
   .content {
-    padding: 12px 16px 16px;
+    padding: 12px 0 16px;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -163,7 +163,7 @@
   .card-photo {
     position: relative;
     height: 196px;
-    background: url('resources/360%20images.png') center/cover no-repeat;
+    background: url('../resources/360%20images.png') center/cover no-repeat;
   }
   .card-photo.empty {
     background: var(--ds-color-bg-neutral);
@@ -322,7 +322,7 @@
   </div>
 
   <div class="top-nav">
-    <button class="nav-btn-square" aria-label="Filters"><img class="icon" src="icons/icon-filter.svg" alt=""></button>
+    <button class="nav-btn-square" aria-label="Filters"><img class="icon" src="../icons/icon-filter.svg" alt=""></button>
     <span class="nav-title">Projects</span>
     <button class="nav-action">New</button>
   </div>
@@ -330,7 +330,7 @@
   <div class="content">
 
     <div class="search-bar">
-      <img class="icon" src="icons/icon-search.svg" alt="">
+      <img class="icon" src="../icons/icon-search.svg" alt="">
       <span>Search project…</span>
     </div>
 
@@ -344,12 +344,12 @@
       <div class="card-photo">
         <div class="overlay-badges">
           <span class="status-pill upload">
-            <img src="icons/icon-update.svg" alt="">
+            <img src="../icons/icon-update.svg" alt="">
             Upload needed
           </span>
         </div>
         <div class="overlay-loss">
-          <img src="icons/icon-water-outline-small.svg" alt="">
+          <img src="../icons/icon-water-outline-small.svg" alt="">
           <span>Water</span>
         </div>
       </div>
@@ -358,7 +358,7 @@
           <h4>David Thompson, 3456 Sunset Boulevard</h4>
           <p>10/20/2025 · Residential · ID 121120896</p>
         </div>
-        <button class="more-btn" aria-label="More"><img src="icons/icon-more.svg" alt=""></button>
+        <button class="more-btn" aria-label="More"><img src="../icons/icon-more.svg" alt=""></button>
       </div>
     </div>
 
@@ -367,23 +367,23 @@
       <div class="card-photo">
         <div class="overlay-badges">
           <span class="status-pill done">
-            <img src="icons/icon-sketch.svg" alt="">
+            <img src="../icons/icon-sketch.svg" alt="">
             Sketch done
           </span>
           <span class="status-pill estimate">
-            <img src="icons/icon-estimate.svg" alt="">
+            <img src="../icons/icon-estimate.svg" alt="">
             Estimates 1
           </span>
           <span class="status-pill sow">
-            <img src="icons/icon-sow.svg" alt="">
+            <img src="../icons/icon-sow.svg" alt="">
             SOW
           </span>
           <span class="status-pill archive" aria-label="Archived">
-            <img src="icons/icon-archive.svg" alt="">
+            <img src="../icons/icon-archive.svg" alt="">
           </span>
         </div>
         <div class="overlay-loss">
-          <img src="icons/icon-water-outline-small.svg" alt="">
+          <img src="../icons/icon-water-outline-small.svg" alt="">
           <span>Water</span>
         </div>
       </div>
@@ -392,7 +392,7 @@
           <h4>George Williams house, 1738595</h4>
           <p>10/20/2025 · Residential · ID 121120896</p>
         </div>
-        <button class="more-btn" aria-label="More"><img src="icons/icon-more.svg" alt=""></button>
+        <button class="more-btn" aria-label="More"><img src="../icons/icon-more.svg" alt=""></button>
       </div>
     </div>
 
@@ -401,12 +401,12 @@
       <div class="card-photo">
         <div class="overlay-badges">
           <span class="status-pill upload">
-            <img src="icons/icon-update.svg" alt="">
+            <img src="../icons/icon-update.svg" alt="">
             Upload needed
           </span>
         </div>
         <div class="overlay-loss">
-          <img src="icons/icon-water-outline-small.svg" alt="">
+          <img src="../icons/icon-water-outline-small.svg" alt="">
           <span>Water</span>
         </div>
       </div>
@@ -415,7 +415,7 @@
           <h4>George Williams house, 1738595</h4>
           <p>10/20/2025 · Residential · ID 121120896</p>
         </div>
-        <button class="more-btn" aria-label="More"><img src="icons/icon-more.svg" alt=""></button>
+        <button class="more-btn" aria-label="More"><img src="../icons/icon-more.svg" alt=""></button>
       </div>
     </div>
 
@@ -427,7 +427,7 @@
           <h4>George Williams house, 1738595</h4>
           <p>10/20/2025 · Residential · ID 121120896</p>
         </div>
-        <button class="more-btn" aria-label="More"><img src="icons/icon-more.svg" alt=""></button>
+        <button class="more-btn" aria-label="More"><img src="../icons/icon-more.svg" alt=""></button>
       </div>
     </div>
 
@@ -437,19 +437,19 @@
   <div class="tab-bar-wrap">
     <div class="tab-bar">
       <div class="tab active">
-        <img src="icons/icon-residential.svg" alt="">
+        <img src="../icons/icon-residential.svg" alt="">
         <span>Projects</span>
       </div>
       <div class="tab">
-        <img src="icons/icon-360.svg" alt="">
+        <img src="../icons/icon-360.svg" alt="">
         <span>Camera</span>
       </div>
       <div class="tab">
-        <img src="icons/icon-help.svg" alt="">
+        <img src="../icons/icon-help.svg" alt="">
         <span>Support</span>
       </div>
       <div class="tab">
-        <img src="icons/icon-settings.svg" alt="">
+        <img src="../icons/icon-settings.svg" alt="">
         <span>Settings</span>
       </div>
     </div>

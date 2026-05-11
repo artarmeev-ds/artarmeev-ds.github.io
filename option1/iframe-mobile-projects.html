@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Projects — Mobile</title>
+<meta name="viewport" content="width=390">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--ds-color-bg-neutral);
+    font-family: var(--ds-font-family);
+    color: var(--ds-color-text-primary);
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+  }
+  body { width: 390px; min-height: 100vh; margin: 0 auto; }
+  /* Mobile body is fixed 390px wide — when body.dark applies, html still
+     uses the light value (CSS variables on body don't propagate up).
+     Pin html bg to match body in dark mode. */
+  html:has(body.dark) { background: #0f0f0f; }
+  img.icon { display: block; flex-shrink: 0; }
+
+  /* ---------- Status bar ---------- */
+  .status-bar {
+    height: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 24px 4px;
+  }
+  .status-time { font-weight: 600; font-size: 17px; letter-spacing: -0.4px; }
+  .status-icons { display: flex; align-items: center; gap: 6px; }
+  .signal-bar { display: inline-flex; gap: 2px; align-items: flex-end; height: 12px; }
+  .signal-bar i { width: 3px; background: var(--ds-color-text-primary); border-radius: 1px; display: inline-block; }
+  .signal-bar i:nth-child(1) { height: 4px; }
+  .signal-bar i:nth-child(2) { height: 7px; }
+  .signal-bar i:nth-child(3) { height: 10px; }
+  .signal-bar i:nth-child(4) { height: 12px; }
+  .battery {
+    width: 28px; height: 14px;
+    border: 1.5px solid var(--ds-color-text-primary);
+    border-radius: 4px;
+    position: relative;
+    padding: 1.5px;
+  }
+  .battery::after {
+    content: '';
+    position: absolute;
+    right: -3px; top: 4px;
+    width: 2px; height: 4px;
+    background: var(--ds-color-text-primary);
+    border-radius: 0 1px 1px 0;
+  }
+  .battery i {
+    display: block; background: var(--ds-color-text-primary); height: 100%; width: 90%; border-radius: 1.5px;
+  }
+
+  /* ---------- Top nav ---------- */
+  .top-nav {
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    position: relative;
+  }
+  .nav-btn-square {
+    width: 44px; height: 44px;
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    background: rgba(247, 247, 247, 0.7);
+    backdrop-filter: blur(20px);
+    border-radius: var(--ds-radius-pill);
+    border: none;
+    cursor: pointer;
+    color: var(--ds-color-text-primary);
+  }
+  .nav-btn-square img { width: 24px; height: 24px; }
+  .nav-title {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+  }
+  .nav-action {
+    height: 32px;
+    padding: 0 14px;
+    border-radius: var(--ds-radius-btn-mobile);
+    background: rgba(247, 247, 247, 0.85);
+    backdrop-filter: blur(20px);
+    border: none;
+    cursor: pointer;
+    color: var(--ds-color-text-primary);
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+  }
+
+  /* ---------- Content ---------- */
+  .content {
+    padding: 12px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* ---------- Search ---------- */
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 16px;
+    background: var(--ds-color-bg-white);
+    border-radius: var(--ds-radius-btn-mobile);
+    color: var(--ds-color-text-secondary);
+    font-size: 16px;
+  }
+  .search-bar img.icon { width: 20px; height: 20px; }
+
+  /* ---------- Segmented tabs ---------- */
+  .pill-tabs {
+    display: flex;
+    background: var(--ds-color-bg-white);
+    border-radius: var(--ds-radius-btn-mobile);
+    padding: 4px;
+    gap: 0;
+  }
+  .pill-tab {
+    flex: 1;
+    height: 36px;
+    border: none;
+    background: transparent;
+    border-radius: var(--ds-radius-btn);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ds-color-text-secondary);
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .pill-tab.active {
+    background: var(--ds-color-bg-neutral-dark);
+    color: var(--ds-color-text-primary);
+  }
+  /* In legacy, inner tabs are pill-rounded too (matches container) */
+  body.legacy .pill-tab { border-radius: var(--ds-radius-btn-mobile); }
+
+  /* ---------- Project card ---------- */
+  .project-card {
+    background: var(--ds-color-bg-white);
+    border-radius: var(--ds-radius-card-mobile);
+    overflow: hidden;
+    position: relative;
+  }
+  .card-photo {
+    position: relative;
+    height: 196px;
+    background: url('../resources/360%20images.png') center/cover no-repeat;
+  }
+  .card-photo.empty {
+    background: var(--ds-color-bg-neutral);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card-photo.empty::before {
+    content: '';
+    width: 56px; height: 56px;
+    border: 3px solid var(--ds-color-stroke-neutral);
+    border-top-color: var(--ds-color-bg-dark);
+    border-radius: 50%;
+    animation: spin 1.4s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .overlay-badges {
+    position: absolute;
+    inset: 12px 12px auto 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .overlay-loss {
+    position: absolute;
+    bottom: 12px; left: 12px;
+    background: var(--ds-color-bg-white);
+    border-radius: var(--ds-radius-pill);
+    padding: 3px 10px 3px 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+  }
+  .overlay-loss img { width: 14px; height: 14px; }
+
+  /* Status pills overlaid on photo — full-pill rounded shape (mobile spec) */
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 24px;
+    padding: 0 10px;
+    border-radius: var(--ds-radius-pill);
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .status-pill img { width: 14px; height: 14px; }
+  /* DS 2.1 — soft pastel tones (Figma 17439-25555), dark text + dark icons */
+  .status-pill.upload   { background: #f7eeb8; color: #1a1905; }
+  .status-pill.done     { background: #dceea0; color: #1a1905; }
+  .status-pill.estimate { background: #f1d5e0; color: #1a1905; }
+  .status-pill.sow      { background: var(--ds-color-bg-white); color: var(--ds-color-text-primary); }
+  .status-pill.archive  { width: 24px; padding: 0; justify-content: center; background: var(--ds-color-bg-white); }
+
+  /* Legacy — saturated tones (Figma 17439-25554), white foreground except SOW */
+  body.legacy .status-pill.upload   { background: #e5df00; color: #1a1905; }
+  body.legacy .status-pill.done     { background: #64b56e; color: #fff; }
+  body.legacy .status-pill.estimate { background: #d76493; color: #fff; }
+  /* SOW stays white in both modes */
+  body.legacy .status-pill.sow      { background: var(--ds-color-bg-white); color: var(--ds-color-text-primary); }
+  /* Saturated pills need white icons too */
+  body.legacy .status-pill.done img,
+  body.legacy .status-pill.estimate img { filter: invert(1); }
+
+  /* Card body */
+  .card-body {
+    padding: 12px 16px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .card-body-text {
+    flex: 1;
+    min-width: 0;
+  }
+  .card-body h4 {
+    margin: 0 0 4px;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+    color: var(--ds-color-text-primary);
+  }
+  .card-body p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 18px;
+    color: var(--ds-color-text-muted);
+  }
+  .more-btn {
+    width: 32px; height: 32px;
+    border-radius: var(--ds-radius-pill);
+    background: var(--ds-color-bg-neutral-dark);
+    border: none;
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .more-btn img { width: 18px; height: 18px; }
+
+  /* ---------- Bottom tab bar ---------- */
+  .tab-bar-wrap {
+    padding: 0 25px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 8px;
+  }
+  .tab-bar {
+    height: 62px;
+    width: 100%;
+    background: rgba(247, 247, 247, 0.85);
+    backdrop-filter: blur(20px);
+    border-radius: 96px;
+    padding: 4px;
+    display: flex;
+  }
+  .tab {
+    flex: 1;
+    height: 54px;
+    border-radius: 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    cursor: pointer;
+    color: var(--ds-color-text-muted);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.4px;
+  }
+  .tab.active {
+    background: #ededed;
+    color: var(--ds-color-text-primary);
+  }
+  .tab img { width: 24px; height: 24px; }
+  .home-indicator {
+    height: 5px;
+    width: 134px;
+    background: var(--ds-color-bg-black);
+    border-radius: 100px;
+    margin-top: 14px;
+  }
+</style>
+</head>
+<body class="proposal-1">
+
+  <div class="status-bar">
+    <span class="status-time">9:41</span>
+    <div class="status-icons">
+      <span class="signal-bar"><i></i><i></i><i></i><i></i></span>
+      <span class="battery"><i></i></span>
+    </div>
+  </div>
+
+  <div class="top-nav">
+    <button class="nav-btn-square" aria-label="Filters"><img class="icon" src="../icons/icon-filter.svg" alt=""></button>
+    <span class="nav-title">Projects</span>
+    <button class="nav-action">New</button>
+  </div>
+
+  <div class="content">
+
+    <div class="search-bar">
+      <img class="icon" src="../icons/icon-search.svg" alt="">
+      <span>Search project…</span>
+    </div>
+
+    <div class="pill-tabs" role="tablist">
+      <button class="pill-tab active">My projects</button>
+      <button class="pill-tab">All office projects</button>
+    </div>
+
+    <!-- Card 1 -->
+    <div class="project-card">
+      <div class="card-photo">
+        <div class="overlay-badges">
+          <span class="status-pill upload">
+            <img src="../icons/icon-update.svg" alt="">
+            Upload needed
+          </span>
+        </div>
+        <div class="overlay-loss">
+          <img src="../icons/icon-water-outline-small.svg" alt="">
+          <span>Water</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-text">
+          <h4>David Thompson, 3456 Sunset Boulevard</h4>
+          <p>10/20/2025 · Residential · ID 121120896</p>
+        </div>
+        <button class="more-btn" aria-label="More"><img src="../icons/icon-more.svg" alt=""></button>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="project-card">
+      <div class="card-photo">
+        <div class="overlay-badges">
+          <span class="status-pill done">
+            <img src="../icons/icon-sketch.svg" alt="">
+            Sketch done
+          </span>
+          <span class="status-pill estimate">
+            <img src="../icons/icon-estimate.svg" alt="">
+            Estimates 1
+          </span>
+          <span class="status-pill sow">
+            <img src="../icons/icon-sow.svg" alt="">
+            SOW
+          </span>
+          <span class="status-pill archive" aria-label="Archived">
+            <img src="../icons/icon-archive.svg" alt="">
+          </span>
+        </div>
+        <div class="overlay-loss">
+          <img src="../icons/icon-water-outline-small.svg" alt="">
+          <span>Water</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-text">
+          <h4>George Williams house, 1738595</h4>
+          <p>10/20/2025 · Residential · ID 121120896</p>
+        </div>
+        <button class="more-btn" aria-label="More"><img src="../icons/icon-more.svg" alt=""></button>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="project-card">
+      <div class="card-photo">
+        <div class="overlay-badges">
+          <span class="status-pill upload">
+            <img src="../icons/icon-update.svg" alt="">
+            Upload needed
+          </span>
+        </div>
+        <div class="overlay-loss">
+          <img src="../icons/icon-water-outline-small.svg" alt="">
+          <span>Water</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-text">
+          <h4>George Williams house, 1738595</h4>
+          <p>10/20/2025 · Residential · ID 121120896</p>
+        </div>
+        <button class="more-btn" aria-label="More"><img src="../icons/icon-more.svg" alt=""></button>
+      </div>
+    </div>
+
+    <!-- Card 4 — skeleton loading -->
+    <div class="project-card">
+      <div class="card-photo empty"></div>
+      <div class="card-body">
+        <div class="card-body-text">
+          <h4>George Williams house, 1738595</h4>
+          <p>10/20/2025 · Residential · ID 121120896</p>
+        </div>
+        <button class="more-btn" aria-label="More"><img src="../icons/icon-more.svg" alt=""></button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Tab bar -->
+  <div class="tab-bar-wrap">
+    <div class="tab-bar">
+      <div class="tab active">
+        <img src="../icons/icon-residential.svg" alt="">
+        <span>Projects</span>
+      </div>
+      <div class="tab">
+        <img src="../icons/icon-360.svg" alt="">
+        <span>Camera</span>
+      </div>
+      <div class="tab">
+        <img src="../icons/icon-help.svg" alt="">
+        <span>Support</span>
+      </div>
+      <div class="tab">
+        <img src="../icons/icon-settings.svg" alt="">
+        <span>Settings</span>
+      </div>
+    </div>
+    <div class="home-indicator"></div>
+  </div>
+
+<script>
+  const params = new URLSearchParams(location.search);
+  const p = params.get('p') || '1';
+  const isLegacy = params.get('v') === 'old';
+  const isDark   = params.get('theme') === 'dark';
+  document.body.className =
+    'proposal-' + p
+    + (isLegacy ? ' legacy' : '')
+    + (isDark   ? ' dark'   : '');
+</script>
+</body>
+</html>
