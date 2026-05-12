@@ -203,14 +203,9 @@
     position: relative;
   }
   .menu-item:hover { background: var(--ds-color-bg-neutral); }
-  /* OPTION 3 — Selected menu option uses the yellow accent (chartreuse).
-     Yellow is reserved for decorations / accents in option 3, and a sidebar
-     active state is exactly that: a small surface that flags "you are here". */
   .menu-item.active {
-    background: #e5df00;
-    color: #1a1905;
+    background: var(--ds-color-bg-neutral-dark);
   }
-  .menu-item.active img.icon { filter: none; }
   .menu-item img.icon { width: 24px; height: 24px; }
   .menu-item .label { flex: 1; }
   .menu-badge {
