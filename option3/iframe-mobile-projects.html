@@ -112,7 +112,7 @@
     gap: 12px;
   }
 
-  /* ---------- Search ---------- */
+  /* ---------- Search — OPTION 3 mobile: pill-shaped (light + dark) ---------- */
   .search-bar {
     display: flex;
     align-items: center;
@@ -121,18 +121,18 @@
     padding: 0 16px;
     margin: 0 16px;
     background: var(--ds-color-bg-white);
-    border-radius: var(--ds-radius-btn-mobile);
+    border-radius: 9999px;
     color: var(--ds-color-text-secondary);
     font-size: 16px;
   }
   .search-bar img.icon { width: 20px; height: 20px; }
 
-  /* ---------- Segmented tabs ---------- */
+  /* ---------- Segmented tabs — OPTION 3 mobile: pill container + pill thumb ---------- */
   .pill-tabs {
     display: flex;
     margin: 0 16px;
     background: var(--ds-color-bg-white);
-    border-radius: var(--ds-radius-btn-mobile);
+    border-radius: 9999px;
     padding: 4px;
     gap: 0;
   }
@@ -141,7 +141,7 @@
     height: 36px;
     border: none;
     background: transparent;
-    border-radius: var(--ds-radius-btn);
+    border-radius: 9999px;
     font-size: 14px;
     font-weight: 500;
     color: var(--ds-color-text-secondary);
@@ -152,8 +152,6 @@
     background: var(--ds-color-bg-neutral-dark);
     color: var(--ds-color-text-primary);
   }
-  /* In legacy, inner tabs are pill-rounded too (matches container) */
-  body.legacy .pill-tab { border-radius: var(--ds-radius-btn-mobile); }
 
   /* ---------- Project card ---------- */
   .project-card {
