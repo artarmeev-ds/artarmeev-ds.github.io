@@ -495,7 +495,7 @@
       <h3>8px gap between icon and text</h3>
       <p>On web buttons, the gap between leading icon and label is <code>8px</code>. Equivalent to <code>me-2</code> / <code>ms-2</code> on a projected <code>&lt;svg-icon&gt;</code>.</p>
       <div style="margin-top:4px">
-        <span class="sample-btn sample-btn-accent" style="gap:8px">
+        <span class="sample-btn sample-btn-accent" style="gap:8px;background:#c0bc90;color:#1a1905;border-color:#c0bc90">
           <img src="../icons/icon-360.svg" alt="" width="16" height="16">
           Open 360°
         </span>
@@ -576,12 +576,12 @@
         <span class="num">14</span>
       </div>
       <h3>Dark theme — NEW only</h3>
-      <p>The dark theme exists for the DS 2.1 NEW version only; Old stays light because that's what's in production today. Page bg flips to <code>#0f0f0f</code>, cards to <code>#1a1a1a</code>, inputs / active rows to <code>#2a2a2a</code>. Action buttons drop the beige sage and switch to a neutral light grey (<code>#a8a8a8</code> regular, <code>#bcbcbc</code> hover, <code>#888888</code> pressed) with dark text — the mobile references use neutral greys, not the beige palette. Status badges intentionally stay on their light pastel backgrounds so we can audit contrast against the dark surfaces before adjusting.</p>
+      <p>The dark theme exists for the DS 2.1 NEW version only; Old stays light because that's what's in production today. Page bg flips to <code>#0f0f0f</code>, cards to <code>#1a1a1a</code>, inputs / active rows to <code>#2a2a2a</code>. Primary actions drop the olive and switch to neutral light grey (<code>#a8a8a8</code> regular, <code>#bcbcbc</code> hover, <code>#888888</code> pressed) with dark text — matches option 1's dark behavior. Secondary actions split by surface: web filled secondary flips to the dark card surface <code>#1a1a1a</code> with a subtle <code>#2a2a2a</code> stroke and white content; mobile filled secondary (View rooms / Share access) goes to <code>#2C2C2E</code> with white content and no stroke — lifted one shade above the card so it reads as tappable. Status badges intentionally stay on their light pastel backgrounds so we can audit contrast against the dark surfaces before adjusting.</p>
       <div class="card-swatches">
         <div class="mini-swatch"><div class="mini-swatch-color" style="background:#0f0f0f"></div><span class="mini-swatch-name">page</span><span class="mini-swatch-value">#0f0f0f</span></div>
-        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#1a1a1a"></div><span class="mini-swatch-name">card</span><span class="mini-swatch-value">#1a1a1a</span></div>
-        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#2a2a2a"></div><span class="mini-swatch-name">elevated</span><span class="mini-swatch-value">#2a2a2a</span></div>
-        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#a8a8a8"></div><span class="mini-swatch-name">action</span><span class="mini-swatch-value">#a8a8a8</span></div>
+        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#1a1a1a"></div><span class="mini-swatch-name">card / web 2°</span><span class="mini-swatch-value">#1a1a1a</span></div>
+        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#2c2c2e"></div><span class="mini-swatch-name">mobile 2°</span><span class="mini-swatch-value">#2C2C2E</span></div>
+        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#a8a8a8"></div><span class="mini-swatch-name">primary</span><span class="mini-swatch-value">#a8a8a8</span></div>
         <div class="mini-swatch"><div class="mini-swatch-color" style="background:#ffffff"></div><span class="mini-swatch-name">text-primary</span><span class="mini-swatch-value">#ffffff</span></div>
         <div class="mini-swatch"><div class="mini-swatch-color" style="background:#a8a8a8"></div><span class="mini-swatch-name">text-secondary</span><span class="mini-swatch-value">#a8a8a8</span></div>
       </div>
@@ -592,8 +592,8 @@
       <div class="decision-card-head">
         <span class="num">15</span>
       </div>
-      <h3>Edge-to-edge cards · margined controls</h3>
-      <p>Mobile cards lose their 16px side gutters and stretch to the device edges — wider tap targets, less wasted space, more native-app feel. Standalone controls keep their <code>16px</code> side margins so they don't look orphaned: the Projects search bar, the My projects / All office projects segmented tabs, and the standalone Share access pill on Project detail. Card radius stays at <code>16px</code>.</p>
+      <h3>Edge-to-edge cards · pill controls</h3>
+      <p>Mobile cards lose their 16px side gutters and stretch to the device edges — wider tap targets, less wasted space, more native-app feel. Standalone controls keep their <code>16px</code> side margins so they don't look orphaned: the standalone Share access pill on Project detail, plus the Projects search bar and the My projects / All office projects segmented tabs on Projects list. On the Projects list specifically, the search bar and segmented tabs are fully <strong>pill-shaped</strong> in both light and dark — they sit above edge-to-edge cards so the pill radius softens the contrast and reads as iOS-native search/segment controls. Card radius stays at <code>16px</code>.</p>
     </div>
 
   </div>

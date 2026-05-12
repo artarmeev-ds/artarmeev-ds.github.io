@@ -1,8 +1,13 @@
 /* Phoenix design tokens — OPTION 3 (hybrid)
-   Primary actions: darker olive #c0bc90 + white content (Figma 18209-47926).
-   Secondary actions: light beige #e2e0d3 (some web actions like Edit/Share/More).
-   Outline buttons (white + grey stroke) preserved for Download + Projects list.
-   Mobile: 16px button radius, edge-to-edge cards, controls keep 16px gutters. */
+   Primary actions: darker olive #c0bc90 + DARK text/icons (same content as
+   option 1, just one tone deeper). Dark mode flips primary to neutral grey
+   #a8a8a8 — matches option 1's dark behavior.
+   Web secondary FILLED #e2e0d3 (Edit / Share / sidebar More) + DARK content.
+   Web secondary STROKE kept for Download row buttons; Projects list page
+   stays Primary + white-stroke only (no filled secondary there).
+   Mobile secondary: FILLED #e2e0d3 in light, FILLED #2c2c2e in dark.
+   Mobile: 16px button radius, edge-to-edge cards, controls keep 16px gutters.
+   Projects list mobile: search bar + segmented tabs are pill-shaped. */
 
 :root {
   /* ---------- Surface ---------- */
@@ -14,7 +19,8 @@
   --ds-color-bg-dark: #a9a67c;             /* "Dark new" */
   --ds-color-bg-gray: #87867f;
 
-  /* OPTION 3 — Primary actions: darker olive #c0bc90 with WHITE text + icons.
+  /* OPTION 3 — Primary actions: darker olive #c0bc90 with DARK text + icons
+     (same content treatment as option 1, just one tone deeper than #d2cfa9).
      Three-state: Base, Light tint, Dark deeper. */
   --ds-color-bg-action:         #c0bc90;   /* olive — regular */
   --ds-color-bg-action-hover:   #d2cfa9;   /* lighter tint */
