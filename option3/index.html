@@ -389,7 +389,7 @@
 
 <header class="page-header">
   <h1>Phoenix · DS 2.1 Design Update</h1>
-  <p>Hybrid direction — primary actions get the darker olive <code>#c0bc90</code> (dark text + icons, same content treatment as option 1, just one tone deeper). Some web secondaries (Edit / Share / sidebar More) and every mobile secondary (View rooms / Share access) fill with light beige <code>#e2e0d3</code>. Download row buttons keep their white stroke, and the Projects list page stays Primary + white-stroke only. Yellow chartreuse <code>#E5DF00</code> is repurposed as an accent on small surfaces only — decorations, counts, small badges, selected icons, and thin indicator stripes (e.g. the top-nav active underline). Dark theme matches option 1's grey treatment. On mobile: 16px button radius, cards stretch edge-to-edge, but standalone controls (search, segmented tabs, Share access) keep a 16px gutter. Use the top menu to switch between options, themes, and pages.</p>
+  <p>Hybrid direction — primary actions get the darker olive <code>#c0bc90</code> (dark text + icons, same content treatment as option 1, just one tone deeper). Frequent web secondary (Share) and every mobile secondary (View rooms / Share access) fill with light beige <code>#e2e0d3</code>; less-frequent web secondaries (Edit, sidebar More) stay white-stroke. Download row buttons keep their white stroke too, and the Projects list page stays Primary + white-stroke only. Yellow chartreuse <code>#E5DF00</code> is repurposed as an accent on small surfaces only — decorations, counts, small badges, selected icons, and thin indicator stripes (e.g. the top-nav active underline). Dark theme matches option 1's grey treatment. On mobile: 16px button radius, cards stretch edge-to-edge, but standalone controls (search, segmented tabs, Share access) keep a 16px gutter. Use the top menu to switch between options, themes, and pages.</p>
   <div class="page-meta">
     <span class="pill">Reference · docusketch-frontend</span>
     <span class="pill">Tokens · CSS variables</span>
@@ -464,12 +464,13 @@
       <div class="decision-card-head">
         <span class="num">5</span>
       </div>
-      <h3>Mixed secondary — filled & stroke</h3>
-      <p>Secondary actions split by use. <strong>Filled</strong> <code>#e2e0d3</code> with dark text/icons for prominent secondaries: desktop Edit · Share · sidebar More, and every mobile secondary (View rooms · Share access). <strong>White-stroke</strong> <code>#e2e0d3</code> for row-level utility on web — Download buttons next to each report row; the whole Projects list page stays Primary + white-stroke only (no filled secondaries there, to keep the dense table calm).</p>
+      <h3>Mixed secondary — filled & stroke by frequency</h3>
+      <p>Secondary actions split by how often they're used. <strong>Filled</strong> <code>#e2e0d3</code> with dark text/icons for the prominent / frequent ones: desktop <strong>Share</strong>, and every mobile secondary (View rooms · Share access). <strong>White-stroke</strong> <code>#e2e0d3</code> for less frequent / utility actions: desktop <strong>Edit</strong> and sidebar <strong>More</strong>, plus row-level Download buttons; the whole Projects list page stays Primary + white-stroke only (no filled secondaries there, to keep the dense table calm). Dark theme normalizes all secondaries to the dark card surface so the filled/stroke distinction relaxes.</p>
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <span class="sample-btn" style="background:#e2e0d3;border-color:#e2e0d3;color:#1a1905">Filled · Edit</span>
         <span class="sample-btn" style="background:#e2e0d3;border-color:#e2e0d3;color:#1a1905">Filled · Share</span>
         <span class="sample-btn" style="background:#e2e0d3;border-color:#e2e0d3;color:#1a1905">Filled · View rooms (mobile)</span>
+        <span class="sample-btn">Stroke · Edit</span>
+        <span class="sample-btn">Stroke · More</span>
         <span class="sample-btn">Stroke · Download</span>
       </div>
     </div>

@@ -630,6 +630,18 @@
     padding: 0;
     justify-content: center;
   }
+  /* OPTION 3 — New-light only: Edit (.btn.btn-icon) and sidebar More
+     (.sidebar-btn-link) are LESS FREQUENT actions, so they revert to white-stroke
+     in the light theme. Share (plain .btn) stays filled secondary. Dark theme
+     keeps the dark filled treatment (already lower contrast than primary). */
+  body.proposal-1:not(.dark) .btn.btn-icon,
+  body.proposal-1:not(.dark) .sidebar-btn-link {
+    background: var(--ds-color-bg-white);
+  }
+  body.proposal-1:not(.dark) .btn.btn-icon:hover,
+  body.proposal-1:not(.dark) .sidebar-btn-link:hover {
+    background: var(--ds-color-bg-neutral);
+  }
   /* DS 2.1 — chartreuse deleted. Primary action uses the new beige palette:
      regular = Base new, hover = Light, pressed = Dark new. Text stays dark in all states. */
   .btn-accent {
