@@ -373,8 +373,8 @@
   <span class="brand">Phoenix · Design Proposals</span>
   <nav class="toggle-group" aria-label="Proposal">
     <a href="../option1/">Option 1</a>
-    <a href="../option2/" class="active">Option 2</a>
-    <a href="../option3/">Option 3</a>
+    <a href="../option2/">Option 2</a>
+    <a href="../option3/" class="active">Option 3</a>
   </nav>
   <div class="toggle-group version-toggle" role="group" aria-label="Version">
     <button class="opt active" data-state="new"  type="button">New light</button>
@@ -389,7 +389,7 @@
 
 <header class="page-header">
   <h1>Phoenix · DS 2.1 Design Update</h1>
-  <p>Alternative direction from a colleague. Same Old reference (today's production) but a different set of New rules — warm charcoal <code>#2a2810</code> primary + light beige <code>#e2e0d3</code> secondary in light theme; light grey <code>#a8a8a8</code> primary + dark grey <code>#2a2a2a</code> secondary in dark theme. Pill buttons on mobile, edge-to-edge mobile cards. Aligned to Figma references 18005-16473 (light) and 18209-47926 (dark), with the light-theme primary lifted one step off pure Ash so it reads less harsh on white. Use the top menu to switch between options, themes, and pages.</p>
+  <p>Hybrid direction — primary actions get the darker olive <code>#c0bc90</code> (dark text + icons, same content treatment as option 1, just one tone deeper). Some web secondaries (Edit / Share / sidebar More) and every mobile secondary (View rooms / Share access) fill with light beige <code>#e2e0d3</code>. Download row buttons keep their white stroke, and the Projects list page stays Primary + white-stroke only. Dark theme matches option 1's grey treatment. On mobile: 16px button radius, cards stretch edge-to-edge, but standalone controls (search, segmented tabs, Share access) keep a 16px gutter. Use the top menu to switch between options, themes, and pages.</p>
   <div class="page-meta">
     <span class="pill">Reference · docusketch-frontend</span>
     <span class="pill">Tokens · CSS variables</span>
@@ -403,7 +403,7 @@
   <div class="section-head">
     <span class="section-tag">DS 2.1 · decisions</span>
     <h2>What changed and why</h2>
-    <p>Fifteen decisions from this alternative DS 2.1 direction, applied to the Project Overview and the Projects list previews below.</p>
+    <p>Fifteen decisions for this hybrid direction, applied to the Project Overview and the Projects list previews below.</p>
   </div>
 
   <div class="decisions">
@@ -444,52 +444,46 @@
       </div>
     </div>
 
-    <!-- 4 — Theme-aware primary palette (option 2 differentiator) -->
+    <!-- 4 — Olive primary palette -->
     <div class="decision-card">
       <div class="decision-card-head">
         <span class="num">4</span>
       </div>
-      <h3>Theme-aware actions — Charcoal/Beige light, Grey dark</h3>
-      <p>Primary and secondary actions flip with the theme. <strong>Light theme</strong> (Figma 18005-16473, softened): warm charcoal <code>#2a2810</code> primary (white text/icons) + light beige <code>#e2e0d3</code> secondary (dark text/icons). <strong>Dark theme</strong> (Figma 18209-47926): light grey <code>#a8a8a8</code> primary (dark text/icons) + dark grey <code>#2a2a2a</code> secondary (white text/icons). Each theme inverts which surface is light vs dark, so primary and secondary always sit on opposite sides of the contrast. Clearest fork from option 1, which keeps a single beige palette across both themes.</p>
-      <div style="display:flex;gap:8px;align-items:center;margin-top:4px;flex-wrap:wrap">
-        <span class="sample-btn sample-btn-accent" style="background:#2a2810;color:#fff;border-color:#2a2810">Light · primary</span>
-        <span class="sample-btn" style="background:#e2e0d3;border-color:#e2e0d3;color:#1a1905">Light · secondary</span>
-        <span class="sample-btn sample-btn-accent" style="background:#a8a8a8;color:#1a1905;border-color:#a8a8a8">Dark · primary</span>
-        <span class="sample-btn" style="background:#2a2a2a;border-color:#2a2a2a;color:#fff">Dark · secondary</span>
-      </div>
+      <h3>Olive primary — <code>#c0bc90</code></h3>
+      <p>Primary actions — desktop Open 360°, sidebar Open 360° tour, mobile Request sketch / Add SOW / Request estimate / Try it out — fill with the darker olive <code>#c0bc90</code> (old DS Base) and carry <strong>dark</strong> text and icons (same content treatment as option 1, just one tone deeper). Three-state: <strong>Base</strong> regular, <strong>Light</strong> hover <code>#d2cfa9</code>, <strong>Dark</strong> pressed <code>#a9a67c</code>. Sits one tone below option 1's <code>#d2cfa9</code>, lifting the primary off the surrounding pastel surfaces.</p>
+      <div style="margin-top:4px"><span class="sample-btn sample-btn-accent" style="background:#c0bc90;color:#1a1905;border-color:#c0bc90">Open 360°</span></div>
       <div class="card-swatches">
-        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#2a2810"></div><span class="mini-swatch-name">Light · primary</span><span class="mini-swatch-value">#2a2810</span></div>
-        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#e2e0d3"></div><span class="mini-swatch-name">Light · secondary</span><span class="mini-swatch-value">#e2e0d3</span></div>
-        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#a8a8a8"></div><span class="mini-swatch-name">Dark · primary</span><span class="mini-swatch-value">#a8a8a8</span></div>
-        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#2a2a2a"></div><span class="mini-swatch-name">Dark · secondary</span><span class="mini-swatch-value">#2a2a2a</span></div>
+        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#c0bc90"></div><span class="mini-swatch-name">Base · regular</span><span class="mini-swatch-value">#c0bc90</span></div>
+        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#d2cfa9"></div><span class="mini-swatch-name">Light · hover</span><span class="mini-swatch-value">#d2cfa9</span></div>
+        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#a9a67c"></div><span class="mini-swatch-name">Dark · pressed</span><span class="mini-swatch-value">#a9a67c</span></div>
       </div>
     </div>
 
-    <!-- 5 — Beige fill secondary (option 2: no white outline) -->
+    <!-- 5 — Mixed secondary: filled where it makes sense, stroke where it stays quiet -->
     <div class="decision-card">
       <div class="decision-card-head">
         <span class="num">5</span>
       </div>
-      <h3>Filled secondary — no white outlines</h3>
-      <p>White outline buttons are gone in option 2. Every secondary action — desktop Edit · Share · More · row downloads; mobile View rooms · Share access · Reshoot · Add additional 360°; round edit pencil — gets a filled surface that flips with the theme. <strong>Light theme:</strong> light beige <code>#e2e0d3</code> + dark text/icons. <strong>Dark theme:</strong> dark grey <code>#2a2a2a</code> + white text/icons. Always one shade off the surrounding card so they read as tappable without competing with the primary action.</p>
+      <h3>Mixed secondary — filled & stroke</h3>
+      <p>Secondary actions split by use. <strong>Filled</strong> <code>#e2e0d3</code> with dark text/icons for prominent secondaries: desktop Edit · Share · sidebar More, and every mobile secondary (View rooms · Share access). <strong>White-stroke</strong> <code>#e2e0d3</code> for row-level utility on web — Download buttons next to each report row; the whole Projects list page stays Primary + white-stroke only (no filled secondaries there, to keep the dense table calm).</p>
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <span class="sample-btn" style="background:#e2e0d3;border-color:#e2e0d3;color:#1a1905">Light · Edit</span>
-        <span class="sample-btn" style="background:#e2e0d3;border-color:#e2e0d3;color:#1a1905">Light · View rooms</span>
-        <span class="sample-btn" style="background:#2a2a2a;border-color:#2a2a2a;color:#fff">Dark · Edit</span>
-        <span class="sample-btn" style="background:#2a2a2a;border-color:#2a2a2a;color:#fff">Dark · View rooms</span>
+        <span class="sample-btn" style="background:#e2e0d3;border-color:#e2e0d3;color:#1a1905">Filled · Edit</span>
+        <span class="sample-btn" style="background:#e2e0d3;border-color:#e2e0d3;color:#1a1905">Filled · Share</span>
+        <span class="sample-btn" style="background:#e2e0d3;border-color:#e2e0d3;color:#1a1905">Filled · View rooms (mobile)</span>
+        <span class="sample-btn">Stroke · Download</span>
       </div>
     </div>
 
-    <!-- 6 — Pill buttons kept on mobile (option 2 keeps the rounded language) -->
+    <!-- 6 — No pill buttons; aligned radii (option 3: 16px on mobile) -->
     <div class="decision-card">
       <div class="decision-card-head">
         <span class="num">6</span>
       </div>
-      <h3>Pill mobile · square web</h3>
-      <p>Mobile action buttons stay full pills at <code>24px</code> radius — matches the Figma reference and reinforces the iOS-native feel option 2 leans into. Web action buttons stay at <code>8px</code> radius (square corners stay calmer on a denser desktop surface). Mobile cards round to <code>16px</code>; round icon nav buttons and badges keep their existing shapes.</p>
+      <h3>No pill buttons — aligned radii</h3>
+      <p>Action buttons use <code>8px</code> on web and <code>16px</code> on mobile (one step rounder than option 1's <code>12px</code>, but still short of a full pill). Mobile cards round to <code>16px</code> — buttons and cards now share the same radius for a calmer rhythm. Round icon-only nav buttons (back, more, edit) and badges keep their existing rounded shapes.</p>
       <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
-        <span class="sample-btn sample-btn-accent" style="border-radius:8px;background:#2a2810;color:#fff;border-color:#2a2810">Web 8px</span>
-        <span class="sample-btn sample-btn-accent" style="border-radius:24px;background:#2a2810;color:#fff;border-color:#2a2810">Mobile 24px pill</span>
+        <span class="sample-btn sample-btn-accent" style="border-radius:8px;background:#c0bc90;color:#1a1905;border-color:#c0bc90">Web 8px</span>
+        <span class="sample-btn sample-btn-accent" style="border-radius:16px;background:#c0bc90;color:#1a1905;border-color:#c0bc90">Mobile 16px</span>
       </div>
     </div>
 
@@ -582,24 +576,24 @@
         <span class="num">14</span>
       </div>
       <h3>Dark theme — NEW only</h3>
-      <p>The dark theme exists for the DS 2.1 NEW version only; Old stays light because that's what's in production today. Page bg flips to <code>#0f0f0f</code>, cards to <code>#1a1a1a</code>. Actions go fully neutral: primary turns light grey <code>#a8a8a8</code> with dark text + icons (Figma 18209-47926), secondary turns dark grey <code>#2a2a2a</code> with white text + icons. No olive, no beige in dark theme — the warm palette belongs to light mode only. Status badges intentionally stay on their light pastel backgrounds so we can audit contrast against the dark surfaces before adjusting.</p>
+      <p>The dark theme exists for the DS 2.1 NEW version only; Old stays light because that's what's in production today. Page bg flips to <code>#0f0f0f</code>, cards to <code>#1a1a1a</code>, inputs / active rows to <code>#2a2a2a</code>. Action buttons drop the beige sage and switch to a neutral light grey (<code>#a8a8a8</code> regular, <code>#bcbcbc</code> hover, <code>#888888</code> pressed) with dark text — the mobile references use neutral greys, not the beige palette. Status badges intentionally stay on their light pastel backgrounds so we can audit contrast against the dark surfaces before adjusting.</p>
       <div class="card-swatches">
         <div class="mini-swatch"><div class="mini-swatch-color" style="background:#0f0f0f"></div><span class="mini-swatch-name">page</span><span class="mini-swatch-value">#0f0f0f</span></div>
         <div class="mini-swatch"><div class="mini-swatch-color" style="background:#1a1a1a"></div><span class="mini-swatch-name">card</span><span class="mini-swatch-value">#1a1a1a</span></div>
-        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#a8a8a8"></div><span class="mini-swatch-name">primary</span><span class="mini-swatch-value">#a8a8a8</span></div>
-        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#2a2a2a"></div><span class="mini-swatch-name">secondary</span><span class="mini-swatch-value">#2a2a2a</span></div>
+        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#2a2a2a"></div><span class="mini-swatch-name">elevated</span><span class="mini-swatch-value">#2a2a2a</span></div>
+        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#a8a8a8"></div><span class="mini-swatch-name">action</span><span class="mini-swatch-value">#a8a8a8</span></div>
         <div class="mini-swatch"><div class="mini-swatch-color" style="background:#ffffff"></div><span class="mini-swatch-name">text-primary</span><span class="mini-swatch-value">#ffffff</span></div>
         <div class="mini-swatch"><div class="mini-swatch-color" style="background:#a8a8a8"></div><span class="mini-swatch-name">text-secondary</span><span class="mini-swatch-value">#a8a8a8</span></div>
       </div>
     </div>
 
-    <!-- 15 — Edge-to-edge mobile cards (option 2 only) -->
+    <!-- 15 — Edge-to-edge mobile cards, controls stay margined -->
     <div class="decision-card">
       <div class="decision-card-head">
         <span class="num">15</span>
       </div>
-      <h3>Edge-to-edge mobile cards</h3>
-      <p>The mobile content column loses its 16px side gutters. Cards stretch to the device edges, padding moves inside the card. Wider tap targets, less wasted horizontal space, more "native app" feel — pairs naturally with the pill buttons in rule 6. Card radius stays at <code>16px</code> for the rounded corner; only the side gutter goes to zero.</p>
+      <h3>Edge-to-edge cards · margined controls</h3>
+      <p>Mobile cards lose their 16px side gutters and stretch to the device edges — wider tap targets, less wasted space, more native-app feel. Standalone controls keep their <code>16px</code> side margins so they don't look orphaned: the Projects search bar, the My projects / All office projects segmented tabs, and the standalone Share access pill on Project detail. Card radius stays at <code>16px</code>.</p>
     </div>
 
   </div>

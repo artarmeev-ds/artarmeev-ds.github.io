@@ -1,27 +1,28 @@
-/* Phoenix design tokens — DS 2.1 update applied
-   Mirrors src/styles/tokens/_design-tokens.scss with the changes from
-   the May 8 proposal (Figma node 17411-20553). */
+/* Phoenix design tokens — OPTION 3 (hybrid)
+   Primary actions: darker olive #c0bc90 + white content (Figma 18209-47926).
+   Secondary actions: light beige #e2e0d3 (some web actions like Edit/Share/More).
+   Outline buttons (white + grey stroke) preserved for Download + Projects list.
+   Mobile: 16px button radius, edge-to-edge cards, controls keep 16px gutters. */
 
 :root {
   /* ---------- Surface ---------- */
   --ds-color-bg-white: #ffffff;
-  --ds-color-bg-primary: #d2cfa9;          /* DS 2.1 "Base new" — was #c0bc90 */
+  --ds-color-bg-primary: #c0bc90;          /* OPTION 3 — darker olive (old DS Base) */
   --ds-color-bg-neutral: #f4f3ea;
   --ds-color-bg-neutral-dark: #e2e0d3;
   --ds-color-bg-black: #1a1905;
-  --ds-color-bg-dark: #a9a67c;             /* DS 2.1 "Dark new" — was #6f6d41 */
+  --ds-color-bg-dark: #a9a67c;             /* "Dark new" */
   --ds-color-bg-gray: #87867f;
 
-  /* OPTION 2 LIGHT THEME — primary actions match Figma reference 18005-16473
-     (dark on white) but softened from pure Ash #1a1905 → warm charcoal #2a2810
-     to feel less harsh on cream/white surfaces. White text + icons. */
-  --ds-color-bg-action:         #2a2810;   /* warm charcoal — primary regular */
-  --ds-color-bg-action-hover:   #3a3820;   /* lifted */
-  --ds-color-bg-action-pressed: #1a1905;   /* deep Ash on press */
+  /* OPTION 3 — Primary actions: darker olive #c0bc90 with WHITE text + icons.
+     Three-state: Base, Light tint, Dark deeper. */
+  --ds-color-bg-action:         #c0bc90;   /* olive — regular */
+  --ds-color-bg-action-hover:   #d2cfa9;   /* lighter tint */
+  --ds-color-bg-action-pressed: #a9a67c;   /* deeper shade */
 
-  /* OPTION 2 — secondary action palette: Light #e2e0d3 (matches Figma 18005-16473
-     and 18209-47926 where Reshoot / Add additional 360° / round edit / Set as
-     first room all use --bg-neutral-dark). */
+  /* OPTION 3 — Secondary action palette: Light #e2e0d3 (--bg-neutral-dark).
+     Used by SOME web actions (Edit / Share / More) — Download row icons keep
+     their white stroke. Projects list page stays Primary + white-stroke only. */
   --ds-color-bg-secondary:         #e2e0d3;   /* regular */
   --ds-color-bg-secondary-hover:   #ecead9;   /* tint */
   --ds-color-bg-secondary-pressed: #d2cfa9;   /* darker */
@@ -32,12 +33,12 @@
   --ds-color-bg-error: #e92f2f;
   --ds-color-bg-warning: #dfbb3a;
   --ds-color-bg-info: #549cd3;
-  --ds-color-bg-button-primary: #2a2810;   /* OPTION 2 LIGHT — warm charcoal primary on mobile too */
+  --ds-color-bg-button-primary: #c0bc90;   /* OPTION 3 — olive primary on mobile too */
 
-  /* OPTION 2 LIGHT — promo collapses onto the warm charcoal primary. */
-  --ds-color-bg-promo:         #2a2810;
-  --ds-color-bg-promo-hover:   #3a3820;
-  --ds-color-bg-promo-pressed: #1a1905;
+  /* OPTION 3 — Promo collapses onto the olive primary. */
+  --ds-color-bg-promo:         #c0bc90;
+  --ds-color-bg-promo-hover:   #d2cfa9;
+  --ds-color-bg-promo-pressed: #a9a67c;
 
   /* ---------- Text — DS 2.1: beige → grey
      Recipe: #1A1905 (Ash) at opacity 0.65, blend-mode plus-darker.
@@ -95,9 +96,9 @@
   --ds-radius-xl: 16px;
   --ds-radius-pill: 24px;
   --ds-radius-card: 8px;
-  --ds-radius-card-mobile: 16px;
+  --ds-radius-card-mobile: 16px;          /* DS 2.1 — was 24px */
   --ds-radius-btn: 8px;                   /* Web action buttons */
-  --ds-radius-btn-mobile: 24px;           /* OPTION 2 — pill buttons on mobile */
+  --ds-radius-btn-mobile: 16px;           /* OPTION 3 — 16px mobile (no full pills) */
 
   /* ---------- Shadows ---------- */
   --ds-shadow-1: 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -118,83 +119,32 @@
 }
 
 /* Proposal class kept for compatibility — :root already has DS 2.1 applied. */
-body.proposal-1 { /* no overrides — DS 2.1 baseline lives on :root */ }
+body.proposal-1 { /* no overrides — option 3 baseline lives on :root */ }
 
 /* ==================================================================
-   OPTION 2 — Action treatment
-   LIGHT theme (Figma 18005-16473, softened): primary warm charcoal
-     #2a2810 + white content; secondary light beige #e2e0d3 + dark content.
-   DARK  theme (Figma 18209-47926): primary light grey #a8a8a8 + dark
-     content; secondary dark grey #2a2a2a + white content.
-   Outline buttons (white + grey stroke) are gone in option 2;
-   they're repurposed as filled secondaries.
+   OPTION 3 — Action treatment
+   Primary actions: olive #c0bc90 + DARK text + icons (same as option 1, just
+   one tone deeper from #d2cfa9). Dark mode inherits option 1's dark-theme
+   action behavior — neutral light grey #a8a8a8 + dark text/icons.
+   Web Edit / Share / sidebar More: filled secondary #e2e0d3 + dark content.
+   Web Download row buttons: keep their existing white stroke.
+   Projects list page: stays Primary + white-stroke only.
+   Mobile secondary (View rooms / Share access): filled #e2e0d3 + dark content
+   (no white outline on mobile in option 3).
+   Mobile: 16px button radius, edge-to-edge cards (controls keep 16px gutters).
    ================================================================== */
 
-/* Primary actions text + icons → white on Ash/Olive */
-body.proposal-1 .btn-accent,
-body.proposal-1 .btn-primary,
-body.proposal-1 .sidebar-btn-primary,
-body.proposal-1 .pill-btn:not(.pill-btn-outline),
-body.proposal-1 .btn-promo,
-body.proposal-1 .btn-create,
-body.proposal-1 .action-btn-primary {
-  color: #ffffff;
-}
-body.proposal-1 .btn-accent img,
-body.proposal-1 .btn-primary img,
-body.proposal-1 .sidebar-btn-primary img,
-body.proposal-1 .pill-btn:not(.pill-btn-outline) img,
-body.proposal-1 .btn-promo img,
-body.proposal-1 .btn-create img,
-body.proposal-1 .action-btn-primary img {
-  filter: brightness(0) invert(1);
-}
-
-/* Secondary actions: beige fill replaces the white outline */
-body.proposal-1 .btn:not(.btn-accent):not(.btn-primary):not(.btn-create),
-body.proposal-1 .icon-btn-32,
-body.proposal-1 .sidebar-btn-link,
-body.proposal-1 .action-btn:not(.action-btn-primary),
-body.proposal-1 .photo-btn,
-body.proposal-1 .pill-btn-outline,
-body.proposal-1 .archived-btn,
-body.proposal-1 .round-icon-btn {
+/* Mobile secondary fill — repurpose .pill-btn-outline as a filled #e2e0d3 pill.
+   Stroke uses --stroke-neutral so light mode blends invisibly (#e2e0d3=#e2e0d3)
+   while dark mode picks up #2a2a2a for a subtle stroke like option 1.
+   Legacy mode keeps its grey fill below (in iframe-mobile.html). */
+body.proposal-1 .pill-btn-outline {
   background: var(--ds-color-bg-secondary);
-  border-color: var(--ds-color-bg-secondary);
+  border-color: var(--ds-color-stroke-neutral);
 }
-body.proposal-1 .btn:not(.btn-accent):not(.btn-primary):not(.btn-create):hover,
-body.proposal-1 .icon-btn-32:hover,
-body.proposal-1 .sidebar-btn-link:hover,
-body.proposal-1 .action-btn:not(.action-btn-primary):hover,
-body.proposal-1 .photo-btn:hover,
-body.proposal-1 .pill-btn-outline:hover,
-body.proposal-1 .archived-btn:hover,
-body.proposal-1 .round-icon-btn:hover {
+body.proposal-1 .pill-btn-outline:hover {
   background: var(--ds-color-bg-secondary-hover);
-  border-color: var(--ds-color-bg-secondary-hover);
-}
-
-/* Secondary actions: force BLACK text + icons on the beige fill (light theme).
-   Scoped to non-dark mode — dark mode keeps white text/icons on the dark grey fill. */
-body.proposal-1:not(.dark) .btn:not(.btn-accent):not(.btn-primary):not(.btn-create),
-body.proposal-1:not(.dark) .icon-btn-32,
-body.proposal-1:not(.dark) .sidebar-btn-link,
-body.proposal-1:not(.dark) .action-btn:not(.action-btn-primary),
-body.proposal-1:not(.dark) .photo-btn,
-body.proposal-1:not(.dark) .pill-btn-outline,
-body.proposal-1:not(.dark) .archived-btn,
-body.proposal-1:not(.dark) .round-icon-btn {
-  color: #1a1905;
-}
-body.proposal-1:not(.dark) .btn:not(.btn-accent):not(.btn-primary):not(.btn-create) img,
-body.proposal-1:not(.dark) .icon-btn-32 img,
-body.proposal-1:not(.dark) .sidebar-btn-link img,
-body.proposal-1:not(.dark) .action-btn:not(.action-btn-primary) img,
-body.proposal-1:not(.dark) .photo-btn img,
-body.proposal-1:not(.dark) .pill-btn-outline img,
-body.proposal-1:not(.dark) .archived-btn img,
-body.proposal-1:not(.dark) .round-icon-btn img {
-  filter: none;
+  border-color: var(--ds-color-stroke-neutral);
 }
 
 /* ==================================================================
@@ -212,21 +162,15 @@ body.dark {
   --ds-color-bg-neutral:      #0f0f0f;
   --ds-color-bg-neutral-dark: #2a2a2a;
 
-  /* Action palette — DARK theme actions per rendered Figma 18209-47926:
-     Primary = light grey #a8a8a8 with DARK text + icons.
-     Secondary = dark grey #2a2a2a (one shade lighter than card) with
-     WHITE text + icons. No olive, no light beige in dark theme. */
-  --ds-color-bg-action:         #a8a8a8;     /* light grey — primary regular */
+  /* Action palette — neutral light grey in dark mode (mobile reference shows
+     "Request sketch", "Add comment", "Request" CTA all as neutral greys, not
+     the beige sage from light theme). Primary text stays dark on the button. */
+  --ds-color-bg-action:         #a8a8a8;     /* regular */
   --ds-color-bg-action-hover:   #bcbcbc;     /* lighter */
   --ds-color-bg-action-pressed: #888888;     /* darker */
   --ds-color-bg-primary:        #a8a8a8;
   --ds-color-bg-button-primary: #a8a8a8;
   --ds-color-bg-dark:           #888888;
-
-  /* Secondary actions in dark theme — dark grey on dark cards. */
-  --ds-color-bg-secondary:         #2a2a2a;
-  --ds-color-bg-secondary-hover:   #3a3a3a;
-  --ds-color-bg-secondary-pressed: #1f1f1f;
 
   /* Text */
   --ds-color-text-primary:   #ffffff;
@@ -240,29 +184,50 @@ body.dark {
   --ds-color-bg-promo:         #a8a8a8;
   --ds-color-bg-promo-hover:   #bcbcbc;
   --ds-color-bg-promo-pressed: #888888;
+
+  /* OPTION 3 — Secondary action palette in dark theme: web filled secondary
+     sits on the dark card surface (#1a1a1a); mobile gets a slightly lifted
+     #2C2C2E fill (handled by a scoped .pill-btn-outline override below). */
+  --ds-color-bg-secondary:         #1a1a1a;
+  --ds-color-bg-secondary-hover:   #2a2a2a;
+  --ds-color-bg-secondary-pressed: #0f0f0f;
 }
 
-/* Primary actions in dark theme: light grey bg → DARK text + icons.
-   Overrides the white-on-Ash rule from body.proposal-1 above. */
+/* OPTION 3 — Mobile dark secondary: #2C2C2E filled (no stroke), white text/icons.
+   White text is the body.dark default for text-primary; icons get inverted by the
+   generic body.dark img.icon rule. */
+body.dark.proposal-1 .pill-btn-outline {
+  background: #2c2c2e;
+  border-color: #2c2c2e;
+}
+body.dark.proposal-1 .pill-btn-outline:hover {
+  background: #3a3a3c;
+  border-color: #3a3a3c;
+}
+
+/* Text + counts stay DARK on the light-grey action surface in dark mode.
+   Excludes .pill-btn-outline because its background flips to a dark surface. */
 body.dark .btn-accent,
 body.dark .btn-primary,
 body.dark .sidebar-btn-primary,
 body.dark .pill-btn:not(.pill-btn-outline),
+body.dark .pill-btn-promo,
 body.dark .btn-promo,
 body.dark .btn-create,
 body.dark .action-btn-primary,
 body.dark .menu-badge {
   color: #1a1905;
 }
+
 /* Generic dark-mode icon inversion — applies to ALL imgs (photos are CSS
    bg-images in this codebase, never <img>) so icons read on dark surfaces.
-   Specific surfaces that stay light (pastel pills, primary actions on
-   #a8a8a8, mobile system glass) are opted out below. */
+   Surfaces that stay light (pastel pills, primary actions on #a8a8a8) are
+   opted out below. */
 body.dark img {
   filter: brightness(0) invert(1);
 }
 /* Opt-outs MUST come after the generic invert rule above so they win
-   (same specificity → source order decides). */
+   (same specificity → source order decides). Light surfaces keep dark icons. */
 body.dark .badge img,
 body.dark .pbadge.upload img,
 body.dark .pbadge.done img,
@@ -277,7 +242,7 @@ body.dark .ie-banner-tag img,
 /* .hero-loss / .overlay-loss (Water badge, mobile only) intentionally OMITTED —
    their bg flips to dark (#1a1a1a) in dark mode, so the icon must invert to white. */
 body.dark .alert img,
-/* Primary actions in dark theme sit on LIGHT GREY #a8a8a8 — icons stay dark. */
+/* Primary actions on light-grey #a8a8a8 — icons stay dark to match dark text. */
 body.dark .btn-accent img,
 body.dark .btn-primary img,
 body.dark .sidebar-btn-primary img,
@@ -308,10 +273,6 @@ body.dark .nav-btn-square img,
 body.dark .tab-bar .tab img {
   filter: none;
 }
-
-/* Secondary actions in dark mode use dark grey bg + white text/icons —
-   inherits both from the body.dark text-primary token and the generic
-   icon-invert rule. No explicit override needed. */
 
 /* ==================================================================
    LEGACY MODE — pre DS 2.1 (current production)
@@ -353,8 +314,9 @@ body.legacy {
   --ds-radius-card-mobile: 24px;
 }
 
-/* OPTION 2 — Legacy yellow / beige primary actions: BLACK text + icons.
-   Cancels the body.proposal-1 white-on-charcoal treatment for legacy. */
+/* OPTION 3 — Legacy yellow / beige primary actions: BLACK text + icons.
+   Most primary actions in option 3 already inherit dark text (no body.proposal-1
+   white override), but this block makes the rule explicit + covers img filter. */
 body.legacy .btn-accent,
 body.legacy .btn-primary,
 body.legacy .sidebar-btn-primary,
