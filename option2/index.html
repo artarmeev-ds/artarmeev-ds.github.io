@@ -365,6 +365,21 @@
     color: var(--ds-color-text-primary);
     box-shadow: 0 1px 2px rgba(26, 25, 5, 0.08);
   }
+  /* Inline badge inside Option toggles (e.g. "Pre-final" on Option 3). */
+  .toggle-group .menu-tag {
+    display: inline-flex;
+    align-items: center;
+    height: 16px;
+    padding: 0 6px;
+    margin-left: 6px;
+    border-radius: 3px;
+    background: #e5df00;
+    color: #1a1905;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
 </style>
 </head>
 <body>
@@ -374,7 +389,7 @@
   <nav class="toggle-group" aria-label="Proposal">
     <a href="../option1/">Option 1</a>
     <a href="../option2/" class="active">Option 2</a>
-    <a href="../option3/">Option 3</a>
+    <a href="../option3/">Option 3 <span class="menu-tag">Pre-final</span></a>
   </nav>
   <div class="toggle-group version-toggle" role="group" aria-label="Version">
     <button class="opt active" data-state="new"  type="button">New light</button>
@@ -548,10 +563,10 @@
       <div class="decision-card-head">
         <span class="num">11</span>
       </div>
-      <h3>Grey secondary text</h3>
-      <p>Density rail labels, section subtitles, sidebar IDs and copy badges use grey. Recipe: <code>#1A1905</code> at <code>opacity 0.65</code> with <code>plus-darker</code> blend — equivalent to <code>#6a6a66</code>.</p>
+      <h3>Neutral/Ash secondary text & icons</h3>
+      <p>Density rail labels, section subtitles, sidebar IDs, copy badges, and secondary icons share one token — <strong>Neutral/Ash 68%</strong>. Recipe: <code>#1A1905</code> at <code>opacity 0.68</code> with <code>plus-darker</code> blend — practical equivalent <code>#5d5e52</code>. Same approach as before, just tuned a step darker / less olive than the old <code>#6a6a66</code> draft so it reads as a true secondary on both white and cream surfaces.</p>
       <div class="card-swatches">
-        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#6a6a66"></div><span class="mini-swatch-name">secondary</span><span class="mini-swatch-value">#6a6a66</span></div>
+        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#5d5e52"></div><span class="mini-swatch-name">secondary text + icon</span><span class="mini-swatch-value">#5d5e52</span></div>
       </div>
     </div>
 

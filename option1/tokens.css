@@ -33,12 +33,12 @@
   --ds-color-bg-promo-hover:   #e6e4d2;     /* Light */
   --ds-color-bg-promo-pressed: #a9a67c;     /* Dark new */
 
-  /* ---------- Text — DS 2.1: beige → grey
-     Recipe: #1A1905 (Ash) at opacity 0.65, blend-mode plus-darker.
+  /* ---------- Text — DS 2.1: beige → Neutral/Ash
+     Recipe: Neutral/Ash 68% — #1A1905 at opacity 0.68, blend-mode plus-darker.
      Practical equivalent below. ---------- */
   --ds-color-text-primary: #1a1905;        /* unchanged — main copy */
-  --ds-color-text-secondary: #6a6a66;      /* was #6f6d41 (beige) */
-  --ds-color-text-muted: #6a6a66;          /* DS 2.1 — same as secondary, no separate muted */
+  --ds-color-text-secondary: #5d5e52;      /* Neutral/Ash 68%, was #6f6d41 (beige) */
+  --ds-color-text-muted: #5d5e52;          /* DS 2.1 — same as secondary, no separate muted */
   --ds-color-text-white: #ffffff;
   --ds-color-text-success: #15803d;
   --ds-color-text-error: #b91c1c;
