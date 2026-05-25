@@ -164,6 +164,68 @@
     border-radius: 50%;
     display: inline-block;
   }
+  .status-guideline { background: #e6e4d2; color: #5d5e52; }
+  .status-guideline::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: #87867f;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .status-in-progress { background: #fef3e0; color: #b45309; }
+  .status-in-progress::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: #b45309;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .status-foundation { background: #f4f3ea; color: #5d5e52; }
+  .status-foundation::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: #c0bc90;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .status-code-review { background: #d4e6f4; color: #165d77; }
+  .status-code-review::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: #165d77;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .status-na { background: #f4f3ea; color: #87867f; }
+  .status-na::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: #87867f;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  /* Long descriptive status text reads better in sentence case. */
+  .status.status-foundation,
+  .status.status-in-progress,
+  .status.status-code-review,
+  .status.status-na {
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+  /* Stack two platform chips (web + mobile) on the right of a card head. */
+  .status-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+    flex-shrink: 0;
+  }
+  /* Status pills can be links to Jira — preserve the look, lose underline. */
+  a.status {
+    text-decoration: none;
+    transition: filter 150ms;
+  }
+  a.status:hover { filter: brightness(0.96); }
 
   /* Swatches inside cards */
   .card-swatches {
@@ -412,42 +474,157 @@
 </header>
 
 <!-- ============================================================
-     DECISIONS — DS 2.1 rules with status
+     PRINCIPLES — DS 2.1 design conventions (no separate tickets)
      ============================================================ -->
 <section class="section">
   <div class="section-head">
-    <span class="section-tag">DS 2.1 · decisions</span>
-    <h2>What changed and why</h2>
-    <p>Fifteen decisions for this hybrid direction, applied to the Project Overview and the Projects list previews below.</p>
+    <span class="section-tag">DS 2.1 · principles</span>
+    <h2>Guiding rules</h2>
+    <p>Eight design conventions that don't ship as code. They govern how new work is judged — content tone, layout density, spacing rhythm, icon usage. No Jira tickets attached; these are the standards engineering + design hold themselves to.</p>
   </div>
 
   <div class="decisions">
 
-    <!-- 1 — Product register, not brand register -->
+    <!-- P1 — Product register, not brand register -->
     <div class="decision-card">
       <div class="decision-card-head">
-        <span class="num">1</span>
+        <span class="num">P1</span>
+        <span class="status status-guideline">Guideline</span>
       </div>
       <h3>Product register, not brand register</h3>
       <p>Copy follows the product voice: utilitarian, terse, action-oriented. No marketing flourishes. <a href="https://impeccable.style/tutorials/brand-vs-product/">Brand vs product</a> for context.</p>
     </div>
 
-    <!-- 2 — Less card design on web -->
+    <!-- P2 — Less card design on web -->
     <div class="decision-card">
       <div class="decision-card-head">
-        <span class="num">2</span>
+        <span class="num">P2</span>
+        <span class="status status-guideline">Guideline</span>
       </div>
       <h3>Less card design on web</h3>
       <p>Sections separate via vertical spacing — no dividers, no framed wrappers. Cards are reserved for distinct entity tiles like tour rooms and water-mitigation areas.</p>
     </div>
 
-    <!-- 3 — Soft badges new spec -->
+    <!-- P3 — No pill buttons; aligned radii (option 3: 16px on mobile) -->
     <div class="decision-card">
       <div class="decision-card-head">
-        <span class="num">3</span>
+        <span class="num">P3</span>
+        <span class="status status-guideline">Guideline</span>
+      </div>
+      <h3>No pill buttons — aligned radii</h3>
+      <p>Action buttons use <code>8px</code> on web and <code>16px</code> on mobile (one step rounder than option 1's <code>12px</code>, but still short of a full pill). Mobile cards round to <code>16px</code> — buttons and cards now share the same radius for a calmer rhythm. Round icon-only nav buttons (back, more, edit) and badges keep their existing rounded shapes.</p>
+      <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
+        <span class="sample-btn sample-btn-accent" style="border-radius:8px;background:#c0bc90;color:#1a1905;border-color:#c0bc90">Web 8px</span>
+        <span class="sample-btn sample-btn-accent" style="border-radius:16px;background:#c0bc90;color:#1a1905;border-color:#c0bc90">Mobile 16px</span>
+      </div>
+    </div>
+
+    <!-- P4 — Icon spacing in buttons -->
+    <div class="decision-card">
+      <div class="decision-card-head">
+        <span class="num">P4</span>
+        <span class="status status-guideline">Guideline</span>
+      </div>
+      <h3>8px gap between icon and text</h3>
+      <p>On web buttons, the gap between leading icon and label is <code>8px</code>. Equivalent to <code>me-2</code> / <code>ms-2</code> on a projected <code>&lt;svg-icon&gt;</code>.</p>
+      <div style="margin-top:4px">
+        <span class="sample-btn sample-btn-accent" style="gap:8px;background:#c0bc90;color:#1a1905;border-color:#c0bc90">
+          <img src="../icons/icon-360.svg" alt="" width="16" height="16">
+          Open 360°
+        </span>
+      </div>
+    </div>
+
+    <!-- P5 — Main actions with icons; others without -->
+    <div class="decision-card">
+      <div class="decision-card-head">
+        <span class="num">P5</span>
+        <span class="status status-guideline">Guideline</span>
+      </div>
+      <h3>Main actions get icons</h3>
+      <p>Primary CTAs — Open 360°, Edit, Share, Request estimate — carry a leading icon. Subtle utility actions like Generate and More stay text-only so secondary surfaces read calmer.</p>
+    </div>
+
+    <!-- P6 — Frequent utility actions stay quiet -->
+    <div class="decision-card">
+      <div class="decision-card-head">
+        <span class="num">P6</span>
+        <span class="status status-guideline">Guideline</span>
+      </div>
+      <h3>Frequent utility actions stay quiet</h3>
+      <p>Per-row download and edit actions render as icon-only 32×32 squares. The action is still recognisable, the row keeps more horizontal room for content, and the surface stays calm.</p>
+      <div style="margin-top:4px">
+        <span class="sample-btn" style="width:32px;padding:0;justify-content:center" aria-label="Download">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 20.75H5V19.25H19V20.75ZM12.75 13.6895L15.4697 10.9697L16.5303 12.0303L12 16.5605L7.46973 12.0303L8.53027 10.9697L11.25 13.6895V3.5H12.75V13.6895Z"/></svg>
+        </span>
+      </div>
+    </div>
+
+    <!-- P7 — 14px minimum -->
+    <div class="decision-card">
+      <div class="decision-card-head">
+        <span class="num">P7</span>
+        <span class="status status-guideline">Guideline</span>
+      </div>
+      <h3>14px minimum body text</h3>
+      <p>No 12px or 13px body copy on web. Body-sm is <code>14px</code>. Badges keep the 12px caption size as the only documented exception. Specific component fixes — like alert font upgrade — are tracked separately in the tasks section.</p>
+    </div>
+
+    <!-- P8 — Edge-to-edge mobile cards, controls stay margined -->
+    <div class="decision-card">
+      <div class="decision-card-head">
+        <span class="num">P8</span>
+        <span class="status status-guideline">Guideline</span>
+      </div>
+      <h3>Edge-to-edge cards · margined controls</h3>
+      <p>Mobile cards lose their 16px side gutters and stretch to the device edges — wider tap targets, less wasted space, more native-app feel. Standalone controls keep their <code>16px</code> side margins so they don't look orphaned: the standalone Share access pill on Project detail, plus the Projects search bar and the My projects / All office projects segmented tabs on Projects list. On the Projects list, the search bar and segmented tabs are also fully <strong>pill-shaped</strong> (both light and dark) so they read as iOS-native search/segment controls above the edge-to-edge cards below. Card radius stays at <code>16px</code>.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     TASKS — DS 2.1 implementation work (tracked in Jira)
+     ============================================================ -->
+<section class="section">
+  <div class="section-head">
+    <span class="section-tag">DS 2.1 · tasks</span>
+    <h2>Implementation tickets · web + mobile</h2>
+    <p>Each card carries two chips — <strong>Web</strong> (epic <a href="https://docusketch.atlassian.net/browse/WEB-448" target="_blank" rel="noopener">WEB-448</a>, assigned to Ilija Miljevic, <code>WM</code> label) and <strong>Mobile</strong> (epics <a href="https://docusketch.atlassian.net/browse/PHX-1408" target="_blank" rel="noopener">PHX-1408</a> design-system consolidation + <a href="https://docusketch.atlassian.net/browse/PHX-1142" target="_blank" rel="noopener">PHX-1142</a> design adjustments). Mobile is leading on most of these — tickets sit in <em>Code review</em> while web is still <em>In Progress</em>. T9 is mobile-only because selection controls were already correct on web. Some tasks (like T7 alert font) are first-of-many specific component fixes derived from the broader principles.</p>
+  </div>
+
+  <div class="decisions">
+
+    <!-- T1 — Olive primary palette (foundation, no standalone ticket) -->
+    <div class="decision-card">
+      <div class="decision-card-head">
+        <span class="num">T1</span>
+        <div class="status-stack">
+          <span class="status status-foundation">Web · Foundation (WEB-452 + WEB-453)</span>
+          <a class="status status-code-review" href="https://docusketch.atlassian.net/browse/PHX-1328" target="_blank" rel="noopener">Mobile · PHX-1328 · Code review</a>
+        </div>
+      </div>
+      <h3>Olive primary — <code>#c0bc90</code></h3>
+      <p>Primary actions — desktop Open 360°, sidebar Open 360° tour, mobile Request sketch / Add SOW / Request estimate / Try it out — fill with the darker olive <code>#c0bc90</code> (old DS Base) and carry <strong>dark</strong> text and icons (same content treatment as option 1, just one tone deeper). Three-state: <strong>Base</strong> regular, <strong>Light</strong> hover <code>#d2cfa9</code>, <strong>Dark</strong> pressed <code>#a9a67c</code>. Sits one tone below option 1's <code>#d2cfa9</code>, lifting the primary off the surrounding pastel surfaces. No standalone ticket — primary surface ships as part of the yellow-removal (WEB-452) and the new Secondary tier (WEB-453).</p>
+      <div style="margin-top:4px"><span class="sample-btn sample-btn-accent" style="background:#c0bc90;color:#1a1905;border-color:#c0bc90">Open 360°</span></div>
+      <div class="card-swatches">
+        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#c0bc90"></div><span class="mini-swatch-name">Base · regular</span><span class="mini-swatch-value">#c0bc90</span></div>
+        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#d2cfa9"></div><span class="mini-swatch-name">Light · hover</span><span class="mini-swatch-value">#d2cfa9</span></div>
+        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#a9a67c"></div><span class="mini-swatch-name">Dark · pressed</span><span class="mini-swatch-value">#a9a67c</span></div>
+      </div>
+    </div>
+
+    <!-- T2 — Soft badges (WEB-449) -->
+    <div class="decision-card">
+      <div class="decision-card-head">
+        <span class="num">T2</span>
+        <div class="status-stack">
+          <a class="status status-in-progress" href="https://docusketch.atlassian.net/browse/WEB-449" target="_blank" rel="noopener">Web · WEB-449 · In Progress</a>
+          <a class="status status-code-review" href="https://docusketch.atlassian.net/browse/PHX-1340" target="_blank" rel="noopener">Mobile · PHX-1340 · Code review</a>
+        </div>
       </div>
       <h3>Soft badge bgs &amp; sizing</h3>
-      <p>Status pills use soft tinted backgrounds (Done · In progress · Latest · SOW). Each is <code>20px</code> tall with <code>4px</code> padding on every side and a <code>16px</code> icon separated from the label by <code>4px</code>.</p>
+      <p>Status pills use soft tinted backgrounds (Done · In progress · Latest · SOW). Each is <code>20px</code> tall with <code>4px</code> padding on every side and a <code>16px</code> icon separated from the label by <code>4px</code>. Text + icon recipe at Neutral/Ash 78% with multiply blend.</p>
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">
         <span style="display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 4px;border-radius:4px;background:#ebfac1;color:#243805;font-size:12px;font-weight:500">Done</span>
         <span style="display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 4px;border-radius:4px;background:#d4e6f4;color:#165d77;font-size:12px;font-weight:500">In progress</span>
@@ -459,25 +636,14 @@
       </div>
     </div>
 
-    <!-- 4 — Olive primary palette -->
+    <!-- T3 — Mixed secondary (WEB-453) -->
     <div class="decision-card">
       <div class="decision-card-head">
-        <span class="num">4</span>
-      </div>
-      <h3>Olive primary — <code>#c0bc90</code></h3>
-      <p>Primary actions — desktop Open 360°, sidebar Open 360° tour, mobile Request sketch / Add SOW / Request estimate / Try it out — fill with the darker olive <code>#c0bc90</code> (old DS Base) and carry <strong>dark</strong> text and icons (same content treatment as option 1, just one tone deeper). Three-state: <strong>Base</strong> regular, <strong>Light</strong> hover <code>#d2cfa9</code>, <strong>Dark</strong> pressed <code>#a9a67c</code>. Sits one tone below option 1's <code>#d2cfa9</code>, lifting the primary off the surrounding pastel surfaces.</p>
-      <div style="margin-top:4px"><span class="sample-btn sample-btn-accent" style="background:#c0bc90;color:#1a1905;border-color:#c0bc90">Open 360°</span></div>
-      <div class="card-swatches">
-        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#c0bc90"></div><span class="mini-swatch-name">Base · regular</span><span class="mini-swatch-value">#c0bc90</span></div>
-        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#d2cfa9"></div><span class="mini-swatch-name">Light · hover</span><span class="mini-swatch-value">#d2cfa9</span></div>
-        <div class="mini-swatch"><div class="mini-swatch-color" style="background:#a9a67c"></div><span class="mini-swatch-name">Dark · pressed</span><span class="mini-swatch-value">#a9a67c</span></div>
-      </div>
-    </div>
-
-    <!-- 5 — Mixed secondary: filled where it makes sense, stroke where it stays quiet -->
-    <div class="decision-card">
-      <div class="decision-card-head">
-        <span class="num">5</span>
+        <span class="num">T3</span>
+        <div class="status-stack">
+          <a class="status status-in-progress" href="https://docusketch.atlassian.net/browse/WEB-453" target="_blank" rel="noopener">Web · WEB-453 · In Progress</a>
+          <a class="status status-code-review" href="https://docusketch.atlassian.net/browse/PHX-1328" target="_blank" rel="noopener">Mobile · PHX-1328 · Code review</a>
+        </div>
       </div>
       <h3>Mixed secondary — filled & stroke by frequency</h3>
       <p>Secondary actions split by how often they're used. <strong>Filled</strong> <code>#e2e0d3</code> with dark text/icons for the prominent / frequent ones: desktop <strong>Share</strong>, and every mobile secondary (View rooms · Share access). <strong>White-stroke</strong> <code>#e2e0d3</code> for less frequent / utility actions: desktop <strong>Edit</strong> and sidebar <strong>More</strong>, plus row-level Download buttons; the whole Projects list page stays Primary + white-stroke only (no filled secondaries there, to keep the dense table calm). Dark theme normalizes all secondaries to the dark card surface so the filled/stroke distinction relaxes.</p>
@@ -490,61 +656,14 @@
       </div>
     </div>
 
-    <!-- 6 — No pill buttons; aligned radii (option 3: 16px on mobile) -->
+    <!-- T4 — Yellow accent restriction (WEB-452) -->
     <div class="decision-card">
       <div class="decision-card-head">
-        <span class="num">6</span>
-      </div>
-      <h3>No pill buttons — aligned radii</h3>
-      <p>Action buttons use <code>8px</code> on web and <code>16px</code> on mobile (one step rounder than option 1's <code>12px</code>, but still short of a full pill). Mobile cards round to <code>16px</code> — buttons and cards now share the same radius for a calmer rhythm. Round icon-only nav buttons (back, more, edit) and badges keep their existing rounded shapes.</p>
-      <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
-        <span class="sample-btn sample-btn-accent" style="border-radius:8px;background:#c0bc90;color:#1a1905;border-color:#c0bc90">Web 8px</span>
-        <span class="sample-btn sample-btn-accent" style="border-radius:16px;background:#c0bc90;color:#1a1905;border-color:#c0bc90">Mobile 16px</span>
-      </div>
-    </div>
-
-    <!-- 7 — Icon spacing in buttons -->
-    <div class="decision-card">
-      <div class="decision-card-head">
-        <span class="num">7</span>
-      </div>
-      <h3>8px gap between icon and text</h3>
-      <p>On web buttons, the gap between leading icon and label is <code>8px</code>. Equivalent to <code>me-2</code> / <code>ms-2</code> on a projected <code>&lt;svg-icon&gt;</code>.</p>
-      <div style="margin-top:4px">
-        <span class="sample-btn sample-btn-accent" style="gap:8px;background:#c0bc90;color:#1a1905;border-color:#c0bc90">
-          <img src="../icons/icon-360.svg" alt="" width="16" height="16">
-          Open 360°
-        </span>
-      </div>
-    </div>
-
-    <!-- 8 — Main actions with icons; others without -->
-    <div class="decision-card">
-      <div class="decision-card-head">
-        <span class="num">8</span>
-      </div>
-      <h3>Main actions get icons</h3>
-      <p>Primary CTAs — Open 360°, Edit, Share, Request estimate — carry a leading icon. Subtle utility actions like Generate and More stay text-only so secondary surfaces read calmer.</p>
-    </div>
-
-    <!-- 9 — Frequent utility actions stay quiet -->
-    <div class="decision-card">
-      <div class="decision-card-head">
-        <span class="num">9</span>
-      </div>
-      <h3>Frequent utility actions stay quiet</h3>
-      <p>Per-row download and edit actions render as icon-only 32×32 squares. The action is still recognisable, the row keeps more horizontal room for content, and the surface stays calm.</p>
-      <div style="margin-top:4px">
-        <span class="sample-btn" style="width:32px;padding:0;justify-content:center" aria-label="Download">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 20.75H5V19.25H19V20.75ZM12.75 13.6895L15.4697 10.9697L16.5303 12.0303L12 16.5605L7.46973 12.0303L8.53027 10.9697L11.25 13.6895V3.5H12.75V13.6895Z"/></svg>
-        </span>
-      </div>
-    </div>
-
-    <!-- 10 — Yellow as accent only (decorations, counts, selected nav, small icons) -->
-    <div class="decision-card">
-      <div class="decision-card-head">
-        <span class="num">10</span>
+        <span class="num">T4</span>
+        <div class="status-stack">
+          <a class="status status-in-progress" href="https://docusketch.atlassian.net/browse/WEB-452" target="_blank" rel="noopener">Web · WEB-452 · In Progress</a>
+          <span class="status status-na">Mobile · No equivalent</span>
+        </div>
       </div>
       <h3>Yellow — small accents only</h3>
       <p>Yellow chartreuse <code>#E5DF00</code> stays in the palette but loses every surface role. It is no longer used for primary CTAs, secondary actions, or promotional fills — those now belong to the olive + beige palette. Yellow returns as a pure accent on <strong>small</strong> surfaces only: decorations, small badges, counts, selected icons, and thin indicator stripes like the top-nav active underline. Large surfaces (sidebar menu rows, bottom-tab cells) stay neutral — yellow would overpower them. Treat it like a highlighter — high visibility, never a button, never a row.</p>
@@ -561,10 +680,14 @@
       </div>
     </div>
 
-    <!-- 11 — Grey secondary text -->
+    <!-- T5 — Neutral/Ash secondary text & icons (WEB-450) -->
     <div class="decision-card">
       <div class="decision-card-head">
-        <span class="num">11</span>
+        <span class="num">T5</span>
+        <div class="status-stack">
+          <a class="status status-in-progress" href="https://docusketch.atlassian.net/browse/WEB-450" target="_blank" rel="noopener">Web · WEB-450 · In Progress</a>
+          <a class="status status-code-review" href="https://docusketch.atlassian.net/browse/PHX-1339" target="_blank" rel="noopener">Mobile · PHX-1339 · Code review</a>
+        </div>
       </div>
       <h3>Neutral/Ash secondary text & icons</h3>
       <p>Density rail labels, section subtitles, sidebar IDs, copy badges, and secondary icons share one token — <strong>Neutral/Ash 68%</strong>. Recipe: <code>#1A1905</code> at <code>opacity 0.68</code> with <code>plus-darker</code> blend — practical equivalent <code>#5d5e52</code>. Same approach as before, just tuned a step darker / less olive than the old <code>#6a6a66</code> draft so it reads as a true secondary on both white and cream surfaces.</p>
@@ -573,34 +696,52 @@
       </div>
     </div>
 
-    <!-- 12 — 14px minimum -->
+    <!-- T6 — NEW tag is always green (WEB-473) -->
     <div class="decision-card">
       <div class="decision-card-head">
-        <span class="num">12</span>
-      </div>
-      <h3>14px minimum body text</h3>
-      <p>No 12px or 13px body copy on web. Body-sm is <code>14px</code>. Badges keep the 12px caption size as the only documented exception.</p>
-    </div>
-
-    <!-- 13 — NEW tag is always green -->
-    <div class="decision-card">
-      <div class="decision-card-head">
-        <span class="num">13</span>
+        <span class="num">T6</span>
+        <div class="status-stack">
+          <a class="status status-in-progress" href="https://docusketch.atlassian.net/browse/WEB-473" target="_blank" rel="noopener">Web · WEB-473 · In Progress</a>
+          <span class="status status-na">Mobile · No equivalent</span>
+        </div>
       </div>
       <h3>"NEW" tag is always green</h3>
-      <p>Any NEW label flagging a freshly added item — sidebar Initial Estimate, future modules — uses the green badge style. Green is the most prominent tone in the palette and reads as "first time here". Other badge colours stay reserved for status (Done, In progress) or category (SOW, Latest).</p>
+      <p>Any NEW label flagging a freshly launched product feature — sidebar Initial Estimate, line item editor, future modules — uses the green badge style. Green is the most prominent tone in the palette and reads as "first time here". Other badge colours stay reserved for status (Done, In progress) or category (SOW, Latest). NEW is not for new messages, new orders, or pricing-tier framing — those keep their existing notification / status / commercial treatments.</p>
       <div style="margin-top:4px">
         <span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:4px;background:#ebfac1;color:#15803d;font-size:11px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase">New</span>
       </div>
     </div>
 
-    <!-- 14 — Dark theme -->
+    <!-- T7 — Alert font upgrade (WEB-451) -->
     <div class="decision-card">
       <div class="decision-card-head">
-        <span class="num">14</span>
+        <span class="num">T7</span>
+        <div class="status-stack">
+          <a class="status status-in-progress" href="https://docusketch.atlassian.net/browse/WEB-451" target="_blank" rel="noopener">Web · WEB-451 · In Progress</a>
+          <span class="status status-na">Mobile · No equivalent</span>
+        </div>
+      </div>
+      <h3>Alert font — 12 → 14px / 18px</h3>
+      <p>First specific-component task derived from principle <strong>P7</strong> (14px minimum body). The <code>app-alert</code> component (success / warning / error / info banners) currently renders at <code>12px / 14px</code> — too small for state-critical messages. Bump to <code>14px / 18px</code> in <code>alert.component.scss</code>, picked up automatically by all ~20+ feature templates that render <code>&lt;app-alert&gt;</code>. More component-level fixes (toasts, modal banners, anywhere else a 12 / 13px body slipped in) will land under the same epic as the codebase gets audited.</p>
+      <div class="alert" style="display:flex;align-items:center;padding:8px;border-radius:8px;color:#1a1905;font-size:14px;line-height:18px;background:#fef2c3;margin-top:4px">
+        <span style="display:inline-flex;width:16px;height:16px;margin-right:4px;align-items:center;justify-content:center;color:#8a6d00">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 21h22L12 2zm0 3.83L19.53 19H4.47L12 5.83zM11 10v4h2v-4h-2zm0 6v2h2v-2h-2z"/></svg>
+        </span>
+        <span>Alert text now renders at 14px / 18px — readable, breathable.</span>
+      </div>
+    </div>
+
+    <!-- T8 — Dark theme (mobile first, no ticket yet) -->
+    <div class="decision-card">
+      <div class="decision-card-head">
+        <span class="num">T8</span>
+        <div class="status-stack">
+          <span class="status status-na">Web · TBD</span>
+          <a class="status status-in-progress" href="https://docusketch.atlassian.net/browse/PHX-1410" target="_blank" rel="noopener">Mobile · PHX-1410 · ~90%</a>
+        </div>
       </div>
       <h3>Dark theme — NEW only</h3>
-      <p>The dark theme exists for the DS 2.1 NEW version only; Old stays light because that's what's in production today. Page bg flips to <code>#0f0f0f</code>, cards to <code>#1a1a1a</code>, inputs / active rows to <code>#2a2a2a</code>. Primary actions drop the olive and switch to neutral light grey (<code>#a8a8a8</code> regular, <code>#bcbcbc</code> hover, <code>#888888</code> pressed) with dark text — matches option 1's dark behavior. Secondary actions split by surface: web filled secondary flips to the dark card surface <code>#1a1a1a</code> with a subtle <code>#2a2a2a</code> stroke and white content; mobile filled secondary (View rooms / Share access) goes to <code>#2C2C2E</code> with white content and no stroke — lifted one shade above the card so it reads as tappable. Status badges intentionally stay on their light pastel backgrounds so we can audit contrast against the dark surfaces before adjusting.</p>
+      <p>Mobile-first rollout — KMP implementation is roughly <strong>90% complete</strong>; web follows once mobile lands. The dark theme exists for the DS 2.1 NEW version only; Old stays light because that's what's in production today. Page bg flips to <code>#0f0f0f</code>, cards to <code>#1a1a1a</code>, inputs / active rows to <code>#2a2a2a</code>. Primary actions drop the olive and switch to neutral light grey (<code>#a8a8a8</code> regular, <code>#bcbcbc</code> hover, <code>#888888</code> pressed) with dark text — matches option 1's dark behavior. Secondary actions split by surface: web filled secondary flips to the dark card surface <code>#1a1a1a</code> with a subtle <code>#2a2a2a</code> stroke and white content; mobile filled secondary (View rooms / Share access) goes to <code>#2C2C2E</code> with white content and no stroke — lifted one shade above the card so it reads as tappable. Status badges intentionally stay on their light pastel backgrounds so we can audit contrast against the dark surfaces before adjusting. Web tracking ticket TBD.</p>
       <div class="card-swatches">
         <div class="mini-swatch"><div class="mini-swatch-color" style="background:#0f0f0f"></div><span class="mini-swatch-name">page</span><span class="mini-swatch-value">#0f0f0f</span></div>
         <div class="mini-swatch"><div class="mini-swatch-color" style="background:#1a1a1a"></div><span class="mini-swatch-name">card / web 2°</span><span class="mini-swatch-value">#1a1a1a</span></div>
@@ -611,13 +752,33 @@
       </div>
     </div>
 
-    <!-- 15 — Edge-to-edge mobile cards, controls stay margined -->
+    <!-- T9 — Selection controls (mobile-only; web already correct) -->
     <div class="decision-card">
       <div class="decision-card-head">
-        <span class="num">15</span>
+        <span class="num">T9</span>
+        <div class="status-stack">
+          <span class="status status-na">Web · Already correct</span>
+          <a class="status status-code-review" href="https://docusketch.atlassian.net/browse/PHX-1407" target="_blank" rel="noopener">Mobile · PHX-1407 · Code review</a>
+        </div>
       </div>
-      <h3>Edge-to-edge cards · margined controls</h3>
-      <p>Mobile cards lose their 16px side gutters and stretch to the device edges — wider tap targets, less wasted space, more native-app feel. Standalone controls keep their <code>16px</code> side margins so they don't look orphaned: the standalone Share access pill on Project detail, plus the Projects search bar and the My projects / All office projects segmented tabs on Projects list. On the Projects list, the search bar and segmented tabs are also fully <strong>pill-shaped</strong> (both light and dark) so they read as iOS-native search/segment controls above the edge-to-edge cards below. Card radius stays at <code>16px</code>.</p>
+      <h3>Selection controls — colour update</h3>
+      <p>Mobile-only fix. Switches, radio buttons, checkboxes, and steppers on mobile were using off-palette colours; PHX-1407 brings them in line with the design system: switch on <strong>Eucalyptus/Dark</strong> selected + <strong>Eucalyptus/Base</strong> default; radio + checkbox selected on <strong>bg Dark</strong> with white tick / circle and a new <strong>stroke Illustration</strong> default outline; stepper on <strong>bg Neutral dark</strong>. Web already renders these correctly — no web ticket needed. Listed here so the cross-platform parity story is visible in one place.</p>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:4px">
+        <!-- Switch ON -->
+        <span style="display:inline-flex;align-items:center;width:34px;height:20px;background:#6f6d41;border-radius:10px;padding:2px;justify-content:flex-end" aria-label="Switch on">
+          <span style="display:inline-block;width:16px;height:16px;background:#fff;border-radius:50%"></span>
+        </span>
+        <!-- Radio selected -->
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#1a1905;border-radius:50%" aria-label="Radio selected">
+          <span style="display:inline-block;width:8px;height:8px;background:#fff;border-radius:50%"></span>
+        </span>
+        <!-- Checkbox selected -->
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#1a1905;border-radius:4px;color:#fff;font-size:14px;line-height:1" aria-label="Checkbox selected">✓</span>
+        <!-- Stepper -->
+        <span style="display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 8px;background:#e2e0d3;border-radius:14px;color:#1a1905;font-size:12px;font-weight:500" aria-label="Stepper">
+          <span>−</span><span>2</span><span>+</span>
+        </span>
+      </div>
     </div>
 
   </div>
