@@ -626,11 +626,11 @@
       <h3>Soft badge bgs &amp; sizing</h3>
       <p>Status pills use soft tinted backgrounds (Done · In progress · Latest · SOW). Each is <code>20px</code> tall with <code>4px</code> padding on every side and a <code>16px</code> icon separated from the label by <code>4px</code>. Text + icon recipe at Neutral/Ash 78% with multiply blend.</p>
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">
-        <span style="display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 4px;border-radius:4px;background:#ebfac1;color:#243805;font-size:12px;font-weight:500">Done</span>
-        <span style="display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 4px;border-radius:4px;background:#d4e6f4;color:#165d77;font-size:12px;font-weight:500">In progress</span>
-        <span style="display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 4px;border-radius:4px;background:#d4d1c6;color:#1a1905;font-size:12px;font-weight:500">Latest</span>
-        <span style="display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 4px;border-radius:4px;background:#d4d1c6;color:#1a1905;font-size:12px;font-weight:500">
-          <img src="../icons/icon-sow.svg" width="16" height="16" alt="" aria-hidden="true">
+        <span style="display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 4px;border-radius:4px;background:#ebfac1;color:#1a1905c7;font-size:12px;font-weight:500;mix-blend-mode:multiply">Done</span>
+        <span style="display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 4px;border-radius:4px;background:#d4e6f4;color:#1a1905c7;font-size:12px;font-weight:500;mix-blend-mode:multiply">In progress</span>
+        <span style="display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 4px;border-radius:4px;background:#d4d1c6;color:#1a1905c7;font-size:12px;font-weight:500;mix-blend-mode:multiply">Latest</span>
+        <span style="display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 4px;border-radius:4px;background:#d4d1c6;color:#1a1905c7;font-size:12px;font-weight:500;mix-blend-mode:multiply">
+          <img src="../icons/icon-sow.svg" width="16" height="16" alt="" aria-hidden="true" style="mix-blend-mode:multiply;opacity:0.78">
           SOW
         </span>
       </div>
@@ -702,13 +702,13 @@
         <span class="num">T6</span>
         <div class="status-stack">
           <a class="status status-in-progress" href="https://docusketch.atlassian.net/browse/WEB-473" target="_blank" rel="noopener">Web · WEB-473 · In Progress</a>
-          <span class="status status-na">Mobile · No equivalent</span>
+          <span class="status status-na">Mobile · Ticket pending</span>
         </div>
       </div>
       <h3>"NEW" tag is always green</h3>
-      <p>Any NEW label flagging a freshly launched product feature — sidebar Initial Estimate, line item editor, future modules — uses the green badge style. Green is the most prominent tone in the palette and reads as "first time here". Other badge colours stay reserved for status (Done, In progress) or category (SOW, Latest). NEW is not for new messages, new orders, or pricing-tier framing — those keep their existing notification / status / commercial treatments.</p>
+      <p>Any NEW label flagging a freshly launched product feature — sidebar Initial Estimate, line item editor, future modules — uses the green badge style. Green is the most prominent tone in the palette and reads as "first time here". Other badge colours stay reserved for status (Done, In progress) or category (SOW, Latest). NEW is not for new messages, new orders, or pricing-tier framing — those keep their existing notification / status / commercial treatments. <strong>Text uses the shared <code>text Badge</code> recipe — Neutral/Ash 78%, sentence-case, 12px caption regular</strong> — matching every other status badge from <a href="https://docusketch.atlassian.net/browse/PHX-1340" target="_blank" rel="noopener">PHX-1340</a>. The dark-green text + 11px uppercase treatment from earlier drafts is retired. <strong>Mobile needs the same fix</strong> — a paired PHX subtask under <a href="https://docusketch.atlassian.net/browse/PHX-1408" target="_blank" rel="noopener">PHX-1408</a> will follow.</p>
       <div style="margin-top:4px">
-        <span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:4px;background:#ebfac1;color:#15803d;font-size:11px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase">New</span>
+        <span style="display:inline-flex;align-items:center;height:20px;padding:0 4px;border-radius:4px;background:#ebfac1;color:#1a1905c7;font-size:12px;font-weight:500;mix-blend-mode:multiply">New</span>
       </div>
     </div>
 
@@ -769,11 +769,11 @@
           <span style="display:inline-block;width:16px;height:16px;background:#fff;border-radius:50%"></span>
         </span>
         <!-- Radio selected -->
-        <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#1a1905;border-radius:50%" aria-label="Radio selected">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#6f6d41;border-radius:50%" aria-label="Radio selected">
           <span style="display:inline-block;width:8px;height:8px;background:#fff;border-radius:50%"></span>
         </span>
         <!-- Checkbox selected -->
-        <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#1a1905;border-radius:4px;color:#fff;font-size:14px;line-height:1" aria-label="Checkbox selected">✓</span>
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:#6f6d41;border-radius:4px;color:#fff;font-size:14px;line-height:1" aria-label="Checkbox selected">✓</span>
         <!-- Stepper -->
         <span style="display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 8px;background:#e2e0d3;border-radius:14px;color:#1a1905;font-size:12px;font-weight:500" aria-label="Stepper">
           <span>−</span><span>2</span><span>+</span>
