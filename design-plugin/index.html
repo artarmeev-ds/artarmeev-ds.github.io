@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design Review — automating design-system compliance on the Portal</title>
+<meta name="description" content="A proposal to make design-system compliance an automated part of the docusketch-frontend workflow.">
+<style>
+  :root{
+    --ink:#1a1905; --ink-2:#4a4832; --ink-3:#7a7860;
+    --beige:#f4f3ea; --beige-2:#eae8d9; --white:#fff;
+    --line:#ded9c4; --line-soft:#ebe7d8;
+    --accent:#e5df00; --olive:#c0bc90;
+    --ok:#2f7d4f; --warn:#b45309; --err:#e92f2f; --info:#3d5a80;
+    --r-sm:4px; --r-md:8px; --r-lg:12px; --r-xl:16px;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--beige); color:var(--ink);
+    font:400 16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px}
+  a{color:var(--ink);text-decoration:underline;text-underline-offset:2px}
+  code{font-family:var(--mono);font-size:.88em;background:var(--beige-2);padding:2px 5px;border-radius:var(--r-sm)}
+  h1,h2,h3{line-height:1.25;letter-spacing:-.01em;margin:0}
+  h2{font-size:26px;margin:0 0 6px}
+  h3{font-size:18px;margin:0 0 6px}
+  p{margin:0 0 14px}
+  ul,ol{margin:0 0 14px;padding-left:22px}
+  li{margin:0 0 7px}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+  /* header */
+  header{background:var(--white);border-bottom:1px solid var(--line)}
+  .hd{padding:56px 0 44px}
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:0 0 14px}
+  header h1{font-size:44px;font-weight:650;max-width:19ch}
+  .lede{font-size:19px;color:var(--ink-2);max-width:62ch;margin:16px 0 0}
+  .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+  .chip{font-size:13px;padding:5px 11px;border-radius:var(--r-pill,24px);background:var(--beige);border:1px solid var(--line);color:var(--ink-2)}
+  .chip strong{color:var(--ink);font-weight:600}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:10;background:rgba(244,243,234,.93);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  nav ul{display:flex;gap:0;list-style:none;margin:0;padding:0;overflow-x:auto}
+  nav a{display:block;padding:13px 14px;font-size:13.5px;text-decoration:none;color:var(--ink-2);white-space:nowrap;border-bottom:2px solid transparent}
+  nav a:hover{color:var(--ink);border-bottom-color:var(--olive)}
+
+  section{padding:52px 0;border-bottom:1px solid var(--line-soft)}
+  section:last-of-type{border-bottom:none}
+  .kicker{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:0 0 10px}
+  .sub{color:var(--ink-2);max-width:66ch;margin:10px 0 26px}
+
+  /* cards */
+  .card{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px}
+  .grid{display:grid;gap:14px}
+  .g2{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:760px){.g2,.g3{grid-template-columns:1fr}}
+
+  .ask{background:var(--white);border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:var(--r-lg);padding:24px 26px;margin:0 0 8px}
+  .ask h3{font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);font-weight:600;margin-bottom:12px}
+  .ask ol{margin-bottom:0}
+  .ask li{font-size:17px}
+
+  /* stats */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 0 8px}
+  @media(max-width:760px){.stats{grid-template-columns:1fr 1fr}}
+  .stat{background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);padding:18px}
+  .stat b{display:block;font-size:32px;font-weight:650;letter-spacing:-.02em;line-height:1}
+  .stat span{display:block;font-size:13px;color:var(--ink-3);margin-top:7px}
+
+  /* before/after */
+  .ba{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;margin-bottom:14px}
+  .ba > .t{padding:13px 18px;border-bottom:1px solid var(--line-soft);font-size:14px;color:var(--ink-2)}
+  .ba > .t b{color:var(--ink);font-weight:600}
+  .ba .rows{display:grid;grid-template-columns:1fr 1fr}
+  @media(max-width:760px){.ba .rows{grid-template-columns:1fr}}
+  .ba .rows > div{padding:15px 18px;font-family:var(--mono);font-size:12.5px;line-height:1.65;overflow-x:auto;white-space:pre}
+  .ba .rows > div:first-child{border-right:1px solid var(--line-soft);background:#fdf6f5}
+  @media(max-width:760px){.ba .rows > div:first-child{border-right:none;border-bottom:1px solid var(--line-soft)}}
+  .ba .rows > div:last-child{background:#f5faf6}
+  .tag{display:block;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.1em;margin-bottom:8px}
+  .tag.no{color:var(--err)} .tag.yes{color:var(--ok)}
+
+  /* layers */
+  .layer{display:grid;grid-template-columns:52px 1fr 132px;gap:18px;align-items:start;background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px 22px;margin-bottom:12px}
+  @media(max-width:760px){.layer{grid-template-columns:1fr;gap:10px}}
+  .layer .n{width:38px;height:38px;border-radius:50%;background:var(--beige);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-weight:650;font-size:15px}
+  .layer h3 small{display:block;font-weight:400;font-size:13px;color:var(--ink-3);margin-top:3px;letter-spacing:0}
+  .layer p{margin:9px 0 0;font-size:14.5px;color:var(--ink-2)}
+  .gate{font-size:12px;font-weight:600;padding:5px 10px;border-radius:var(--r-sm);text-align:center;white-space:nowrap}
+  .gate.hard{background:#fdeaea;color:#a01e1e;border:1px solid #f3cccc}
+  .gate.soft{background:#eef2f8;color:var(--info);border:1px solid #d5dfee}
+  .gate.none{background:var(--beige);color:var(--ink-3);border:1px solid var(--line)}
+
+  /* table */
+  table{width:100%;border-collapse:collapse;background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;font-size:14.5px}
+  th,td{text-align:left;padding:12px 15px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+  th{background:var(--beige-2);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2);font-weight:600}
+  tr:last-child td{border-bottom:none}
+  td b{font-weight:600}
+  .tw{overflow-x:auto}
+
+  /* split bar */
+  .bar{display:flex;height:38px;border-radius:var(--r-md);overflow:hidden;border:1px solid var(--line);margin:0 0 12px}
+  .bar div{display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:600;color:var(--white)}
+  .bar .a{background:#2f7d4f;flex:40} .bar .b{background:#8a9a5b;flex:20} .bar .c{background:var(--olive);flex:73;color:#2e2c14}
+  .legend{display:flex;flex-wrap:wrap;gap:18px;font-size:13.5px;color:var(--ink-2)}
+  .legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:7px;vertical-align:-1px}
+
+  /* timeline */
+  .tl{list-style:none;padding:0;margin:0}
+  .tl li{display:grid;grid-template-columns:112px 1fr;gap:18px;padding:16px 0;border-bottom:1px solid var(--line-soft)}
+  @media(max-width:760px){.tl li{grid-template-columns:1fr;gap:4px}}
+  .tl li:last-child{border-bottom:none}
+  .tl .when{font-size:13px;font-weight:600;color:var(--ink-3);padding-top:2px}
+  .tl b{display:block;margin-bottom:4px}
+  .tl p{margin:0;font-size:14.5px;color:var(--ink-2)}
+
+  .q{background:var(--white);border:1px solid var(--line);border-radius:var(--r-md);padding:16px 18px;margin-bottom:10px}
+  .q b{display:block;margin-bottom:4px}
+  .q span{font-size:14.5px;color:var(--ink-2)}
+
+  footer{background:var(--white);border-top:1px solid var(--line);padding:34px 0;font-size:13.5px;color:var(--ink-3)}
+  .note{font-size:13.5px;color:var(--ink-3);margin-top:10px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap hd">
+    <p class="eyebrow">Proposal · Portal frontend · July 2026</p>
+    <h1>Design review, as automatic as the linter</h1>
+    <p class="lede">
+      For the last few weeks a Claude plugin has been checking every UI change I make against our
+      design system, and fixing what it can. It works. This page proposes how to make it part of the
+      workflow for everyone contributing to <code>docusketch-frontend</code> — and asks for a decision
+      on three points.
+    </p>
+    <div class="meta">
+      <span class="chip"><strong>12</strong> topics</span>
+      <span class="chip"><strong>133</strong> documented rules</span>
+      <span class="chip"><strong>1</strong> command: <code>/design-review:fix</code></span>
+      <span class="chip">Status: <strong>works, used by one person</strong></span>
+    </div>
+  </div>
+</header>
+
+<nav aria-label="Sections">
+  <div class="wrap">
+    <ul>
+      <li><a href="#ask">The ask</a></li>
+      <li><a href="#problem">Problem</a></li>
+      <li><a href="#today">What exists</a></li>
+      <li><a href="#plan">The plan</a></li>
+      <li><a href="#split">What can be automated</a></li>
+      <li><a href="#cost">Effort &amp; cost</a></li>
+      <li><a href="#risks">Risks</a></li>
+      <li><a href="#decide">Decisions</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+
+<section id="ask">
+  <div class="wrap">
+    <p class="kicker">Start here</p>
+    <h2>What I'm asking for</h2>
+    <p class="sub">Three decisions. Everything else on this page is the reasoning behind them.</p>
+    <div class="ask">
+      <h3>Decisions needed</h3>
+      <ol>
+        <li><b>Adopt the plugin as team tooling</b> — move it into the <code>docusketch</code> organisation and enable it in the repo, so every developer gets it automatically instead of installing it by hand.</li>
+        <li><b>Approve ~2 weeks of engineering</b> to convert the mechanical rules into ordinary linter checks that block a merge for free, with no AI involved.</li>
+        <li><b>Approve an advisory AI review on pull requests</b> — a comment, not a block, to begin with. Budget in the order of $100–150 per month.</li>
+      </ol>
+    </div>
+    <p class="note">Nothing here changes how anyone writes code today. The first two items make the existing rules easier to follow; the third makes them visible in the place where review already happens.</p>
+  </div>
+</section>
+
+<section id="problem">
+  <div class="wrap">
+    <p class="kicker">Context</p>
+    <h2>The problem, in plain terms</h2>
+    <p class="sub">
+      The Portal has a design system: a fixed set of buttons, colours, spacing, icons, form fields.
+      When code follows it, the product looks like one product. When it doesn't, the drift is invisible
+      in any single pull request and obvious once you open five screens in a row.
+    </p>
+    <div class="grid g3">
+      <div class="card">
+        <h3>The rules are real</h3>
+        <p>They exist, they're written down, and they're detailed. Nobody can hold 133 of them in their head while shipping a feature.</p>
+      </div>
+      <div class="card">
+        <h3>Review catches some of it</h3>
+        <p>A reviewer looking at a diff sees logic and structure. A hardcoded colour or a wrong button variant reads as normal code.</p>
+      </div>
+      <div class="card">
+        <h3>Cleanup is expensive</h3>
+        <p>Found later, the same fix costs a ticket, a branch, a review and a regression check instead of thirty seconds.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="today">
+  <div class="wrap">
+    <p class="kicker">What exists today</p>
+    <h2>The plugin, and what it actually does</h2>
+    <p class="sub">
+      One command. It reads the changed files, walks every rule, prints a table of what passed and what
+      failed, and applies the fixes that are safe to apply automatically. Anything requiring a human or
+      designer judgement it flags instead of touching.
+    </p>
+
+    <div class="stats">
+      <div class="stat"><b>12</b><span>topic areas — buttons, tables, modals, forms, icons, colour tokens…</span></div>
+      <div class="stat"><b>133</b><span>rules, each with examples, exceptions and a severity</span></div>
+      <div class="stat"><b>~8,000</b><span>lines of accumulated design decisions</span></div>
+      <div class="stat"><b>1</b><span>command to run all of it, in parallel</span></div>
+    </div>
+
+    <h3 style="margin:34px 0 14px">Examples of what it finds and fixes</h3>
+
+    <div class="ba">
+      <div class="t"><b>Raw Bootstrap button</b> — should use our own button component</div>
+      <div class="rows">
+        <div><span class="tag no">BEFORE</span>&lt;button class="btn btn-primary"&gt;Save&lt;/button&gt;</div>
+        <div><span class="tag yes">AFTER</span>&lt;button app-button variant="primary"&gt;Save&lt;/button&gt;</div>
+      </div>
+    </div>
+
+    <div class="ba">
+      <div class="t"><b>Hardcoded colour</b> — should reference a design-system token</div>
+      <div class="rows">
+        <div><span class="tag no">BEFORE</span>color: #1a1905;
+background: rgb(244, 243, 234);</div>
+        <div><span class="tag yes">AFTER</span>color: var(--ds-color-text-primary);
+background: var(--ds-color-bg-neutral);</div>
+      </div>
+    </div>
+
+    <div class="ba">
+      <div class="t"><b>Off-scale corner radius</b> — our scale is 4 / 8 / 12 / 16 / 24 only</div>
+      <div class="rows">
+        <div><span class="tag no">BEFORE</span>border-radius: 6px;</div>
+        <div><span class="tag yes">AFTER</span>border-radius: var(--ds-radius-md);</div>
+      </div>
+    </div>
+
+    <div class="ba">
+      <div class="t"><b>Legacy icon library</b> — FontAwesome is retired; we ship our own SVG set</div>
+      <div class="rows">
+        <div><span class="tag no">BEFORE</span>&lt;fa-icon [icon]="icons.faTimes" /&gt;</div>
+        <div><span class="tag yes">AFTER</span>&lt;svg-icon src="…/icon-close.svg"
+          class="stroke-black" /&gt;</div>
+      </div>
+    </div>
+
+    <div class="ba">
+      <div class="t"><b>Button label casing</b> — sentence case, with brand names left alone</div>
+      <div class="rows">
+        <div><span class="tag no">BEFORE</span>Generate New Report</div>
+        <div><span class="tag yes">AFTER</span>Generate new report</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:26px">
+      <h3>The part that isn't obvious</h3>
+      <p style="margin-bottom:10px">
+        The value isn't the pattern matching — it's the accumulated judgement. A single rule about
+        hardcoded colours has grown sub-cases over months of real pull requests: a colour written as a
+        fallback value, a token whose fallback disagrees with the token, a pale tint paired with a
+        saturated token, an invented token name that silently renders the wrong colour. Each one was a
+        real regression that got caught, understood, and written down.
+      </p>
+      <p style="margin:0">
+        That knowledge currently lives in one person's tooling. Making it shared is the point of this
+        proposal.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="plan">
+  <div class="wrap">
+    <p class="kicker">The plan</p>
+    <h2>Three layers, deliberately different strengths</h2>
+    <p class="sub">
+      One check can't serve everyone. A blocking gate has to be fast and never wrong; a smart review can
+      be slower and occasionally debatable. So: three layers, each doing what it's actually good at.
+    </p>
+
+    <div class="layer">
+      <div class="n">1</div>
+      <div>
+        <h3>While the code is being written<small>The plugin, enabled from the repository itself</small></h3>
+        <p>The developer gets the feedback before the code is finished. Fastest, cheapest, least annoying moment to fix anything. Enabled by committing the plugin reference into the repo — no per-person setup.</p>
+      </div>
+      <div class="gate none">Advisory</div>
+    </div>
+
+    <div class="layer">
+      <div class="n">2</div>
+      <div>
+        <h3>Mechanical rules in the ordinary linter<small>ESLint + Stylelint, in the CI checks we already run</small></h3>
+        <p>Roughly 40 rules — hardcoded colours, off-scale sizes, retired components, raw Bootstrap classes — need no intelligence to detect. Moved into the standard linter they cost nothing per run, never disagree with themselves, and can safely block a merge.</p>
+      </div>
+      <div class="gate hard">Blocks merge</div>
+    </div>
+
+    <div class="layer">
+      <div class="n">3</div>
+      <div>
+        <h3>AI design review on the pull request<small>A new GitHub check that comments with its findings</small></h3>
+        <p>Covers everything judgement-based that a linter can't express. Posts a findings table on the PR. Advisory at first — we only consider making it blocking once we can see its false-positive rate on real pull requests.</p>
+      </div>
+      <div class="gate soft">Comment only</div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <h3>We already have a working precedent for layer 3</h3>
+      <p style="margin:0">
+        The repo runs <b>PR Safeness</b> today: a GitHub check that asks Claude to assess each pull
+        request, posts a score as a comment, and never blocks — the developer decides. The API key, the
+        permissions and the shared workflow all already exist. Layer 3 follows the same pattern, which
+        is why it's the cheapest of the three to build.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="split">
+  <div class="wrap">
+    <p class="kicker">Feasibility</p>
+    <h2>How much can actually be automated</h2>
+    <p class="sub">
+      I went through all 133 rules and sorted them by what kind of check they need. The honest answer is
+      that about a third can become hard gates, and the rest stay advisory — which is the correct
+      outcome, not a shortfall.
+    </p>
+
+    <div class="bar" role="img" aria-label="About 40 rules fully automatable, about 20 partially, about 73 judgement-based">
+      <div class="a">~40</div>
+      <div class="b">~20</div>
+      <div class="c">~73</div>
+    </div>
+    <div class="legend">
+      <span><i style="background:#2f7d4f"></i>Fully mechanical → linter, blocks merge</span>
+      <span><i style="background:#8a9a5b"></i>Partly mechanical → linter catches the obvious case</span>
+      <span><i style="background:var(--olive)"></i>Judgement → stays with the AI review</span>
+    </div>
+
+    <div class="tw" style="margin-top:26px">
+      <table>
+        <thead>
+          <tr><th style="width:22%">Category</th><th style="width:38%">Examples</th><th>Why it lands there</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Mechanical</b><br><span style="color:var(--ink-3);font-size:13px">~40 rules</span></td>
+            <td>Hardcoded colours · font sizes off the scale · corner radius · shadows · retired icon library · raw Bootstrap buttons, alerts, tabs and inputs · deprecated badge modifiers</td>
+            <td>A fixed list of allowed and forbidden values. Standard linter features cover most of them with configuration only — very little new code.</td>
+          </tr>
+          <tr>
+            <td><b>Partly mechanical</b><br><span style="color:var(--ink-3);font-size:13px">~20 rules</span></td>
+            <td>Label casing (brand names are exempt) · required form-field wrapper · modal width and close button · specific token migrations</td>
+            <td>The common case is detectable; the exceptions need structural understanding. Worth building for the few rules that get violated most often.</td>
+          </tr>
+          <tr>
+            <td><b>Judgement</b><br><span style="color:var(--ink-3);font-size:13px">~73 rules</span></td>
+            <td>“Does the button variant match the role of the action” · “one primary action per screen” · “error palette vs warning palette” · “tabs or a segmented control here”</td>
+            <td>These require reading intent. No linter can express them — and this is precisely where the plugin earns its keep.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card" style="margin-top:22px">
+      <h3>One constraint worth naming up front</h3>
+      <p style="margin:0">
+        We cannot switch these checks on across the whole codebase. Around 340 style files were written
+        before these rules existed, and turning the rules on globally would light up the entire project
+        in red. So enforcement applies <b>only to lines a pull request actually changes</b> — new code is
+        clean, existing code is left alone until someone touches it. This is the same principle as the
+        test-coverage gate we already run on pull requests.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="cost">
+  <div class="wrap">
+    <p class="kicker">Effort &amp; cost</p>
+    <h2>What it takes to build</h2>
+    <p class="sub">One engineer. Layers can ship independently and in this order, so value arrives before the whole thing is finished.</p>
+
+    <ol class="tl">
+      <li>
+        <div class="when">Day 1</div>
+        <div>
+          <b>Move the plugin into the organisation and enable it in the repo</b>
+          <p>Every developer gets the command without installing anything. Version-tagged so the rules can't shift under an open pull request. Cheapest step, largest immediate effect.</p>
+        </div>
+      </li>
+      <li>
+        <div class="when">Days 2–4</div>
+        <div>
+          <b>Advisory AI review on pull requests</b>
+          <p>Follows the existing PR Safeness pattern, so this is mostly plumbing. From here on, design findings are visible to reviewers on every PR.</p>
+        </div>
+      </li>
+      <li>
+        <div class="when">Week 2</div>
+        <div>
+          <b>Mechanical style rules in the linter, changed lines only</b>
+          <p>The style-file rules — colours, sizes, radii, shadows — plus the wrapper that limits enforcement to the diff. This is what makes the first checks genuinely blocking.</p>
+        </div>
+      </li>
+      <li>
+        <div class="when">Week 3</div>
+        <div>
+          <b>Template rules and the handful of complex ones</b>
+          <p>Raw Bootstrap markup, retired components, and the four or five most-violated rules that need real structural checks.</p>
+        </div>
+      </li>
+      <li>
+        <div class="when">Ongoing</div>
+        <div>
+          <b>Exceptions register and rule upkeep</b>
+          <p>A file in the repo recording every “yes, this one is intentional” decision, so it's argued once and never re-flagged. Needs a named owner.</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="grid g2" style="margin-top:26px">
+      <div class="card">
+        <h3>Engineering</h3>
+        <p style="margin:0"><b>~2 to 3 weeks</b> of one engineer's time, front-loaded. After that it's maintenance: adding a rule is a few lines, not a project.</p>
+      </div>
+      <div class="card">
+        <h3>Running cost</h3>
+        <p style="margin:0">
+          <b>~$100–150 / month</b> for the AI review, assuming we run it when a PR opens and is marked
+          ready — not on every push. A full review costs a few dollars, so the trigger settings matter
+          more than the price.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="risks">
+  <div class="wrap">
+    <p class="kicker">Risks</p>
+    <h2>What could go wrong, and the answer to it</h2>
+    <p class="sub">These are the objections I'd raise myself. Each one has a specific mitigation baked into the plan above.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th style="width:30%">Risk</th><th style="width:34%">Why it matters</th><th>Mitigation</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><b>AI review isn't perfectly repeatable</b></td>
+            <td>The same pull request can get slightly different findings on two runs. A gate that behaves unpredictably gets switched off or worked around.</td>
+            <td>The AI layer never blocks a merge to begin with. Only the linter layer blocks, and linter rules are proven by their own tests and behave identically every time.</td>
+          </tr>
+          <tr>
+            <td><b>False positives erode trust</b></td>
+            <td>One wrong complaint costs more goodwill than ten correct ones earn. This is the single most likely way the whole thing fails.</td>
+            <td>An exceptions register in the repo: a decision is recorded once and stops resurfacing. Plus a named owner who resolves disputes rather than leaving developers to argue with a bot.</td>
+          </tr>
+          <tr>
+            <td><b>Cost creep</b></td>
+            <td>Running the full review on every push, across many open pull requests, adds up fast.</td>
+            <td>Trigger only on PR open and ready-for-review, only when the change touches UI files, plus an on-demand re-run by comment. Cost is a configuration choice.</td>
+          </tr>
+          <tr>
+            <td><b>Feedback arriving too late</b></td>
+            <td>Finding a design problem in CI, after the work feels done, is the most irritating possible moment to find it.</td>
+            <td>That's exactly why layer 1 exists. CI is the safety net; the real point of contact is while the code is being written.</td>
+          </tr>
+          <tr>
+            <td><b>Rules drifting apart</b></td>
+            <td>Each rule would live in two places — the plugin and the linter config. Left alone, they diverge and start contradicting each other.</td>
+            <td>Each rule is marked in the plugin with the linter check that enforces it, and a guard in CI fails if a rule loses its marker. We already run a similar guard on our AI configuration files.</td>
+          </tr>
+          <tr>
+            <td><b>Nobody uses it</b></td>
+            <td>Optional tooling stays optional. Adoption is a people problem, not a technical one.</td>
+            <td>Layer 2 is not optional — it blocks. Layer 1 requires no setup. Layer 3 makes findings visible to reviewers, so compliance becomes part of the conversation that already happens on every PR.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="decide">
+  <div class="wrap">
+    <p class="kicker">Discussion</p>
+    <h2>Open questions for this meeting</h2>
+    <p class="sub">Points I don't want to decide alone.</p>
+
+    <div class="q"><b>Who owns the rules?</b><span>Once the plugin is team tooling, changing a rule changes everyone's checks. Does it need review, and whose?</span></div>
+    <div class="q"><b>Do we want a blocking gate at all, or is visibility enough?</b><span>With PR Safeness we chose advisory. There's a real argument for watching how an advisory design review changes behaviour before tightening anything.</span></div>
+    <div class="q"><b>Who arbitrates “the bot is wrong”?</b><span>The exceptions register only works if someone maintains it and can say no.</span></div>
+    <div class="q"><b>How many of the team work in an AI-assisted editor day to day?</b><span>Layer 1 is only worth building if the answer is “most of us”. If it's two people, we skip it and lean on layers 2 and 3.</span></div>
+    <div class="q"><b>Which rules hurt most right now?</b><span>I have a ranked list of candidates for the linter, but the team's own irritation is better data than my ranking. Bring the ones that keep coming up in review.</span></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p style="margin:0 0 6px">
+      <b style="color:var(--ink)">Design Review</b> — design-system compliance checker and fixer for the DocuSketch Portal frontend.
+    </p>
+    <p style="margin:0">Prepared for the first round of team discussion · July 2026</p>
+  </div>
+</footer>
+
+</body>
+</html>
