@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projects list — usage evidence · DocuSketch°</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{ --bg:#F9F9F5; --ink:#1A1905; --muted:#5D5E52; --line:#E2E0D3; --accent:#6F6D41; --accent2:#C0BC90; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:18px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:820px;margin:0 auto;padding:0 24px}
+  .brand{font-weight:500;color:var(--accent);font-size:15px;letter-spacing:.02em}
+  h1{font-size:34px;font-weight:500;line-height:1.2;margin:10px 0 12px}
+  h2{font-size:24px;font-weight:500;margin:0 0 8px}
+  p{margin:0 0 16px}
+  header{padding:44px 0 8px}
+  header .lede{color:var(--muted);font-size:19px;max-width:64ch;margin:0 0 10px}
+  header .src{color:var(--muted);font-size:15px}
+  section{padding:38px 0;border-top:1px solid var(--line)}
+  .chart{position:relative;height:480px;margin:6px 0 8px}
+  .cap{color:var(--muted);font-size:15px;margin:0 0 16px}
+  table{width:100%;border-collapse:collapse;font-size:16px;margin:8px 0 4px}
+  th,td{text-align:left;padding:11px 8px;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-weight:400;font-size:14px}
+  ol.findings{margin:0;padding:0;list-style:none;counter-reset:f}
+  ol.findings li{counter-increment:f;padding:15px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:34px 1fr;gap:14px}
+  ol.findings li:last-child{border-bottom:0}
+  ol.findings li::before{content:counter(f);color:var(--muted);font-size:17px}
+  ol.findings b{font-weight:500}
+  ol.findings .d{color:var(--muted);font-size:16px;margin-top:2px}
+  .note{background:#EFEEE4;border:1px solid var(--line);border-radius:12px;padding:16px 18px;font-size:16px}
+  .note b{font-weight:500}
+  footer{border-top:1px solid var(--line)}
+  footer .wrap{padding:26px 24px 48px;color:var(--muted);font-size:15px}
+</style>
+</head>
+<body>
+
+<header><div class="wrap">
+  <div class="brand">DocuSketch°</div>
+  <h1>Projects list — the usage evidence</h1>
+  <p class="lede">How the projects list is used across both Portals — the basis for the table redesign.</p>
+  <p class="src">Previous Portal: Amplitude, 12 months. New Portal (Phoenix): PostHog, 90 days.</p>
+</div></header>
+
+<main>
+
+  <section><div class="wrap">
+    <h2>The two Portals — one list</h2>
+    <p>It's the same product's projects list in two implementations, and usage is handing over from the mature one to the new one. On both, the loop is identical: <b>open the list, find a project, act on it.</b></p>
+    <table>
+      <thead><tr><th>&nbsp;</th><th>Previous Portal</th><th>New Portal (Phoenix)</th></tr></thead>
+      <tbody>
+        <tr><td>Scale</td><td>~13k users / month (15.4k peak)</td><td>16.1k users / 90 days, growing</td></tr>
+        <tr><td>Trend</td><td>Declining (migration)</td><td>Rising</td></tr>
+        <tr><td>Source</td><td>Amplitude · 12 mo</td><td>PostHog · 90 days</td></tr>
+      </tbody>
+    </table>
+  </div></section>
+
+  <section><div class="wrap">
+    <h2>What people do on the list</h2>
+    <p class="cap">Share of each Portal's list users who took the action — normalised so the two compare despite different windows.</p>
+    <div class="chart"><canvas id="actions"></canvas></div>
+    <div class="note" style="margin-top:20px">
+      The two lists look different, but people do the same things — most gaps were <b>how events are named or split, not behaviour</b>. <b>Download is the biggest action on both</b> (~62–65% of list users); it didn't show as one bar because it's split across per-asset events (<code>tour_assets_downloaded_new</code> for the sketch/assets, plus separate estimate and report downloads) — the chart uses the main one. Share and Edit happen on both too (<code>tour_shared_public</code>, <code>edit_button_clicked</code>). The one real difference is <b>Search</b> — new-only instrumentation, so it can't appear on the old Portal.
+    </div>
+  </div></section>
+
+  <section><div class="wrap">
+    <h2>How people search</h2>
+    <p class="cap">What the search box is used for on the new Portal (completed queries, 30 days).</p>
+    <table>
+      <thead><tr><th>Search by</th><th>Share</th></tr></thead>
+      <tbody>
+        <tr><td>Name or address (text)</td><td>79%</td></tr>
+        <tr><td>Numbers — ID or house number</td><td>15%</td></tr>
+        <tr><td>Letters + numbers (address / external ID)</td><td>5%</td></tr>
+        <tr><td>Job number (e.g. ABQ-26-0418)</td><td>1%</td></tr>
+        <tr><td>Email</td><td>0.2%</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:16px">The placeholder promises "name, address, email, ID and job number" — but <b>email is essentially unused (0.2%)</b> and job number is rare. Lead with <b>name and address</b>, then ID; drop or hide email.</p>
+  </div></section>
+
+  <section><div class="wrap">
+    <h2>How people filter</h2>
+    <p class="cap">Which filter each list user changes, of the ~10% who filter (share of filter use, unique users, 90 days).</p>
+    <table>
+      <thead><tr><th>Filter</th><th>Previous Portal</th><th>New Portal (Phoenix)</th></tr></thead>
+      <tbody>
+        <tr><td>Visibility</td><td>57%</td><td>52%</td></tr>
+        <tr><td>Period (date range)</td><td>6%</td><td>15%</td></tr>
+        <tr><td>Loss type</td><td>15%</td><td>13%</td></tr>
+        <tr><td>Requested service</td><td>9%</td><td>8%</td></tr>
+        <tr><td>Property type</td><td>8%</td><td>8%</td></tr>
+        <tr><td>Office</td><td>4%</td><td>4%</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:16px">Same shape on both Portals: <b>Visibility dominates (~52–57%)</b> and the top three cover ~80%. The one shift on the new Portal is <b>Period jumping to #2 (~15% vs 6%)</b> — Phoenix users filter by recency more. So don't hide filters wholesale — <b>keep Visibility visible</b> (it's a primary lens, not an occasional filter), surface <b>Period and Loss type</b> as quick options, and fold the tail (Requested service, Property type, Office) behind a Filter control with active-filter chips.</p>
+  </div></section>
+
+  <section><div class="wrap">
+    <h2>What it means for the redesign</h2>
+    <ol class="findings">
+      <li><div><b>The list is the daily hub — make it fast.</b><div class="d">Tens of thousands of users a month; load, scan and search speed is the priority.</div></div></li>
+      <li><div><b>Find → open is the core loop.</b><div class="d">Opening a project must be effortless from the row.</div></div></li>
+      <li><div><b>Downloading finished assets is the #1 action.</b><div class="d">~62–65% of list users download a sketch/assets — keep a one-click download on the row.</div></div></li>
+      <li><div><b>Keep the other row actions visible too.</b><div class="d">Sharing, ordering a sketch, opening the tour editor, estimates & reports are all common — actions aren't secondary.</div></div></li>
+      <li><div><b>Filtering is a minority path.</b><div class="d">~10–12% of list users filter; prioritise fast scan and search over heavy filter UI.</div></div></li>
+    </ol>
+  </div></section>
+
+</main>
+
+<footer><div class="wrap">
+  Previous Portal: Amplitude "Docusketch - prod" (273774), peak month of the last 12. New Portal: PostHog "Phoenix Prod" (302152), last 90 days, web (<code>$lib = web</code>). Each action is shown as a share of that Portal's list users, so the two windows compare. Search is new-Portal-only instrumentation. "Edit tour" (<code>edit_button_clicked</code>) opens the 360 tour editor in a new tab — not an edit-info modal or the player. "Download assets" is <code>tour_assets_downloaded_new</code> (the sketch/assets download); estimate and report downloads are separate, smaller events. The search event fires on every keystroke, so search event counts are inflated ~7–10× — all figures here use unique users / completed queries, which are unaffected. Filter breakdown: <code>filter_changed</code> grouped by <code>filter_name</code>, both Portals (Amplitude), last 90 days, unique users per filter (a user who uses several filters counts in each). Figures are directional.
+</div></footer>
+
+<script>
+  const line="#E2E0D3", accent="#6F6D41", accent2="#C0BC90";
+  Chart.defaults.font.family="IBM Plex Sans, system-ui, sans-serif";
+  Chart.defaults.font.size=13;
+  Chart.defaults.color="#5D5E52";
+  new Chart(document.getElementById("actions"),{
+    type:"bar",
+    data:{
+      labels:["Download assets","Search","Share","Order sketch","Edit tour","Change filter","Open estimate list","Generate report","Order estimate"],
+      datasets:[
+        {label:"Previous Portal",data:[62,null,48,56,17,10,10,5,6],backgroundColor:accent,borderRadius:3},
+        {label:"New Portal",data:[64,53,33,28,24,11,11,8,5],backgroundColor:accent2,borderRadius:3}
+      ]
+    },
+    options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:"top",labels:{boxWidth:12,boxHeight:12}},
+        tooltip:{callbacks:{label:c=>c.dataset.label+": "+(c.parsed.x==null?"not tracked":c.parsed.x+"% of list users")}}},
+      scales:{x:{grid:{color:line},ticks:{callback:v=>v+"%"},title:{display:true,text:"% of list users"}},
+        y:{grid:{display:false}}}}
+  });
+</script>
+</body>
+</html>
