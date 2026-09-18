@@ -1,0 +1,1095 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Initial Estimate — DocuSketch Help Center (preview)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================
+     Help Center look-alike shell.
+     Type scale, colours and chrome copied from help.docusketch.com
+     (Document360): Roboto 13px / 1.55, h1 32.5px 600, link #0065FF,
+     brand strip #f4f3ea, side rail #f4f4f5 / 359px.
+     Deliberately NOT functional: the logo does not navigate and the
+     article tree is empty, so nobody mistakes this for the live site.
+     ============================================================ */
+  :root {
+    --hc-font: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --hc-brand-bg: #f4f3ea;
+    --hc-rail-bg: #f4f4f5;
+    --hc-line: #e2e2e4;
+    --hc-line-soft: #ededee;
+    --ink: #000000;
+    --ink-2: #3f4245;
+    --ink-3: #74777b;
+    --link: #0065ff;
+    --link-soft: #eaf1ff;
+    --warn: #96631a;
+    --warn-soft: #fdf6e7;
+    --warn-line: #ecdcb6;
+    --ok: #1a7f52;
+    --ok-soft: #eaf6f0;
+    --ok-line: #c4e3d3;
+    --mock: #6b4b96;
+    --mock-soft: #f7f4fb;
+    --mock-line: #e3d9ef;
+    --rail-w: 359px;
+    --brand-h: 60px;
+    --contentw: 820px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: #fff;
+    color: var(--ink);
+    font-family: var(--hc-font);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* ---------------- top chrome ---------------- */
+  .hc-top { display: flex; align-items: stretch; border-bottom: 1px solid var(--hc-line); position: sticky; top: 0; z-index: 20; background: #fff; }
+  .hc-brand {
+    width: var(--rail-w); min-width: var(--rail-w); height: var(--brand-h);
+    background: var(--hc-brand-bg);
+    display: flex; align-items: center; padding: 0 24px;
+    cursor: default; user-select: none;
+  }
+  .hc-brand img { height: 30px; width: auto; display: block; }
+  .hc-brand .brand-flag {
+    margin-left: 10px; font-size: 10px; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--mock); background: #fff; border: 1px solid var(--mock-line); border-radius: 3px; padding: 2px 6px;
+  }
+  .hc-navbar { flex: 1; background: var(--hc-rail-bg); display: flex; align-items: center; gap: 16px; padding: 0 20px; min-width: 0; }
+  .crumbs { display: flex; align-items: center; gap: 8px; color: var(--ink-2); font-size: 13px; white-space: nowrap; overflow: hidden; }
+  .hc-rail, .hc-top { font-size: 13px; }
+  .crumbs .sep { color: #a9adb2; }
+  .crumbs .here { color: var(--ink); }
+  .hc-search {
+    margin-left: auto; display: flex; align-items: center; gap: 8px;
+    background: #fff; border: 1px solid var(--hc-line); border-radius: 4px;
+    padding: 5px 10px; min-width: 240px; color: #9aa0a6; font-size: 13px; cursor: not-allowed;
+  }
+
+  /* ---------------- body layout ---------------- */
+  .hc-body { display: flex; align-items: flex-start; }
+  .hc-rail {
+    width: var(--rail-w); min-width: var(--rail-w);
+    background: var(--hc-rail-bg); border-right: 1px solid var(--hc-line);
+    min-height: calc(100vh - var(--brand-h));
+    padding: 16px 16px 40px;
+    position: sticky; top: var(--brand-h); align-self: flex-start;
+    max-height: calc(100vh - var(--brand-h)); overflow: auto;
+  }
+  .rail-filter {
+    width: 100%; background: #fff; border: 1px solid var(--hc-line); border-radius: 4px;
+    padding: 6px 10px; font-family: var(--hc-font); font-size: 13px; color: #9aa0a6; cursor: not-allowed;
+  }
+  .rail-empty {
+    margin-top: 18px; border: 1px dashed #c9ccd0; border-radius: 6px; background: #fff;
+    padding: 16px; color: var(--ink-2);
+  }
+  .rail-empty .re-title { font-weight: 500; margin-bottom: 6px; color: var(--ink); }
+  .rail-empty p { margin: 0 0 10px; font-size: 12.5px; color: var(--ink-3); line-height: 1.5; }
+  .rail-empty p:last-child { margin-bottom: 0; }
+
+  .hc-main { flex: 1; min-width: 0; padding: 26px 40px 96px; }
+  .hc-article { max-width: var(--contentw); }
+
+  /* ---------------- preview notice ---------------- */
+  .preview-note {
+    border: 1px solid var(--mock-line); background: var(--mock-soft); border-radius: 6px;
+    padding: 14px 18px; margin-bottom: 26px; color: #4f3a70; font-size: 14px; line-height: 1.55;
+  }
+  .preview-note strong { color: var(--mock); }
+
+  /* ---------------- article typography (D360 scale) ---------------- */
+  .article-title { font-size: 36px; font-weight: 600; line-height: 1.2; margin: 0 0 8px; color: var(--ink); }
+  .article-info { display: flex; flex-wrap: wrap; gap: 6px 16px; color: var(--ink-3); font-size: 14px; padding-bottom: 18px; border-bottom: 1px solid var(--hc-line-soft); margin-bottom: 26px; }
+  .lede { font-size: 18px; line-height: 1.6; color: var(--ink-2); margin: 0 0 24px; }
+
+  p { margin: 0 0 18px; }
+  ul, ol { margin: 0 0 16px; padding-left: 24px; }
+  li { margin-bottom: 4px; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code { background: #f4f4f5; border: 1px solid var(--hc-line); border-radius: 3px; padding: 1px 5px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; }
+  hr.sep { border: 0; border-top: 1px solid var(--hc-line-soft); margin: 34px 0; }
+
+  section { scroll-margin-top: 76px; margin-bottom: 34px; }
+  h2.sec { font-size: 28px; font-weight: 600; line-height: 1.3; margin: 0; color: var(--ink); }
+  h3 { font-size: 20px; font-weight: 600; margin: 28px 0 8px; }
+  h4 { font-size: 16px; font-weight: 600; margin: 20px 0 6px; color: var(--ink-2); }
+  .sec-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+  .sec-note { font-size: 14px; color: var(--ink-3); margin: -6px 0 20px; }
+
+  /* ---------------- in-article TOC ---------------- */
+  nav.toc { background: #fafafb; border: 1px solid var(--hc-line); border-radius: 6px; padding: 16px 20px; margin: 0 0 32px; }
+  nav.toc h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin: 0 0 10px; font-weight: 600; }
+  nav.toc ol { margin: 0; padding-left: 20px; columns: 2; column-gap: 32px; }
+  nav.toc li { margin-bottom: 4px; break-inside: avoid; }
+  nav.toc a { color: var(--ink); }
+  nav.toc a:hover { color: var(--link); }
+
+  /* ---------------- badges ---------------- */
+  .badge { font-size: 11px; letter-spacing: .05em; text-transform: uppercase; border-radius: 3px; padding: 2px 7px; border: 1px solid var(--hc-line); color: var(--ink-3); background: #f4f4f5; white-space: nowrap; }
+  .badge.draft { background: var(--link-soft); border-color: #cfe0ff; color: #0b46b4; }
+  .badge.outline { background: var(--warn-soft); border-color: var(--warn-line); color: var(--warn); }
+  .badge.stub { background: var(--mock-soft); border-color: var(--mock-line); color: var(--mock); }
+
+  /* ---------------- callouts (D360-ish) ---------------- */
+  .note { border: 1px solid #cfe0ff; border-left: 3px solid var(--link); background: var(--link-soft); border-radius: 4px; padding: 12px 16px; margin: 18px 0; }
+  .note.warn { border-color: var(--warn-line); border-left-color: #d79a2b; background: var(--warn-soft); }
+  .note.tip { border-color: var(--ok-line); border-left-color: var(--ok); background: var(--ok-soft); }
+  .note strong { display: block; margin-bottom: 2px; }
+  .note p:last-child { margin-bottom: 0; }
+
+  /* ---------------- tables ---------------- */
+  table { width: 100%; border-collapse: collapse; margin: 20px 0 24px; font-size: 15px; }
+  th, td { text-align: left; vertical-align: top; padding: 9px 12px; border: 1px solid var(--hc-line); }
+  th { background: #f7f7f8; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-3); font-weight: 600; white-space: nowrap; }
+  td code { white-space: nowrap; }
+
+  /* ---------------- steps ---------------- */
+  ol.steps { list-style: none; padding: 0; counter-reset: step; }
+  ol.steps > li { counter-increment: step; position: relative; padding: 0 0 0 44px; margin-bottom: 18px; }
+  ol.steps > li::before {
+    content: counter(step); position: absolute; left: 0; top: 0;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--link-soft); color: #0b46b4; font-size: 14px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+  }
+  ol.steps strong { display: block; }
+
+  /* ---------------- screenshots ---------------- */
+  figure.shot { margin: 20px 0 24px; }
+  figure.shot img { display: none; width: 100%; height: auto; border: 1px solid var(--hc-line); border-radius: 6px; }
+  figure.shot.has-shot img { display: block; }
+  figure.shot.has-shot .shot-ph { display: none; }
+  .shot-ph {
+    border: 1.5px dashed #c9ccd0; border-radius: 6px;
+    background: repeating-linear-gradient(45deg, #fcfcfd, #fcfcfd 10px, #f6f6f8 10px, #f6f6f8 20px);
+    padding: 18px; color: var(--ink-2);
+  }
+  .shot-ph .ph-tag { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin-bottom: 6px; }
+  .shot-ph .ph-title { font-weight: 600; margin-bottom: 8px; color: var(--ink); }
+  .shot-ph dl { display: grid; grid-template-columns: 120px 1fr; gap: 4px 12px; margin: 0; font-size: 15px; }
+  .shot-ph dt { color: var(--ink-3); }
+  .shot-ph dd { margin: 0; }
+  .shot-ph .ph-file { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }
+  figcaption { font-size: 14px; color: var(--ink-3); margin-top: 8px; }
+
+  .flow { width: 100%; height: auto; margin: 20px 0 8px; }
+
+  /* ---------------- shot list ---------------- */
+  .pill { font-size: 11px; border-radius: 3px; padding: 2px 7px; border: 1px solid var(--hc-line); white-space: nowrap; }
+  .pill.todo { background: var(--warn-soft); border-color: var(--warn-line); color: var(--warn); }
+  .pill.done { background: var(--ok-soft); border-color: var(--ok-line); color: var(--ok); }
+  .progress-line { font-size: 15px; color: var(--ink-2); margin-bottom: 4px; }
+
+  /* ---------------- team block ---------------- */
+  details.team { border: 1px solid var(--mock-line); background: var(--mock-soft); border-radius: 6px; padding: 14px 18px; margin-top: 40px; }
+  details.team summary { cursor: pointer; font-weight: 600; color: var(--mock); }
+  details.team[open] summary { margin-bottom: 10px; }
+
+  footer.page { border-top: 1px solid var(--hc-line-soft); margin-top: 40px; padding-top: 16px; font-size: 14px; color: var(--ink-3); }
+
+  /* ---------------- responsive ---------------- */
+  @media (max-width: 1100px) {
+    .hc-rail { display: none; }
+    .hc-brand { width: auto; min-width: 0; }
+    .hc-main { padding: 22px 24px 72px; }
+  }
+  @media (max-width: 680px) {
+    .hc-search { display: none; }
+    .article-title { font-size: 28px; }
+    h2.sec { font-size: 23px; }
+    nav.toc ol { columns: 1; }
+    .shot-ph dl { grid-template-columns: 1fr; }
+    .shot-ph dt { margin-top: 5px; }
+  }
+  @media print {
+    .hc-top, .hc-rail, nav.toc, details.team { display: none; }
+    .hc-main { padding: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== Help Center chrome — imitation only, nothing here navigates ===== -->
+<div class="hc-top">
+  <div class="hc-brand" role="img" aria-label="DocuSketch (preview — not a link)" title="Preview only — this logo does not open the Help Center home page">
+    <img src="assets/docusketch-wordmark.png" alt="DocuSketch" />
+    <span class="brand-flag">Preview</span>
+  </div>
+  <div class="hc-navbar">
+    <div class="crumbs">
+      <span>Documentation</span><span class="sep">&rsaquo;</span>
+      <span>Estimating</span><span class="sep">&rsaquo;</span>
+      <span class="here">Initial Estimate</span>
+    </div>
+    <div class="hc-search" aria-disabled="true" title="Search is disabled in this preview">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="#9aa0a6" stroke-width="1.5"/><path d="M11 11l3.5 3.5" stroke="#9aa0a6" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span>Search</span>
+    </div>
+  </div>
+</div>
+
+<div class="hc-body">
+  <aside class="hc-rail">
+    <input class="rail-filter" type="text" placeholder="Filter by name" disabled />
+    <div class="rail-empty">
+      <div class="re-title">No articles here</div>
+      <p>This is a mock-up of the Help Center, not the Help Center itself. The article tree, the search box and the logo are intentionally inert.</p>
+      <p>The draft you are reading is the only page in this preview.</p>
+    </div>
+  </aside>
+
+  <main class="hc-main">
+    <div class="hc-article">
+
+      <div class="preview-note">
+        <strong>Draft for internal review.</strong>
+        Styled to look like the Help Center so the layout can be judged in context — but it is not published, the copy is not final, and screenshots are still being captured. Nothing on this page links to the live Help Center.
+      </div>
+
+      <h1 class="article-title">Initial Estimate</h1>
+      <div class="article-info">
+        <span>Draft v0.5</span>
+        <span>Updated on Sep 18, 2026</span>
+        <span>Applies to: Web portal</span>
+        <span>Mobile app: section pending</span>
+      </div>
+
+      <p class="lede">
+        Turn everything captured on site into a priced, editable line-item scope &mdash; in the web portal, in seconds,
+        with the evidence behind every line kept in view.
+      </p>
+
+
+<nav class="toc">
+  <h2>In this article</h2>
+  <ol>
+    <li><a href="#what">What Initial Estimate is</a></li>
+    <li><a href="#before">Before you start</a></li>
+    <li><a href="#how">How it works, end to end</a></li>
+    <li><a href="#generate">Generating a version</a></li>
+    <li><a href="#versions">Versions and revisions</a></li>
+    <li><a href="#table">Reading the line-item table</a></li>
+    <li><a href="#evidence">Where a line item came from</a></li>
+    <li><a href="#editing">Editing line items</a></li>
+    <li><a href="#quality">Checking quality before you export</a></li>
+    <li><a href="#ai">AI assistance</a></li>
+    <li><a href="#export">Exporting and sharing</a></li>
+    <li><a href="#mobile">In the mobile app</a></li>
+    <li><a href="#faq">FAQ and troubleshooting</a></li>
+    <li><a href="#glossary">Glossary</a></li>
+  </ol>
+</nav>
+
+<!-- ============================================================ 1 -->
+<section id="what">
+  <div class="sec-head">
+    <h2 class="sec">1. What Initial Estimate is</h2>
+    <span class="badge draft">Draft copy</span>
+  </div>
+
+  <p>
+    <strong>Initial Estimate</strong> is the step where DocuSketch turns a documented property into a real scope:
+    a list of line items with codes, quantities, units and prices, grouped by the room each one belongs to — ready to review, edit and
+    export to your estimating software.
+  </p>
+  <p>
+    It runs in the web portal, on the project you already captured. You do not write the first draft: the estimate
+    is generated from what is already in the project — the sketch, the rooms you marked as affected, the scope of
+    work, the 360&deg; tour, photos and documents. What you do is <em>review it</em>, correct what needs
+    correcting, and send it on.
+  </p>
+
+  <h3>Why it is different from a spreadsheet</h3>
+  <p>
+    Every line item keeps a trail back to the thing that produced it. Open any line and you can see which room it
+    belongs to, what evidence drove it — a photo, a room measurement, a note in the scope of work — and how the
+    quantity was calculated. Nothing is a number you have to take on faith, which is what makes the estimate
+    defensible when somebody on the other side of the claim asks why a line is there.
+  </p>
+
+  <h3>What you can do here</h3>
+  <ul>
+    <li>Generate a first set of line items, and choose how broad that set should be.</li>
+    <li>Review the scope room by room, with prices and totals updating as you work.</li>
+    <li>Edit anything: codes, descriptions, quantities, the room a line belongs to.</li>
+    <li>Inspect the evidence and the quantity calculation behind each line.</li>
+    <li>Run the built-in checks that catch unassigned items, errors and gaps before you export.</li>
+    <li>Export the result, or keep iterating in a new version.</li>
+  </ul>
+
+  <div class="note">
+    <strong>Where it sits in the workflow</strong>
+    <p>
+      Initial Estimate is the last stop of the documentation chain — capture, mark, scope, estimate — so how
+      completely the project was documented decides how good the generated scope is.
+    </p>
+  </div>
+
+  <figure class="shot" data-shot="01-editor-overview" data-where="Project → Estimates → Initial → open a version">
+    <img src="screenshots/01-editor-overview.png" alt="The Initial Estimate editor with the line-item table open" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">The Initial Estimate editor, full view</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/01-editor-overview.png</dd>
+        <dt>Where</dt><dd>Project &rarr; Estimates &rarr; Initial &rarr; open a version</dd>
+        <dt>Must show</dt><dd>Version title, toolbar, the line-item table with a few rooms expanded and totals visible</dd>
+      </dl>
+    </div>
+    <figcaption>The editor: version header, toolbar, and the line-item table grouped by room.</figcaption>
+  </figure>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 2 -->
+<section id="before">
+  <div class="sec-head">
+    <h2 class="sec">2. Before you start</h2>
+    <span class="badge draft">Draft copy</span>
+  </div>
+
+  <p>
+    An Initial Estimate can only be as good as the project behind it, so the portal walks you through four steps.
+    Only the first one is required — with a sketch in place you can generate immediately. The two in the middle are
+    optional, and they are what sharpen the result.
+  </p>
+
+  <ol class="steps">
+    <li>
+      <strong>Get a sketch</strong>
+      Capture the property with Instant Sketch in the DocuSketch mobile app, or order an Enhanced sketch. The
+      result is a floor plan with measurements — the geometry every quantity is calculated from.
+    </li>
+    <li>
+      <strong>Mark affected areas</strong> <em>(optional, but it sharpens the scope)</em>
+      Mark every room the loss touched, directly on the sketch, and set the water category and class where they
+      apply. The scope follows what you mark.
+    </li>
+    <li>
+      <strong>Review your scope</strong> <em>(optional)</em>
+      Confirm that rooms, materials and quantities look right before estimating. Corrections are much cheaper
+      here than in the line-item table.
+    </li>
+    <li>
+      <strong>Generate the initial estimate</strong>
+      Takes a few seconds, and you can re-run it. What comes back is a Xactimate-ready scope, ready to review and
+      export.
+    </li>
+  </ol>
+
+  <h3>Opening it</h3>
+  <p>
+    Open the project and go to the <strong>Estimates</strong> tab. That tab tracks every estimate on the project —
+    the ones you generate yourself and the ones ordered from the DocuSketch expert team. Use
+    <strong>Create Instant Estimate</strong> to start a new one, or open an existing <em>Initial estimate</em> row
+    to go back into the editor.
+  </p>
+  <p>
+    If the project is not ready yet, this is where the four steps above are shown, with a link straight to
+    whichever one is still outstanding.
+  </p>
+
+  <div class="note warn">
+    <strong>Availability</strong>
+    <p>
+      Initial Estimate depends on your company plan and on your user permissions. If you do not see the tab, or
+      the generate action is unavailable, contact your DocuSketch account manager.
+    </p>
+  </div>
+
+  <figure class="shot" data-shot="02-onboarding-steps" data-where="Project → Estimates → Initial on a project that is not ready yet">
+    <img src="screenshots/02-onboarding-steps.png" alt="The four-step readiness screen" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">The four-step readiness screen</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/02-onboarding-steps.png</dd>
+        <dt>Where</dt><dd>Project &rarr; Estimates &rarr; Initial, on a project with no estimate yet</dd>
+        <dt>Must show</dt><dd>All four steps with their state, and the Generate initial estimate button</dd>
+      </dl>
+    </div>
+    <figcaption>The readiness screen: what is done, what is optional, and the button that starts the estimate.</figcaption>
+  </figure>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 3 -->
+<section id="how">
+  <div class="sec-head">
+    <h2 class="sec">3. How it works, end to end</h2>
+    <span class="badge draft">Draft copy</span>
+  </div>
+
+  <p>
+    Once the project is ready, working an Initial Estimate is a loop of five moves. You will rarely do them
+    strictly in order — most people jump between reviewing and editing — but this is the shape of it.
+  </p>
+
+  <svg class="flow" viewBox="0 0 820 200" role="img" aria-label="Flow: Generate, Review, Edit, Validate, Export, with a loop back to Generate for a new version">
+    <defs>
+      <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#8b959d" />
+      </marker>
+    </defs>
+    <g font-family="-apple-system, Segoe UI, Roboto, sans-serif">
+      <g>
+        <rect x="6" y="46" width="140" height="62" rx="10" fill="#eef4ff" stroke="#cfe0ff" />
+        <text x="76" y="72" text-anchor="middle" font-size="15" font-weight="600" fill="#1b4fa8">Generate</text>
+        <text x="76" y="92" text-anchor="middle" font-size="12" fill="#3d474f">pick a scope</text>
+      </g>
+      <line x1="150" y1="77" x2="176" y2="77" stroke="#8b959d" stroke-width="1.5" marker-end="url(#arw)" />
+      <g>
+        <rect x="180" y="46" width="140" height="62" rx="10" fill="#f7f9fa" stroke="#e3e7ea" />
+        <text x="250" y="72" text-anchor="middle" font-size="15" font-weight="600" fill="#101418">Review</text>
+        <text x="250" y="92" text-anchor="middle" font-size="12" fill="#3d474f">room by room</text>
+      </g>
+      <line x1="324" y1="77" x2="350" y2="77" stroke="#8b959d" stroke-width="1.5" marker-end="url(#arw)" />
+      <g>
+        <rect x="354" y="46" width="140" height="62" rx="10" fill="#f7f9fa" stroke="#e3e7ea" />
+        <text x="424" y="72" text-anchor="middle" font-size="15" font-weight="600" fill="#101418">Edit</text>
+        <text x="424" y="92" text-anchor="middle" font-size="12" fill="#3d474f">correct and add</text>
+      </g>
+      <line x1="498" y1="77" x2="524" y2="77" stroke="#8b959d" stroke-width="1.5" marker-end="url(#arw)" />
+      <g>
+        <rect x="528" y="46" width="140" height="62" rx="10" fill="#f7f9fa" stroke="#e3e7ea" />
+        <text x="598" y="72" text-anchor="middle" font-size="15" font-weight="600" fill="#101418">Validate</text>
+        <text x="598" y="92" text-anchor="middle" font-size="12" fill="#3d474f">clear the issues</text>
+      </g>
+      <line x1="672" y1="77" x2="698" y2="77" stroke="#8b959d" stroke-width="1.5" marker-end="url(#arw)" />
+      <g>
+        <rect x="702" y="46" width="112" height="62" rx="10" fill="#e9f6ef" stroke="#bfe3d1" />
+        <text x="758" y="72" text-anchor="middle" font-size="15" font-weight="600" fill="#1a7f52">Export</text>
+        <text x="758" y="92" text-anchor="middle" font-size="12" fill="#3d474f">or share</text>
+      </g>
+      <path d="M 758 112 L 758 150 L 76 150 L 76 114" fill="none" stroke="#8b959d" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arw)" />
+      <text x="417" y="170" text-anchor="middle" font-size="12" fill="#6b7681">need a different scope? generate a new version</text>
+    </g>
+  </svg>
+
+  <table>
+    <thead>
+      <tr><th>Step</th><th>What happens</th><th>Where it is covered</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Generate</strong></td><td>You choose how broad the generated scope should be, and DocuSketch builds the line items.</td><td><a href="#generate">Section 4</a></td></tr>
+      <tr><td><strong>Review</strong></td><td>You read the scope room by room, filter it, and check the lines you are unsure about.</td><td><a href="#table">Section 6</a>, <a href="#evidence">7</a></td></tr>
+      <tr><td><strong>Edit</strong></td><td>You correct codes and quantities, add what the capture missed, and remove what does not belong.</td><td><a href="#editing">Section 8</a></td></tr>
+      <tr><td><strong>Validate</strong></td><td>Built-in checks list what must be fixed before export — starting with items not assigned to a room.</td><td><a href="#quality">Section 9</a></td></tr>
+      <tr><td><strong>Export</strong></td><td>You take the estimate out — to your estimating software, as a report, or as a shared link.</td><td><a href="#export">Section 11</a></td></tr>
+    </tbody>
+  </table>
+
+  <div class="note tip">
+    <strong>Your work is versioned</strong>
+    <p>
+      You never lose a previous state. Every generation creates a new version, and every saved round of edits a
+      new revision inside it — so you can compare, and go back. See <a href="#versions">Versions and revisions</a>.
+    </p>
+  </div>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 4 -->
+<section id="generate">
+  <div class="sec-head">
+    <h2 class="sec">4. Generating a version</h2>
+    <span class="badge outline">Outline — to expand</span>
+  </div>
+  <p class="sec-note">Future Document360 article: <em>Generating an Initial Estimate and choosing a scope strategy</em>.</p>
+
+  <p>
+    When you generate, you choose a <strong>scope strategy</strong>: how much DocuSketch should put in the first
+    draft. The three strategies are nested — each one contains everything the previous one has, plus more — so the
+    choice is really about where you want to start: with the minimum you can defend line by line, or with the
+    widest set, which you then prune.
+  </p>
+
+  <table>
+    <thead>
+      <tr><th>Strategy</th><th>In one line</th><th>What it includes</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Documented</strong></td>
+        <td>Direct data only</td>
+        <td>Line items pulled strictly from provided data — scope of work, comments, 360&deg;, documents and Instant Sketch.</td>
+      </tr>
+      <tr>
+        <td><strong>Standard</strong></td>
+        <td>Adds customer profile</td>
+        <td>Everything in Documented, plus items carried over from the customer profile — your office defaults and standards.</td>
+      </tr>
+      <tr>
+        <td><strong>Expanded</strong></td>
+        <td>Includes AI predictions</td>
+        <td>The largest output, including AI predictions and suggestions. Review and prune before committing.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>
+    The picker does not make you guess. Each strategy shows how many line items it would produce, the selected one
+    is broken down by confidence — how many high, medium and low — and a short <em>Adds, e.g.</em> list names
+    example items it brings in over the narrower option. Nothing is committed until you press the
+    <strong>Use</strong> button, and the editor reminds you that the items can be refined afterwards.
+  </p>
+
+  <h3>To expand here</h3>
+  <ul>
+    <li>Where the office default strategy is set, and how to change it for one estimate only.</li>
+    <li>What the generation banner shows while the estimate is being built, and why you can keep working.</li>
+    <li>What committing a scope locks, and how to go back to the original generated set to pick differently.</li>
+    <li>Re-generating: when it is the right move, and what happens to edits you already made.</li>
+  </ul>
+
+  <figure class="shot" data-shot="03-scope-strategies" data-where="Initial Estimate → generate → scope picker">
+    <img src="screenshots/03-scope-strategies.png" alt="The scope strategy picker" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">The scope strategy picker</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/03-scope-strategies.png</dd>
+        <dt>Where</dt><dd>Editor, on a version whose scope is not committed yet</dd>
+        <dt>Must show</dt><dd>All three strategies with item counts, the confidence breakdown and the Use button</dd>
+      </dl>
+    </div>
+    <figcaption>Documented, Standard and Expanded — with how many line items each would produce, and what the widest one adds.</figcaption>
+  </figure>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 5 -->
+<section id="versions">
+  <div class="sec-head">
+    <h2 class="sec">5. Versions and revisions</h2>
+    <span class="badge outline">Outline — to expand</span>
+  </div>
+  <p class="sec-note">Future Document360 article: <em>Working with estimate versions</em>.</p>
+
+  <p>
+    Estimates are numbered <code>Version N.R</code> — the version number changes when a new estimate is
+    generated, the revision number when you save edits to it. The project's <strong>Estimates</strong> tab is where
+    they all live: every initial estimate on the project, with its status, how many line items it holds, its
+    amount, any notes, and when it was created and last updated. Each row opens the editor, and the history icon
+    beside it shows what happened to that estimate over time.
+  </p>
+
+  <h3>To expand here</h3>
+  <ul>
+    <li>Reading the version list: states, totals, and which version is current.</li>
+    <li>Version details and history.</li>
+    <li>Comparing two revisions to see exactly what changed.</li>
+    <li>When to generate a new version instead of editing the current one.</li>
+  </ul>
+
+  <figure class="shot" data-shot="04-version-list" data-where="Project → Estimates → Initial (list view)">
+    <img src="screenshots/04-version-list.png" alt="The list of estimate versions" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">The version list</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/04-version-list.png</dd>
+        <dt>Where</dt><dd>Project &rarr; Estimates, on a project with several versions</dd>
+        <dt>Must show</dt><dd>Several versions with different statuses, line-item counts and dates</dd>
+      </dl>
+    </div>
+    <figcaption>The Estimates tab: every version stays on the project, newest first.</figcaption>
+  </figure>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 6 -->
+<section id="table">
+  <div class="sec-head">
+    <h2 class="sec">6. Reading the line-item table</h2>
+    <span class="badge outline">Outline — to expand</span>
+  </div>
+  <p class="sec-note">Future Document360 article: <em>The line-item table</em>.</p>
+
+  <p>
+    The table is the estimate. Items are grouped, each group carries its own subtotal, and the footer carries the
+    preliminary total for the version. Items not assigned to a room yet sit together in a single
+    <strong>Project</strong> group — a standing signal that they still need a home.
+  </p>
+  <p>
+    Above the table sit the controls you will use most: a search box, <strong>Add line item</strong> and
+    <strong>Add room</strong> — and, in the toolbar, the pricing tier (<strong>Min / Avg / Max</strong>), the count
+    of <strong>required actions</strong> still open, and <strong>Export</strong>.
+  </p>
+
+  <table>
+    <thead><tr><th>Column</th><th>What it tells you</th></tr></thead>
+    <tbody>
+      <tr><td><strong>CAT / SEL / Act</strong></td><td>The estimating code: category, selector and activity.</td></tr>
+      <tr><td><strong>Description</strong></td><td>The line item itself, in plain words.</td></tr>
+      <tr><td><strong>Calc</strong></td><td>The expression the quantity is derived from, where one applies.</td></tr>
+      <tr><td><strong>Qty / Unit</strong></td><td>How much, in which unit of measure.</td></tr>
+      <tr><td><strong>Unit Price / Total</strong></td><td>Pricing for the line, and the line total.</td></tr>
+      <tr><td><strong>Source</strong></td><td>Whether the line came from DocuSketch or was added by a person.</td></tr>
+      <tr><td><strong>Conf</strong></td><td>How confident DocuSketch is in the quantity on this line.</td></tr>
+      <tr><td><strong>Row actions</strong></td><td>Add, delete, and open the line item's own detail panel.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>To expand here</h3>
+  <ul>
+    <li>Filtering by source — DS Engine versus User — and what each bucket means.</li>
+    <li>Sorting, searching and jumping to a specific item.</li>
+    <li>Collapsing rooms, and reading group subtotals against the version total.</li>
+    <li>Switching the pricing tier and what that changes.</li>
+    <li>Selecting several rows at once for bulk actions.</li>
+  </ul>
+
+  <figure class="shot" data-shot="05-table-columns" data-where="Editor → line-item table">
+    <img src="screenshots/05-table-columns.png" alt="The line-item table with columns and a room group" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">Table columns and a room group</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/05-table-columns.png</dd>
+        <dt>Where</dt><dd>Editor, table scrolled to a room group header</dd>
+        <dt>Must show</dt><dd>Header row, one room group with several items, the subtotal</dd>
+      </dl>
+    </div>
+    <figcaption>One room group, with its items and subtotal.</figcaption>
+  </figure>
+
+  <figure class="shot" data-shot="06-editor-toolbar" data-where="Editor → the toolbar strip above the table">
+    <img src="screenshots/06-editor-toolbar.png" alt="The editor toolbar: pricing tier, required actions, export" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">The editor toolbar</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/06-editor-toolbar.png</dd>
+        <dt>Where</dt><dd>Editor, the strip above the table</dd>
+        <dt>Must show</dt><dd>Pricing Min / Avg / Max, the required-actions count, Export</dd>
+      </dl>
+    </div>
+    <figcaption>Pricing tier, everything still waiting on a decision, and the way out.</figcaption>
+  </figure>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 7 -->
+<section id="evidence">
+  <div class="sec-head">
+    <h2 class="sec">7. Where a line item came from</h2>
+    <span class="badge outline">Outline — to expand</span>
+  </div>
+  <p class="sec-note">Future Document360 article: <em>Evidence and justification behind a line item</em>. Likely the most-read article of the set.</p>
+
+  <p>
+    Select any line item and the detail panel opens beside the table. Besides the editable fields, it answers two
+    questions that matter when the estimate is challenged: <em>what evidence put this line here</em>, and
+    <em>how was this quantity arrived at</em>.
+  </p>
+
+  <table>
+    <thead><tr><th>Block</th><th>What it answers</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Sources</strong></td><td>Which inputs produced the line — for example the sketch, the scope of work, or an office default.</td></tr>
+      <tr><td><strong>AI Justification Summary</strong></td><td>The evidence the line was driven by, listed one row per source.</td></tr>
+      <tr><td><strong>Quantity Justification</strong></td><td>How the quantity was determined, the confidence level, and the full calculation behind it.</td></tr>
+      <tr><td><strong>Errors and warnings</strong></td><td>Anything the validation rules flagged on this specific line.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>To expand here</h3>
+  <ul>
+    <li>Reading a quantity calculation, with a worked example.</li>
+    <li>Confidence levels, and what to do about a low-confidence quantity.</li>
+    <li>Adding your own justification to a line.</li>
+    <li>The evidence panel: provenance, linked project snapshots, and the assumptions that were made.</li>
+    <li>The coverage audit: how much of the estimate is backed by snapshots, and where the gaps are.</li>
+  </ul>
+
+  <figure class="shot" data-shot="07-line-item-panel" data-where="Editor → click a line item">
+    <img src="screenshots/07-line-item-panel.png" alt="The line item detail panel with justification blocks" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">Line item detail panel</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/07-line-item-panel.png</dd>
+        <dt>Where</dt><dd>Editor, a line item with justifications present</dd>
+        <dt>Must show</dt><dd>Item details, Sources, AI Justification Summary, Quantity Justification with a real calculation</dd>
+      </dl>
+    </div>
+    <figcaption>The panel shows the evidence and the calculation, not just the number.</figcaption>
+  </figure>
+
+  <figure class="shot" data-shot="08-evidence-panel" data-where="Editor → evidence for a line item">
+    <img src="screenshots/08-evidence-panel.png" alt="The evidence panel with linked snapshots" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">Evidence panel</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/08-evidence-panel.png</dd>
+        <dt>Where</dt><dd>Evidence view of a line item with linked snapshots</dd>
+        <dt>Must show</dt><dd>Provenance, snapshot links, assumptions</dd>
+      </dl>
+    </div>
+    <figcaption>Photographic evidence linked to the line, with the assumptions made around it.</figcaption>
+  </figure>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 8 -->
+<section id="editing">
+  <div class="sec-head">
+    <h2 class="sec">8. Editing line items</h2>
+    <span class="badge outline">Outline — to expand</span>
+  </div>
+  <p class="sec-note">Future Document360 article: <em>Editing the scope</em>.</p>
+
+  <p>
+    Everything in the table is yours to change. Edits are held until you save them, so you can work through a
+    whole room and commit it in one go — or discard the round if it went wrong.
+  </p>
+
+  <h3>To expand here</h3>
+  <ul>
+    <li>Editing in place: codes, description, quantity, unit price.</li>
+    <li>The Calc field: it takes a plain number (<code>12</code>), a formula (<code>12+8</code>), or a sketch
+      variable — <code>F</code> floor, <code>C</code> ceiling, <code>W</code> walls, <code>PF</code> floor
+      perimeter — with <code>+ - * / ( )</code> and implicit multiplication, so <code>0.41C</code> means
+      0.41 &times; ceiling area. The editor keeps this cheat-sheet next to the field.</li>
+    <li>Adding a line item from the price catalog.</li>
+    <li>Duplicating, moving between rooms, and deleting items.</li>
+    <li>Assigning an item that has no room.</li>
+    <li>Bypassing a flagged item, and why the reason you type matters later.</li>
+    <li>Excluded items: what ends up there and how to bring something back.</li>
+    <li>Unsaved changes, saving, and discarding.</li>
+  </ul>
+
+  <figure class="shot" data-shot="09-inline-edit" data-where="Editor → edit a cell">
+    <img src="screenshots/09-inline-edit.png" alt="Editing a line item in place" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">Editing in place</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/09-inline-edit.png</dd>
+        <dt>Where</dt><dd>Editor, a cell in edit mode</dd>
+        <dt>Must show</dt><dd>The active cell and the unsaved-changes state in the toolbar</dd>
+      </dl>
+    </div>
+    <figcaption>Edits are held as unsaved changes until you save the round.</figcaption>
+  </figure>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 9 -->
+<section id="quality">
+  <div class="sec-head">
+    <h2 class="sec">9. Checking quality before you export</h2>
+    <span class="badge outline">Outline — to expand</span>
+  </div>
+  <p class="sec-note">Future Document360 article: <em>Validation and coverage checks</em>.</p>
+
+  <p>
+    Before an estimate leaves the portal, the built-in checks tell you what still needs a decision. The toolbar
+    keeps the count in view — <em>49 required actions</em> in the screenshot above — and opens the full report when
+    you click it. When nothing is left, the report says so plainly: <em>no required actions — this estimate is
+    ready to export</em>.
+  </p>
+
+  <h3>To expand here</h3>
+  <ul>
+    <li>The issues report: unassigned items first, then errors, then suggestions.</li>
+    <li>Fixing versus bypassing — and when bypassing in bulk is reasonable.</li>
+    <li>Accepting a suggested item.</li>
+    <li>The coverage audit and gap analysis.</li>
+  </ul>
+
+  <figure class="shot" data-shot="10-validation-report" data-where="Editor → toolbar → Issues">
+    <img src="screenshots/10-validation-report.png" alt="The validation report" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">Validation report</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/10-validation-report.png</dd>
+        <dt>Where</dt><dd>Editor toolbar, the required-actions button</dd>
+        <dt>Must show</dt><dd>Unassigned items, errors and suggested items sections with counts</dd>
+      </dl>
+    </div>
+    <figcaption>Everything that needs a decision before export, in one list.</figcaption>
+  </figure>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 10 -->
+<section id="ai">
+  <div class="sec-head">
+    <h2 class="sec">10. AI assistance</h2>
+    <span class="badge outline">Outline — to expand</span>
+  </div>
+  <p class="sec-note">Future Document360 article: <em>AI assistance in the estimate editor</em>. Availability varies by account — confirm before publishing.</p>
+
+  <p>
+    Beyond generating the scope, the editor can answer questions about the estimate and act on instructions in
+    plain language. Both assistants sit in the top-right corner of the editor: <strong>Ask DS AI</strong> and
+    <strong>Ask Aime</strong>.
+  </p>
+
+  <h3>To expand here</h3>
+  <ul>
+    <li>Asking a question about the estimate, and what the answer is based on.</li>
+    <li>Describing a change in words and reviewing what it proposes before applying it.</li>
+    <li>What these assistants can and cannot see.</li>
+  </ul>
+
+  <figure class="shot" data-shot="11-ai-assistant" data-where="Editor → AI actions">
+    <img src="screenshots/11-ai-assistant.png" alt="AI assistance panel" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">AI assistance</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/11-ai-assistant.png</dd>
+        <dt>Where</dt><dd>Editor header, Ask DS AI / Ask Aime — account must have them enabled</dd>
+        <dt>Must show</dt><dd>The panel open with one question and its answer</dd>
+      </dl>
+    </div>
+    <figcaption>Ask about the estimate without leaving it.</figcaption>
+  </figure>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 11 -->
+<section id="export">
+  <div class="sec-head">
+    <h2 class="sec">11. Exporting and sharing</h2>
+    <span class="badge outline">Outline — to expand</span>
+  </div>
+  <p class="sec-note">Future Document360 article: <em>Exporting an Initial Estimate</em>.</p>
+
+  <p>
+    When the estimate is ready, the export panel puts the output formats and what goes into them in one place —
+    the line items themselves, the floor plan with measurements, and the supporting documentation.
+  </p>
+  <p>
+    If anything still needs a decision, the panel opens on that instead: a red count of items needing review, with
+    <strong>Review</strong> to work through them one by one and <strong>Bypass all</strong> to accept them as they
+    are. You clear that list first, then choose a format.
+  </p>
+
+  <h3>To expand here</h3>
+  <ul>
+    <li>Choosing the report type, and which one your recipient actually needs.</li>
+    <li>What is included in each export, and what is deliberately left out.</li>
+    <li>Warnings that block an export, and how to clear them.</li>
+    <li>Sharing the estimate instead of downloading it.</li>
+  </ul>
+
+  <figure class="shot" data-shot="12-export-panel" data-where="Editor → toolbar → Export">
+    <img src="screenshots/12-export-panel.png" alt="The export panel" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">Export panel</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/12-export-panel.png</dd>
+        <dt>Where</dt><dd>Editor toolbar, Export</dd>
+        <dt>Must show</dt><dd>Report type options and the what-is-included list</dd>
+      </dl>
+    </div>
+    <figcaption>Pick the format, see what travels with it.</figcaption>
+  </figure>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 12 -->
+<section id="mobile">
+  <div class="sec-head">
+    <h2 class="sec">12. In the mobile app</h2>
+    <span class="badge outline">Outline — to expand</span>
+  </div>
+
+  <p>
+    Opened on a phone, the portal switches to a layout built for one: each line item is a card with its code,
+    description, quantity and price, with search, the pricing tier and the AI actions stacked above, and
+    <strong>Add</strong> and <strong>Export</strong> fixed to the bottom of the screen. Tapping a card opens that
+    item's details.
+  </p>
+  <p>
+    The DocuSketch mobile app covers the same estimate separately — that part is still to be written.
+  </p>
+
+  <h3>To cover</h3>
+  <ul>
+    <li>Reviewing and editing items on a small screen.</li>
+    <li>Evidence and justification on mobile.</li>
+    <li>What you still need a desktop for.</li>
+    <li>The native app: how it differs from the portal on a phone.</li>
+  </ul>
+
+  <figure class="shot" data-shot="13-mobile-list" data-where="Mobile app — to be captured later">
+    <img src="screenshots/13-mobile-list.png" alt="Initial Estimate on mobile" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">Initial Estimate on mobile</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/13-mobile-list.png</dd>
+        <dt>Where</dt><dd>Portal at phone width, editor open</dd>
+        <dt>Must show</dt><dd>The card list, the filters above it, the Add / Export footer</dd>
+      </dl>
+    </div>
+    <figcaption>The same estimate at phone width: one card per line item.</figcaption>
+  </figure>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 13 -->
+<section id="faq">
+  <div class="sec-head">
+    <h2 class="sec">13. FAQ and troubleshooting</h2>
+    <span class="badge stub">Stub — collect from support</span>
+  </div>
+
+  <p>To be filled from real support tickets. Candidates so far:</p>
+  <ul>
+    <li>Why is a room missing from my estimate?</li>
+    <li>Why does a line item have a quantity I did not expect?</li>
+    <li>Why can I not export yet?</li>
+    <li>I generated with the wrong scope strategy — what now?</li>
+    <li>Can I get back a line item I deleted?</li>
+    <li>Why do prices differ from what my office normally uses?</li>
+  </ul>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 14 -->
+<section id="glossary">
+  <div class="sec-head">
+    <h2 class="sec">14. Glossary</h2>
+    <span class="badge stub">Stub</span>
+  </div>
+
+  <table>
+    <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Line item</strong></td><td>One priced row of the estimate — a code, a description, a quantity and a unit.</td></tr>
+      <tr><td><strong>CAT / SEL / Act</strong></td><td>Category, selector and activity — the estimating code that identifies the work.</td></tr>
+      <tr><td><strong>Scope strategy</strong></td><td>How broad the generated scope should be: Documented, Standard or Expanded.</td></tr>
+      <tr><td><strong>Affected area</strong></td><td>A room marked as touched by the loss. The scope follows what is marked.</td></tr>
+      <tr><td><strong>Source</strong></td><td>What produced a line item — DocuSketch or a person.</td></tr>
+      <tr><td><strong>Justification</strong></td><td>The stated reason a line item, or its quantity, is what it is.</td></tr>
+      <tr><td><strong>Provenance</strong></td><td>The trail from a line item back to the captured evidence behind it.</td></tr>
+      <tr><td><strong>Version / revision</strong></td><td>A generated estimate, and a saved round of edits inside it.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ shot list -->
+<section id="shot-list">
+  <div class="sec-head">
+    <h2 class="sec">Shot list</h2>
+    <span class="badge">Working aid — not part of the article</span>
+  </div>
+  <p class="progress-line" id="shot-progress">Counting screenshots&hellip;</p>
+  <table>
+    <thead><tr><th>#</th><th>File</th><th>Where to capture</th><th>Status</th></tr></thead>
+    <tbody id="shot-rows"></tbody>
+  </table>
+</section>
+
+<details class="team">
+  <summary>For the team — remove before publishing</summary>
+  <p><strong>Open questions</strong></p>
+  <ol>
+    <li><strong>Naming clash, found while capturing:</strong> the Estimates tab calls the action <em>Create Instant Estimate</em>, the rows read <em>Initial estimate v12</em>, and the header buttons are <em>Ask DS AI</em> / <em>Ask Aime</em>. Which name does the article teach?</li>
+    <li>How do we position Initial Estimate against an ordered estimate delivered by the DocuSketch estimating team? Readers will conflate them.</li>
+    <li>Which parts are behind feature flags or plan tiers today — AI assistance, coverage audit, expanded export options? The article must not promise what an account cannot see.</li>
+    <li>Export: which formats do we document for customers, and is there anything deliberately not exported that we should state (for example pricing in some outputs)?</li>
+    <li><strong>Found while capturing:</strong> Export opens straight into the blocking list when items still need review, with <em>Bypass all</em> right there. Do we teach bypassing at all, or only fixing?</li>
+    <li>Is the audience split real — do adjusters need their own shorter article about evidence and justification only?</li>
+    <li>Sections 4 to 11 are outlines. Which ones does the team want expanded first?</li>
+  </ol>
+  <p><strong>Screenshot conventions to agree</strong></p>
+  <ul>
+    <li>One demo project used for all shots, so numbers stay consistent across the article. <strong>The current shots come from sandbox project “24 Pinehurst Crescent (migration from 2856831)”, which is not fit for publication:</strong> every price is $0.00, the line items are all unassigned (one Project group, no rooms), several rows repeat, and one note carries an internal ticket reference. We need a clean demo project before final capture.</li>
+    <li>No real customer names, addresses or claim numbers in any capture.</li>
+    <li>Browser at a fixed width, light theme, no personal avatar in the header.</li>
+  </ul>
+</details>
+
+<footer class="page">
+  Draft prepared for team review. Source of truth for the final article is Document360.
+</footer>
+
+
+    </div>
+  </main>
+</div>
+
+<script>
+  (function () {
+    var figs = Array.prototype.slice.call(document.querySelectorAll('figure.shot'));
+    var rows = document.getElementById('shot-rows');
+    var done = 0;
+
+    figs.forEach(function (fig, i) {
+      var img = fig.querySelector('img');
+      var name = fig.getAttribute('data-shot') || ('shot-' + (i + 1));
+      var where = fig.getAttribute('data-where') || '';
+      var ok = !!(img && img.complete && img.naturalWidth > 0);
+
+      if (img) {
+        img.addEventListener('load', function () { fig.classList.add('has-shot'); refresh(); });
+        img.addEventListener('error', function () { fig.classList.remove('has-shot'); refresh(); });
+      }
+      if (ok) { fig.classList.add('has-shot'); }
+
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td>' + (i + 1) + '</td>' +
+        '<td><code>' + name + '.png</code></td>' +
+        '<td>' + where + '</td>' +
+        '<td data-status></td>';
+      rows.appendChild(tr);
+      fig._row = tr;
+    });
+
+    function refresh() {
+      done = 0;
+      figs.forEach(function (fig) {
+        var has = fig.classList.contains('has-shot');
+        if (has) { done++; }
+        var cell = fig._row.querySelector('[data-status]');
+        cell.innerHTML = has
+          ? '<span class="pill done">captured</span>'
+          : '<span class="pill todo">to capture</span>';
+      });
+      document.getElementById('shot-progress').textContent =
+        done + ' of ' + figs.length + ' screenshots captured.';
+    }
+
+    refresh();
+  })();
+</script>
+
+</body>
+</html>
