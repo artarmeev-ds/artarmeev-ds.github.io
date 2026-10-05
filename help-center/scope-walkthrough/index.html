@@ -236,7 +236,7 @@
 
 <div class="hc-top">
   <div class="hc-brand" role="img" aria-label="DocuSketch (preview — not a link)" title="Preview only — this logo does not open the Help Center home page">
-    <img src="../initial-estimate/assets/docusketch-wordmark.png" alt="DocuSketch" />
+    <img src="../assets/docusketch-wordmark.png" alt="DocuSketch" />
     <span class="brand-flag">Preview</span>
   </div>
   <div class="hc-navbar">
@@ -260,15 +260,14 @@
       <ul class="rail-nav">
         <li><a href="../instant-sketch/"><span class="dot"></span>Instant Sketch<span class="wip">draft</span></a></li>
         <li><a href="../affected-areas/"><span class="dot"></span>Affected Areas<span class="wip">draft</span></a></li>
-        <li><a class="current ready" href="./"><span class="dot"></span>Scope Walkthrough<span class="wip">draft</span></a></li>
-        <li><a href="../initial-estimate/"><span class="dot"></span>Initial Estimate</a></li>
+        <li><a class="current ready" href="./"><span class="dot"></span>Scope Walkthrough</a></li>
+        <li><a class="ready" href="../initial-estimate/"><span class="dot"></span>Initial Estimate</a></li>
         <li><a href="../win-the-work/"><span class="dot"></span>Win the Work<span class="wip">draft</span></a></li>
       </ul>
     </div>
     <div class="rail-note">
       <strong>Mock-up, not the Help Center</strong>
-      These five are the Golden Thread articles we are drafting. Only Initial Estimate has content; the rest open a
-      placeholder. The logo, search and filter are inert on purpose.
+      These five are the Golden Thread articles we are drafting. The logo, search and filter are inert on purpose.
     </div>
   </aside>
 
@@ -276,44 +275,691 @@
     <div class="hc-article">
 
       <div class="preview-note">
-        <strong>Not written yet.</strong>
-        This page is a placeholder so the Golden Thread set can be navigated end to end. Nothing here is
-        documentation.
+        <strong>Draft for internal review.</strong>
+        Styled to look like the Help Center so the layout can be judged in context — but it is not published
+        documentation, and the copy is not final. Screenshots come from a sandbox project; the mobile capture flow is
+        written from specs and not yet illustrated.
       </div>
 
       <h1 class="article-title">Scope Walkthrough</h1>
       <div class="article-info">
-        <span>Draft in progress</span>
-        <span>No content yet</span>
-        <span>Part of Golden Thread</span>
+        <span>Draft v0.1</span>
+        <span>Updated on Oct 5, 2026</span>
+        <span>Applies to: Web portal</span>
+        <span>Mobile capture: section 4</span>
       </div>
 
-      <p class="lede">Walk the property and speak the scope; DocuSketch turns it into scope items.</p>
-
-      <div class="note">
-        <strong>What this article will cover</strong>
-        <p>
-          The same shape as <a href="../initial-estimate/">Initial Estimate</a>: what the feature is, what has to be
-          in place before you use it, how it works end to end, then a section per screen with real screenshots — on
-          the web portal first, the mobile app after.
-        </p>
-      </div>
-
-      <p>
-        Want this one next? Say so and it gets written the same way: the product is read from the code and the live
-        environment, the screenshots are captured from a sandbox project, and the draft lands here for review before
-        anything moves into Document360.
+      <p class="lede">
+        Walk the property and say what you see. DocuSketch turns the recording into structured scope items — grouped
+        by room, traceable to the sentence that produced them, and ready to become an estimate.
       </p>
 
-      <p><a href="../">&larr; Back to the draft list</a></p>
+<nav class="toc">
+  <h2>In this article</h2>
+  <ol>
+    <li><a href="#what">What a Scope Walkthrough is</a></li>
+    <li><a href="#before">Before you start</a></li>
+    <li><a href="#how">How it works, end to end</a></li>
+    <li><a href="#record">Recording a walkthrough</a></li>
+    <li><a href="#screen">The Scope screen</a></li>
+    <li><a href="#review">Reviewing a walkthrough</a></li>
+    <li><a href="#sheet">The Scope Sheet</a></li>
+    <li><a href="#other-tabs">The other capture tabs</a></li>
+    <li><a href="#to-estimate">From scope to estimate</a></li>
+    <li><a href="#mobile">On a phone</a></li>
+    <li><a href="#faq">FAQ and troubleshooting</a></li>
+    <li><a href="#glossary">Glossary</a></li>
+  </ol>
+</nav>
 
-      <footer class="page">
-        Placeholder page. Source of truth for published articles is Document360.
-      </footer>
+<!-- ============================================================ 1 -->
+<section id="what">
+  <div class="sec-head">
+    <h2 class="sec">1. What a Scope Walkthrough is</h2>
+  </div>
+
+  <p>
+    A <strong>Scope Walkthrough</strong> is the scope, spoken out loud. You walk the property with your phone and
+    describe what you see — the room you are in, the damage, what has to come out, what has to be dried. DocuSketch
+    records it, transcribes it, and turns the description into <strong>scope items</strong>: structured lines with a
+    category, a location and a quantity, each one traceable back to the sentence that produced it.
+  </p>
+  <p>
+    The point is to stop the scope from living in two places. Instead of notes on a phone that somebody retypes in
+    the office hours later, what you said on site becomes the scope the estimate is built from — while you are still
+    standing in the room, where a second look is free.
+  </p>
+
+  <h3>What it produces</h3>
+  <ul>
+    <li>An <strong>audio recording</strong>, kept with the project, that anybody reviewing the scope can play back.</li>
+    <li>A <strong>transcript</strong> of what was said.</li>
+    <li><strong>Scope items</strong> extracted from that transcript, grouped by room and by category.</li>
+    <li>A <strong>scope sheet</strong> for the whole project, which is what the Initial Estimate is generated from.</li>
+  </ul>
+
+  <div class="note">
+    <strong>Where it sits in the workflow</strong>
+    <p>
+      Capture the property, mark what the loss touched, <em>walk the scope</em> — then estimate it. A walkthrough is
+      the step that turns observations into something the estimate engine can price. See
+      <a href="../initial-estimate/">Initial Estimate</a> for what happens next.
+    </p>
+  </div>
+
+  <figure class="shot" data-shot="sw-01-workbench" data-where="Project → Scope → Scope Walkthroughs">
+    <img src="screenshots/sw-01-workbench.png" alt="The Scope screen with the walkthroughs tab open" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">The Scope screen</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/sw-01-workbench.png</dd>
+        <dt>Where</dt><dd>Project &rarr; Scope &rarr; Scope Walkthroughs</dd>
+        <dt>Must show</dt><dd>The audit header, the capture tabs, a walkthrough card and the Scope Sheet panel</dd>
+      </dl>
+    </div>
+    <figcaption>Capture on the left, the scope it produced on the right.</figcaption>
+  </figure>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 2 -->
+<section id="before">
+  <div class="sec-head">
+    <h2 class="sec">2. Before you start</h2>
+  </div>
+
+  <p>
+    A walkthrough needs very little: a project and the DocuSketch mobile app. Everything else is optional, and each
+    optional piece makes the result better.
+  </p>
+
+  <table>
+    <thead><tr><th>You need</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td><strong>A project</strong></td><td>The walkthrough is attached to it, and so is everything extracted from it.</td></tr>
+      <tr><td><strong>The mobile app</strong></td><td>Recording happens on the phone. The web portal is where the result is reviewed.</td></tr>
+      <tr><td><strong>A sketch</strong> <em>(recommended)</em></td><td>Measured rooms turn spoken quantities into real ones: "tear out the wet drywall two feet up" becomes a linear-foot number.</td></tr>
+      <tr><td><strong>Marked affected areas</strong> <em>(recommended)</em></td><td>Tells DocuSketch which rooms the loss touched, so items land in the right place.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note tip">
+    <strong>Speak room by room</strong>
+    <p>
+      Name the room you are in before you describe the damage. The extraction uses that to decide where an item
+      belongs — and a scope item in the right room needs no fixing later.
+    </p>
+  </div>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 3 -->
+<section id="how">
+  <div class="sec-head">
+    <h2 class="sec">3. How it works, end to end</h2>
+  </div>
+
+  <svg class="flow" viewBox="0 0 820 200" role="img" aria-label="Flow: Record, Transcribe, Extract, Review, Estimate">
+    <defs>
+      <marker id="arw2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#8b959d" />
+      </marker>
+    </defs>
+    <g font-family="Roboto, -apple-system, Segoe UI, sans-serif">
+      <g>
+        <rect x="6" y="46" width="140" height="62" rx="10" fill="#eef4ff" stroke="#cfe0ff" />
+        <text x="76" y="72" text-anchor="middle" font-size="15" font-weight="600" fill="#1b4fa8">Record</text>
+        <text x="76" y="92" text-anchor="middle" font-size="12" fill="#3d474f">on the phone</text>
+      </g>
+      <line x1="150" y1="77" x2="176" y2="77" stroke="#8b959d" stroke-width="1.5" marker-end="url(#arw2)" />
+      <g>
+        <rect x="180" y="46" width="140" height="62" rx="10" fill="#f7f9fa" stroke="#e3e7ea" />
+        <text x="250" y="72" text-anchor="middle" font-size="15" font-weight="600" fill="#101418">Transcribe</text>
+        <text x="250" y="92" text-anchor="middle" font-size="12" fill="#3d474f">speech to text</text>
+      </g>
+      <line x1="324" y1="77" x2="350" y2="77" stroke="#8b959d" stroke-width="1.5" marker-end="url(#arw2)" />
+      <g>
+        <rect x="354" y="46" width="140" height="62" rx="10" fill="#f7f9fa" stroke="#e3e7ea" />
+        <text x="424" y="72" text-anchor="middle" font-size="15" font-weight="600" fill="#101418">Extract</text>
+        <text x="424" y="92" text-anchor="middle" font-size="12" fill="#3d474f">scope items</text>
+      </g>
+      <line x1="498" y1="77" x2="524" y2="77" stroke="#8b959d" stroke-width="1.5" marker-end="url(#arw2)" />
+      <g>
+        <rect x="528" y="46" width="140" height="62" rx="10" fill="#f7f9fa" stroke="#e3e7ea" />
+        <text x="598" y="72" text-anchor="middle" font-size="15" font-weight="600" fill="#101418">Review</text>
+        <text x="598" y="92" text-anchor="middle" font-size="12" fill="#3d474f">in the portal</text>
+      </g>
+      <line x1="672" y1="77" x2="698" y2="77" stroke="#8b959d" stroke-width="1.5" marker-end="url(#arw2)" />
+      <g>
+        <rect x="702" y="46" width="112" height="62" rx="10" fill="#e9f6ef" stroke="#bfe3d1" />
+        <text x="758" y="72" text-anchor="middle" font-size="15" font-weight="600" fill="#1a7f52">Estimate</text>
+        <text x="758" y="92" text-anchor="middle" font-size="12" fill="#3d474f">generate</text>
+      </g>
+      <text x="417" y="170" text-anchor="middle" font-size="12" fill="#6b7681">record as many walkthroughs as the job needs — they all feed one scope sheet</text>
+    </g>
+  </svg>
+
+  <p>
+    The first three steps happen without you: once the recording stops, DocuSketch transcribes it and extracts the
+    items. The card in the portal tells you where it got to — <strong>Transcript ready</strong> once the text is in,
+    with a count of how many items came out of it.
+  </p>
+  <p>
+    The last two are yours: check what was extracted, fix what the extraction got wrong, and generate the estimate.
+  </p>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 4 -->
+<section id="record">
+  <div class="sec-head">
+    <h2 class="sec">4. Recording a walkthrough</h2>
+    <span class="badge outline">Mobile — screenshots pending</span>
+  </div>
+
+  <p>
+    Recording happens in the DocuSketch mobile app, on the project you are working. You start a walkthrough, wait for
+    the countdown, and talk your way through the property.
+  </p>
+
+  <h3>What to say</h3>
+  <ul>
+    <li><strong>Name the room first.</strong> "I am in the hallway" — then describe it.</li>
+    <li><strong>Describe the damage plainly.</strong> "The hardwood in the living room is badly cupped and some boards are crowning."</li>
+    <li><strong>Say what the work is.</strong> "Tear out the wet drywall, two feet up, all through."</li>
+    <li><strong>Give quantities when you know them</strong>, and leave them out when you do not — the sketch fills in what it can measure.</li>
+  </ul>
+
+  <p>
+    One long walkthrough and several short ones work equally well; every recording on the project feeds the same
+    scope sheet. Short per-room recordings are easier to re-listen to later.
+  </p>
+
+  <div class="note warn">
+    <strong>This section is a draft</strong>
+    <p>
+      The mobile capture flow is described here from the product specs, not from screenshots. The app screens — start,
+      countdown, recording, the extracted-items review — will be added when the mobile round is captured.
+    </p>
+  </div>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 5 -->
+<section id="screen">
+  <div class="sec-head">
+    <h2 class="sec">5. The Scope screen</h2>
+  </div>
+
+  <p>
+    In the portal, everything about scope lives on the project's <strong>Scope</strong> tab. The screen is in three
+    bands.
+  </p>
+
+  <h3>The audit header</h3>
+  <p>
+    <strong>Scope Audit</strong> is the one-line state of the scope: what is covered (whole project or a part), how
+    many floors and rooms, how many scope items exist, and the water category and class. Beside it sits
+    <strong>Generate initial estimate</strong> — the hand-off to the estimate, from the screen where you just
+    satisfied yourself that the scope is right.
+  </p>
+
+  <figure class="shot" data-shot="sw-10-audit-header" data-where="Project → Scope, the header band">
+    <img src="screenshots/sw-10-audit-header.png" alt="The Scope Audit header" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">Scope Audit header</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/sw-10-audit-header.png</dd>
+        <dt>Where</dt><dd>Project &rarr; Scope, the header band</dd>
+        <dt>Must show</dt><dd>Coverage, floors, rooms, item count, Cat/Class, Generate initial estimate</dd>
+      </dl>
+    </div>
+    <figcaption>The scope in one line — and the button that turns it into an estimate.</figcaption>
+  </figure>
+
+  <h3>The capture panel</h3>
+  <p>
+    On the left, a tab per kind of capture: <strong>Mapping</strong>, <strong>360° Tour</strong>,
+    <strong>Field Notes</strong>, <strong>Scope Walkthroughs</strong> and <strong>Scope Reports</strong>. The
+    walkthroughs tab carries a count, so you can see at a glance whether anybody recorded anything.
+  </p>
+
+  <h3>The Scope Sheet panel</h3>
+  <p>
+    On the right, the scope itself — every item on the project, whatever produced it. The panel stays put as you move
+    between capture tabs, which is the point: you are always comparing a source against the scope it produced.
+  </p>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 6 -->
+<section id="review">
+  <div class="sec-head">
+    <h2 class="sec">6. Reviewing a walkthrough</h2>
+  </div>
+
+  <p>
+    The <strong>Scope Walkthroughs</strong> tab lists every recording on the project, newest first. Collapsed, a card
+    shows the walkthrough's title, its state, who recorded it, how long it runs, how many items were extracted, and
+    the first line of the transcript.
+  </p>
+
+  <h3>Expanding a card</h3>
+  <p>Expand it and you get three things:</p>
+  <ul>
+    <li><strong>The audio</strong> — play, pause, and jump 10 seconds backwards or forwards. Only one walkthrough plays at a time.</li>
+    <li><strong>The transcript</strong> — the full text of what was said, clamped until you choose <em>Show more</em>.</li>
+    <li><strong>Scope items</strong> — what was extracted <em>from this recording</em>, grouped by room and then by category, with the location and quantity each item ended up with.</li>
+  </ul>
+
+  <p>
+    This is the part worth reading when an item in the scope sheet surprises you. The transcript is the evidence: if
+    the extraction added "tear out wet drywall, up to 2' tall" you can see the sentence that asked for it, and hear
+    the technician say it.
+  </p>
+
+  <figure class="shot" data-shot="sw-02-walkthrough-expanded" data-where="Scope → Scope Walkthroughs → expand a card">
+    <img src="screenshots/sw-02-walkthrough-expanded.png" alt="An expanded walkthrough card" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">An expanded walkthrough</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/sw-02-walkthrough-expanded.png</dd>
+        <dt>Where</dt><dd>Scope &rarr; Scope Walkthroughs &rarr; expand a card</dd>
+        <dt>Must show</dt><dd>The audio player, the transcript, and the extracted scope items grouped by room</dd>
+      </dl>
+    </div>
+    <figcaption>Audio, transcript, and the items that came out of it — in one card.</figcaption>
+  </figure>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 7 -->
+<section id="sheet">
+  <div class="sec-head">
+    <h2 class="sec">7. The Scope Sheet</h2>
+  </div>
+
+  <p>
+    The Scope Sheet is the project's scope in one place: how many items exist, across how many rooms, and what each
+    one is. Items are grouped by room, and inside a room by category — accessories, water extraction and
+    remediation, and so on — with a count beside each heading.
+  </p>
+
+  <h3>The columns</h3>
+  <table>
+    <thead><tr><th>Column</th><th>What it tells you</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Item</strong></td><td>What the work is.</td></tr>
+      <tr><td><strong>SRC</strong></td><td>What produced it — a microphone for a walkthrough, a sketch icon for something measured.</td></tr>
+      <tr><td><strong>LOC</strong></td><td>Where on the room it applies: walls, floor, ceiling, perimeter.</td></tr>
+      <tr><td><strong>QTY</strong></td><td>How much, with its unit — or <strong>Add qty</strong> when nothing could be derived.</td></tr>
+    </tbody>
+  </table>
+
+  <p>
+    <strong>Add qty</strong> is the one to look for. It means the item is real but nobody — neither the walkthrough
+    nor the sketch — produced a number for it, and the estimate cannot price what it cannot count.
+  </p>
+
+  <h3>What you can do here</h3>
+  <ul>
+    <li><strong>Add an item</strong> to a room with the <strong>+</strong> on its header.</li>
+    <li><strong>Edit items</strong> opens the sheet for bulk editing.</li>
+    <li><strong>Export scope items</strong> takes the scope out of DocuSketch as a file.</li>
+    <li><strong>History</strong>, beside the Scope Sheet tab, shows how the scope changed over time.</li>
+  </ul>
+
+  <figure class="shot" data-shot="sw-03-scope-sheet" data-where="Scope → the right-hand panel">
+    <img src="screenshots/sw-03-scope-sheet.png" alt="The Scope Sheet panel" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">Scope Sheet panel</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/sw-03-scope-sheet.png</dd>
+        <dt>Where</dt><dd>Scope &rarr; the right-hand panel</dd>
+        <dt>Must show</dt><dd>Totals, rooms, the ITEM / SRC / LOC / QTY columns and an Add qty row</dd>
+      </dl>
+    </div>
+    <figcaption>Every scope item on the project, grouped by room — with its source and quantity.</figcaption>
+  </figure>
+
+  <figure class="shot" data-shot="sw-08-history" data-where="Scope → Scope Sheet panel → History">
+    <img src="screenshots/sw-08-history.png" alt="The History tab of the scope sheet" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">Scope history</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/sw-08-history.png</dd>
+        <dt>Where</dt><dd>Scope &rarr; Scope Sheet panel &rarr; History</dd>
+        <dt>Must show</dt><dd>The history view of the scope sheet</dd>
+      </dl>
+    </div>
+    <figcaption>What changed in the scope, and when.</figcaption>
+  </figure>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 8 -->
+<section id="other-tabs">
+  <div class="sec-head">
+    <h2 class="sec">8. The other capture tabs</h2>
+  </div>
+
+  <p>
+    A walkthrough is one source among several, and the Scope screen keeps the rest a click away — so the scope can be
+    checked against whatever documented it.
+  </p>
+
+  <h3>Mapping</h3>
+  <p>
+    The floor plan with the loss drawn on it: moisture areas, wall cuts and wall moisture, and the equipment placed
+    in each room — air movers, dehumidifiers, air scrubbers, moisture barriers. The header counts what is mapped
+    against what exists, so an unfinished map is visible rather than assumed.
+  </p>
+
+  <figure class="shot" data-shot="sw-07-mapping" data-where="Scope → Mapping">
+    <img src="screenshots/sw-07-mapping.png" alt="The Mapping tab" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">Mapping</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/sw-07-mapping.png</dd>
+        <dt>Where</dt><dd>Scope &rarr; Mapping</dd>
+        <dt>Must show</dt><dd>The floor plan with the moisture / walls / equipment tools</dd>
+      </dl>
+    </div>
+    <figcaption>The loss drawn on the floor plan, beside the scope it justifies.</figcaption>
+  </figure>
+
+  <h3>360° Tour</h3>
+  <p>
+    The captured tour, in context. When a scope item is contested, the tour is where you go to look at the room
+    again without driving back to it.
+  </p>
+
+  <figure class="shot" data-shot="sw-05-tour" data-where="Scope → 360° Tour">
+    <img src="screenshots/sw-05-tour.png" alt="The 360 Tour tab" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">360° Tour</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/sw-05-tour.png</dd>
+        <dt>Where</dt><dd>Scope &rarr; 360° Tour</dd>
+        <dt>Must show</dt><dd>The tour embedded beside the scope sheet</dd>
+      </dl>
+    </div>
+    <figcaption>The tour sits beside the scope, not in another window.</figcaption>
+  </figure>
+
+  <h3>Field Notes</h3>
+  <p>
+    Photos, moisture readings, contents and equipment logs captured on site. <strong>Add field notes</strong> is
+    there for anything the walkthrough did not say out loud.
+  </p>
+
+  <figure class="shot" data-shot="sw-04-field-notes" data-where="Scope → Field Notes">
+    <img src="screenshots/sw-04-field-notes.png" alt="The Field Notes tab" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">Field Notes</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/sw-04-field-notes.png</dd>
+        <dt>Where</dt><dd>Scope &rarr; Field Notes</dd>
+        <dt>Must show</dt><dd>The tab with its empty state or captured notes</dd>
+      </dl>
+    </div>
+    <figcaption>Readings, photos and logs — the evidence that is not spoken.</figcaption>
+  </figure>
+
+  <h3>Scope Reports</h3>
+  <p>
+    A scope report is the scope written up as a document you can send. <strong>Create scope report</strong> builds
+    one; the tab lists the ones already created.
+  </p>
+
+  <figure class="shot" data-shot="sw-06-scope-reports" data-where="Scope → Scope Reports">
+    <img src="screenshots/sw-06-scope-reports.png" alt="The Scope Reports tab" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">Scope Reports</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/sw-06-scope-reports.png</dd>
+        <dt>Where</dt><dd>Scope &rarr; Scope Reports</dd>
+        <dt>Must show</dt><dd>The create action and the list (or its empty state)</dd>
+      </dl>
+    </div>
+    <figcaption>The scope as a document, for the people who do not log in.</figcaption>
+  </figure>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 9 -->
+<section id="to-estimate">
+  <div class="sec-head">
+    <h2 class="sec">9. From scope to estimate</h2>
+  </div>
+
+  <p>
+    When the scope sheet reads the way the property looked, press <strong>Generate initial estimate</strong> in the
+    audit header. Everything on the sheet becomes the input to the estimate: the items, their rooms, their locations
+    and their quantities.
+  </p>
+
+  <h3>Worth checking first</h3>
+  <ul>
+    <li><strong>Items still showing <em>Add qty</em></strong> — give them a quantity, or accept that the estimate will have to.</li>
+    <li><strong>Items in the wrong room</strong> — fix them here; it is cheaper than moving line items later.</li>
+    <li><strong>Rooms with no items at all</strong> — either genuinely untouched, or nobody described them.</li>
+    <li><strong>The category and class</strong> in the audit header — they drive a lot of what gets generated.</li>
+  </ul>
+
+  <p>
+    What happens after the button is covered in <a href="../initial-estimate/">Initial Estimate</a>: choosing a scope
+    strategy, reviewing the generated line items, and exporting.
+  </p>
+
+  <div class="note tip">
+    <strong>The trail survives the hand-off</strong>
+    <p>
+      A line item generated from a walkthrough keeps the connection: in the estimate, its justification cites the
+      field note it came from — often quoting the sentence verbatim.
+    </p>
+  </div>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 10 -->
+<section id="mobile">
+  <div class="sec-head">
+    <h2 class="sec">10. On a phone</h2>
+  </div>
+
+  <p>
+    The Scope screen works at phone width: the audit header and <strong>Generate initial estimate</strong> stack at
+    the top, the capture tabs wrap onto two rows, and the walkthrough cards run full width below them. The Scope
+    Sheet follows underneath rather than beside, so reviewing a long scope is still easier on a desktop.
+  </p>
+
+  <figure class="shot" data-shot="sw-09-mobile" data-where="Portal at phone width, Scope → Scope Walkthroughs">
+    <img src="screenshots/sw-09-mobile.png" alt="The Scope screen at phone width" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">The Scope screen on a phone</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/sw-09-mobile.png</dd>
+        <dt>Where</dt><dd>Portal at phone width, Scope &rarr; Scope Walkthroughs</dd>
+        <dt>Must show</dt><dd>The stacked header, the wrapped tabs and a walkthrough card</dd>
+      </dl>
+    </div>
+    <figcaption>The same scope, stacked for a narrow screen.</figcaption>
+  </figure>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 11 -->
+<section id="faq">
+  <div class="sec-head">
+    <h2 class="sec">11. FAQ and troubleshooting</h2>
+    <span class="badge outline">To extend from support tickets</span>
+  </div>
+
+  <h3>My walkthrough has no scope items.</h3>
+  <p>
+    Check the card's status first — extraction runs after transcription, so an item count appears once the transcript
+    is ready. If the transcript is there and the count is still zero, the recording probably described the property
+    without naming work to do.
+  </p>
+
+  <h3>An item landed in the wrong room.</h3>
+  <p>
+    Move it in the Scope Sheet. To stop it happening again, name the room out loud before describing it — the
+    extraction follows what it hears.
+  </p>
+
+  <h3>Why do some items say "Add qty"?</h3>
+  <p>
+    Nothing produced a number: the walkthrough did not say one, and the sketch could not measure it. Type the
+    quantity, or let the estimate derive one from the room's measurements.
+  </p>
+
+  <h3>Can I record more than one walkthrough?</h3>
+  <p>
+    Yes, and for a large loss it is better. Every recording on the project feeds the same scope sheet, and short
+    per-room recordings are easier to find your way back to.
+  </p>
+
+  <h3>Who can hear the recording?</h3>
+  <p>
+    Anybody with access to the project. The audio, the transcript and the extracted items are all part of the
+    project's record.
+  </p>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ 12 -->
+<section id="glossary">
+  <div class="sec-head">
+    <h2 class="sec">12. Glossary</h2>
+  </div>
+
+  <table>
+    <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Scope walkthrough</strong></td><td>A voice recording of the scope, made on site, with its transcript and extracted items.</td></tr>
+      <tr><td><strong>Scope item</strong></td><td>One piece of work in the scope — a category, a location and a quantity. Not yet priced.</td></tr>
+      <tr><td><strong>Scope Sheet</strong></td><td>All of a project's scope items, grouped by room.</td></tr>
+      <tr><td><strong>Scope Audit</strong></td><td>The header summary: coverage, floors, rooms, item count, category and class.</td></tr>
+      <tr><td><strong>SRC</strong></td><td>The source column — what produced an item, a walkthrough or a measurement.</td></tr>
+      <tr><td><strong>LOC</strong></td><td>Where on the room an item applies: floor, ceiling, walls, perimeter.</td></tr>
+      <tr><td><strong>Field note</strong></td><td>A photo, moisture reading, contents or equipment log captured on site.</td></tr>
+      <tr><td><strong>Scope report</strong></td><td>The scope written up as a sendable document.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr class="sep" />
+
+<!-- ============================================================ shot list -->
+<section id="shot-list">
+  <div class="sec-head">
+    <h2 class="sec">Shot list</h2>
+    <span class="badge">Working aid — not part of the article</span>
+  </div>
+  <p class="progress-line" id="shot-progress">Counting screenshots&hellip;</p>
+  <table>
+    <thead><tr><th>#</th><th>File</th><th>Where to capture</th><th>Status</th></tr></thead>
+    <tbody id="shot-rows"></tbody>
+  </table>
+</section>
+
+<details class="team">
+  <summary>For the team — remove before publishing</summary>
+
+  <p><strong>Open questions</strong></p>
+  <ol>
+    <li><strong>Naming.</strong> The portal says <em>Scope Walkthroughs</em>, the screen is <em>Scope</em>, the header is <em>Scope Audit</em>, and internally the screen is the Scope Workbench. Which names does the article teach?</li>
+    <li>Section 4 (recording on mobile) is written from the specs, not from the app. Who reviews it, and when can we capture the app screens?</li>
+    <li><strong>Edit items</strong> was disabled on the sandbox project used here, so the bulk-edit flow is named but not described. Under what conditions is it enabled?</li>
+    <li>Field Notes and Scope Reports were both empty on this project — their screenshots show empty states. Worth re-capturing on a project that has real ones.</li>
+    <li>The Scope screen ships behind the <code>scopePortal</code> flag. Is it on for all customers now, or still rolling out? The article assumes it is what users see.</li>
+    <li>Does the audio recording have a retention policy worth stating in the FAQ?</li>
+  </ol>
+
+  <p><strong>Screenshot conventions</strong></p>
+  <ul>
+    <li>All shots come from sandbox project <em>CAT Hour Test 6</em> — the same project as the Initial Estimate article, so the two read as one story.</li>
+    <li>Browser at 1440×900, 2× density, light theme; the mobile shot at 390×844.</li>
+    <li>Re-run with <code>SHOTS=../scope-walkthrough/screenshots node capture.mjs run &lt;steps.json&gt;</code> from the Initial Estimate folder.</li>
+  </ul>
+</details>
+
+<footer class="page">
+  Draft prepared for team review. Source of truth for the final article is Document360.
+</footer>
 
     </div>
   </main>
 </div>
+
+<script>
+  (function () {
+    var figs = Array.prototype.slice.call(document.querySelectorAll('figure.shot'));
+    var rows = document.getElementById('shot-rows');
+    var done = 0;
+
+    figs.forEach(function (fig, i) {
+      var img = fig.querySelector('img');
+      var name = fig.getAttribute('data-shot') || ('shot-' + (i + 1));
+      var where = fig.getAttribute('data-where') || '';
+      var ok = !!(img && img.complete && img.naturalWidth > 0);
+
+      if (img) {
+        img.addEventListener('load', function () { fig.classList.add('has-shot'); refresh(); });
+        img.addEventListener('error', function () { fig.classList.remove('has-shot'); refresh(); });
+      }
+      if (ok) { fig.classList.add('has-shot'); }
+
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td>' + (i + 1) + '</td>' +
+        '<td><code>' + name + '.png</code></td>' +
+        '<td>' + where + '</td>' +
+        '<td data-status></td>';
+      rows.appendChild(tr);
+      fig._row = tr;
+    });
+
+    function refresh() {
+      done = 0;
+      figs.forEach(function (fig) {
+        var has = fig.classList.contains('has-shot');
+        if (has) { done++; }
+        var cell = fig._row.querySelector('[data-status]');
+        cell.innerHTML = has
+          ? '<span class="pill done">captured</span>'
+          : '<span class="pill todo">to capture</span>';
+      });
+      document.getElementById('shot-progress').textContent =
+        done + ' of ' + figs.length + ' screenshots captured.';
+    }
+
+    refresh();
+  })();
+</script>
 
 </body>
 </html>

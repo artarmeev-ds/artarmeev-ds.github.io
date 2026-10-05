@@ -18,7 +18,7 @@ import path from 'node:path';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const PROFILE = path.join(here, '.pw-profile');
-const SHOTS = path.join(here, 'screenshots');
+const SHOTS = process.env.SHOTS ? path.resolve(process.env.SHOTS) : path.join(here, 'screenshots');
 const START = 'https://sandbox.docusketch.com/portal-cc/projects';
 
 const [, , mode, a, b] = process.argv;
