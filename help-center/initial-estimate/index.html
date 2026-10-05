@@ -216,11 +216,24 @@
     .hc-top, .hc-rail, nav.toc, details.team { display: none; }
     .hc-main { padding: 0; }
   }
-</style>
-</head>
-<body>
 
-<!-- ===== Help Center chrome — imitation only, nothing here navigates ===== -->
+  /* ---------------- rail navigation (Golden Thread articles) ---------------- */
+  .rail-group { margin-top: 20px; }
+  .rail-group h4 { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin: 0 0 8px; font-weight: 600; }
+  .rail-nav { list-style: none; margin: 0; padding: 0; }
+  .rail-nav li { margin: 0 0 2px; }
+  .rail-nav a { display: flex; align-items: center; gap: 9px; padding: 7px 10px; border-radius: 4px; color: var(--ink); text-decoration: none; }
+  .rail-nav a:hover { background: #e9e9ec; text-decoration: none; }
+  .rail-nav a.current { background: #e4e4e7; font-weight: 500; }
+  .rail-nav .dot { width: 6px; height: 6px; border-radius: 50%; background: #c3c6ca; flex: none; }
+  .rail-nav a.ready .dot { background: var(--ok); }
+  .rail-nav .wip { margin-left: auto; font-size: 10px; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-3); }
+  .rail-note { margin-top: 18px; border: 1px dashed #c9ccd0; border-radius: 6px; background: #fff; padding: 12px 14px; color: var(--ink-3); font-size: 12.5px; line-height: 1.5; }
+  .rail-note strong { color: var(--ink); display: block; margin-bottom: 4px; font-weight: 500; }
+</style>
+</head><body>
+
+<!-- ===== Help Center chrome — imitation only, nothing here navigates off these drafts ===== -->
 <div class="hc-top">
   <div class="hc-brand" role="img" aria-label="DocuSketch (preview — not a link)" title="Preview only — this logo does not open the Help Center home page">
     <img src="assets/docusketch-wordmark.png" alt="DocuSketch" />
@@ -242,10 +255,22 @@
 <div class="hc-body">
   <aside class="hc-rail">
     <input class="rail-filter" type="text" placeholder="Filter by name" disabled />
-    <div class="rail-empty">
-      <div class="re-title">No articles here</div>
-      <p>This is a mock-up of the Help Center, not the Help Center itself. The article tree, the search box and the logo are intentionally inert.</p>
-      <p>The draft you are reading is the only page in this preview.</p>
+
+    <div class="rail-group">
+      <h4>Golden Thread</h4>
+      <ul class="rail-nav">
+        <li><a href="../instant-sketch/"><span class="dot"></span>Instant Sketch<span class="wip">draft</span></a></li>
+        <li><a href="../affected-areas/"><span class="dot"></span>Affected Areas<span class="wip">draft</span></a></li>
+        <li><a href="../scope-walkthrough/"><span class="dot"></span>Scope Walkthrough<span class="wip">draft</span></a></li>
+        <li><a class="current ready" href="./"><span class="dot"></span>Initial Estimate</a></li>
+        <li><a href="../win-the-work/"><span class="dot"></span>Win the Work<span class="wip">draft</span></a></li>
+      </ul>
+    </div>
+
+    <div class="rail-note">
+      <strong>Mock-up, not the Help Center</strong>
+      These five are the Golden Thread articles we are drafting. Only Initial Estimate has content; the rest open a
+      placeholder. The logo, search and filter are inert on purpose.
     </div>
   </aside>
 
@@ -254,22 +279,22 @@
 
       <div class="preview-note">
         <strong>Draft for internal review.</strong>
-        Styled to look like the Help Center so the layout can be judged in context — but it is not published documentation, and the copy is not final. Sections 4 to 11 are outlines. Nothing on this page links to the live Help Center.
+        Styled to look like the Help Center so the layout can be judged in context — but it is not published
+        documentation, and the copy is not final. Screenshots come from a sandbox project.
       </div>
 
       <h1 class="article-title">Initial Estimate</h1>
       <div class="article-info">
-        <span>Draft v0.5</span>
-        <span>Updated on Sep 18, 2026</span>
+        <span>Draft v0.6</span>
+        <span>Updated on Oct 5, 2026</span>
         <span>Applies to: Web portal</span>
         <span>Mobile app: section pending</span>
       </div>
 
       <p class="lede">
-        Turn everything captured on site into a priced, editable line-item scope &mdash; in the web portal, in seconds,
+        Turn everything captured on site into a priced, editable line-item scope — in the web portal, in seconds,
         with the evidence behind every line kept in view.
       </p>
-
 
 <nav class="toc">
   <h2>In this article</h2>
@@ -282,10 +307,10 @@
     <li><a href="#table">Reading the line-item table</a></li>
     <li><a href="#evidence">Where a line item came from</a></li>
     <li><a href="#editing">Editing line items</a></li>
-    <li><a href="#quality">Checking quality before you export</a></li>
+    <li><a href="#quality">Clearing required actions</a></li>
     <li><a href="#ai">AI assistance</a></li>
     <li><a href="#export">Exporting and sharing</a></li>
-    <li><a href="#mobile">In the mobile app</a></li>
+    <li><a href="#mobile">On a phone</a></li>
     <li><a href="#faq">FAQ and troubleshooting</a></li>
     <li><a href="#glossary">Glossary</a></li>
   </ol>
@@ -295,27 +320,26 @@
 <section id="what">
   <div class="sec-head">
     <h2 class="sec">1. What Initial Estimate is</h2>
-    <span class="badge draft">Draft copy</span>
   </div>
 
   <p>
-    <strong>Initial Estimate</strong> is the step where DocuSketch turns a documented property into a real scope:
-    a list of line items with codes, quantities, units and prices, grouped by the room each one belongs to — ready to review, edit and
-    export to your estimating software.
+    <strong>Initial Estimate</strong> is the step where DocuSketch turns a documented property into a real scope: a
+    list of line items with codes, quantities, units and prices, grouped by the room each one belongs to — ready to
+    review, edit and export to your estimating software.
   </p>
   <p>
-    It runs in the web portal, on the project you already captured. You do not write the first draft: the estimate
-    is generated from what is already in the project — the sketch, the rooms you marked as affected, the scope of
-    work, the 360&deg; tour, photos and documents. What you do is <em>review it</em>, correct what needs
-    correcting, and send it on.
+    It runs in the web portal, on the project you already captured. You do not write the first draft: the estimate is
+    generated from what is already in the project — the sketch, the rooms you marked as affected, the scope of work,
+    the 360° tour, photos and documents. What you do is <em>review it</em>, correct what needs correcting, and send
+    it on.
   </p>
 
   <h3>Why it is different from a spreadsheet</h3>
   <p>
     Every line item keeps a trail back to the thing that produced it. Open any line and you can see which room it
     belongs to, what evidence drove it — a photo, a room measurement, a note in the scope of work — and how the
-    quantity was calculated. Nothing is a number you have to take on faith, which is what makes the estimate
-    defensible when somebody on the other side of the claim asks why a line is there.
+    quantity was calculated, down to the arithmetic. Nothing is a number you have to take on faith, which is what
+    makes the estimate defensible when somebody on the other side of the claim asks why a line is there.
   </p>
 
   <h3>What you can do here</h3>
@@ -324,7 +348,8 @@
     <li>Review the scope room by room, with prices and totals updating as you work.</li>
     <li>Edit anything: codes, descriptions, quantities, the room a line belongs to.</li>
     <li>Inspect the evidence and the quantity calculation behind each line.</li>
-    <li>Run the built-in checks that catch unassigned items, errors and gaps before you export.</li>
+    <li>Accept or ignore the additional items DocuSketch suggests.</li>
+    <li>Clear the required actions that stand between the estimate and an export.</li>
     <li>Export the result, or keep iterating in a new version.</li>
   </ul>
 
@@ -336,18 +361,18 @@
     </p>
   </div>
 
-  <figure class="shot" data-shot="01-editor-overview" data-where="Project → Estimates → Initial → open a version">
+  <figure class="shot" data-shot="01-editor-overview" data-where="Project → Estimates → open an Initial estimate row">
     <img src="screenshots/01-editor-overview.png" alt="The Initial Estimate editor with the line-item table open" />
     <div class="shot-ph">
       <div class="ph-tag">Screenshot placeholder</div>
       <div class="ph-title">The Initial Estimate editor, full view</div>
       <dl>
         <dt>File</dt><dd class="ph-file">screenshots/01-editor-overview.png</dd>
-        <dt>Where</dt><dd>Project &rarr; Estimates &rarr; Initial &rarr; open a version</dd>
-        <dt>Must show</dt><dd>Version title, toolbar, the line-item table with a few rooms expanded and totals visible</dd>
+        <dt>Where</dt><dd>Project &rarr; Estimates &rarr; open an Initial estimate row</dd>
+        <dt>Must show</dt><dd>Version title, toolbar, filters, the table with grouped rows and the total</dd>
       </dl>
     </div>
-    <figcaption>The editor: version header, toolbar, and the line-item table grouped by room.</figcaption>
+    <figcaption>The editor: version header, toolbar, filters, and the line-item table with its running total.</figcaption>
   </figure>
 </section>
 
@@ -357,7 +382,6 @@
 <section id="before">
   <div class="sec-head">
     <h2 class="sec">2. Before you start</h2>
-    <span class="badge draft">Draft copy</span>
   </div>
 
   <p>
@@ -369,8 +393,8 @@
   <ol class="steps">
     <li>
       <strong>Get a sketch</strong>
-      Capture the property with Instant Sketch in the DocuSketch mobile app, or order an Enhanced sketch. The
-      result is a floor plan with measurements — the geometry every quantity is calculated from.
+      Capture the property with Instant Sketch in the DocuSketch mobile app, or order an Enhanced sketch. The result
+      is a floor plan with measurements — the geometry every quantity is calculated from.
     </li>
     <li>
       <strong>Mark affected areas</strong> <em>(optional, but it sharpens the scope)</em>
@@ -379,8 +403,8 @@
     </li>
     <li>
       <strong>Review your scope</strong> <em>(optional)</em>
-      Confirm that rooms, materials and quantities look right before estimating. Corrections are much cheaper
-      here than in the line-item table.
+      Confirm that rooms, materials and quantities look right before estimating. Corrections are much cheaper here
+      than in the line-item table.
     </li>
     <li>
       <strong>Generate the initial estimate</strong>
@@ -389,27 +413,29 @@
     </li>
   </ol>
 
+  <p>
+    The screen tracks these for you: each step carries its own state — <strong>Done</strong>,
+    <strong>Optional</strong> or <strong>Ready</strong> — and the heading changes to
+    <em>You're ready to generate your estimate</em> as soon as nothing is blocking.
+  </p>
+
   <h3>Opening it</h3>
   <p>
     Open the project and go to the <strong>Estimates</strong> tab. That tab tracks every estimate on the project —
     the ones you generate yourself and the ones ordered from the DocuSketch expert team. Use
-    <strong>Create Instant Estimate</strong> to start a new one, or open an existing <em>Initial estimate</em> row
-    to go back into the editor.
-  </p>
-  <p>
-    If the project is not ready yet, this is where the four steps above are shown, with a link straight to
-    whichever one is still outstanding.
+    <strong>Create Instant Estimate</strong> to start a new one, or open an existing <em>Initial estimate</em> row to
+    go back into the editor.
   </p>
 
   <div class="note warn">
     <strong>Availability</strong>
     <p>
-      Initial Estimate depends on your company plan and on your user permissions. If you do not see the tab, or
-      the generate action is unavailable, contact your DocuSketch account manager.
+      Initial Estimate depends on your company plan and on your user permissions. If you do not see the tab, or the
+      generate action is unavailable, contact your DocuSketch account manager.
     </p>
   </div>
 
-  <figure class="shot" data-shot="02-onboarding-steps" data-where="Project → Estimates → Initial on a project that is not ready yet">
+  <figure class="shot" data-shot="02-onboarding-steps" data-where="Project → Estimates → Initial, on a project with no estimate yet">
     <img src="screenshots/02-onboarding-steps.png" alt="The four-step readiness screen" />
     <div class="shot-ph">
       <div class="ph-tag">Screenshot placeholder</div>
@@ -430,21 +456,20 @@
 <section id="how">
   <div class="sec-head">
     <h2 class="sec">3. How it works, end to end</h2>
-    <span class="badge draft">Draft copy</span>
   </div>
 
   <p>
-    Once the project is ready, working an Initial Estimate is a loop of five moves. You will rarely do them
-    strictly in order — most people jump between reviewing and editing — but this is the shape of it.
+    Once the project is ready, working an Initial Estimate is a loop of five moves. You will rarely do them strictly
+    in order — most people jump between reviewing and editing — but this is the shape of it.
   </p>
 
-  <svg class="flow" viewBox="0 0 820 200" role="img" aria-label="Flow: Generate, Review, Edit, Validate, Export, with a loop back to Generate for a new version">
+  <svg class="flow" viewBox="0 0 820 200" role="img" aria-label="Flow: Generate, Review, Edit, Clear, Export, with a loop back to Generate for a new version">
     <defs>
       <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
         <path d="M 0 0 L 10 5 L 0 10 z" fill="#8b959d" />
       </marker>
     </defs>
-    <g font-family="-apple-system, Segoe UI, Roboto, sans-serif">
+    <g font-family="Roboto, -apple-system, Segoe UI, sans-serif">
       <g>
         <rect x="6" y="46" width="140" height="62" rx="10" fill="#eef4ff" stroke="#cfe0ff" />
         <text x="76" y="72" text-anchor="middle" font-size="15" font-weight="600" fill="#1b4fa8">Generate</text>
@@ -465,8 +490,8 @@
       <line x1="498" y1="77" x2="524" y2="77" stroke="#8b959d" stroke-width="1.5" marker-end="url(#arw)" />
       <g>
         <rect x="528" y="46" width="140" height="62" rx="10" fill="#f7f9fa" stroke="#e3e7ea" />
-        <text x="598" y="72" text-anchor="middle" font-size="15" font-weight="600" fill="#101418">Validate</text>
-        <text x="598" y="92" text-anchor="middle" font-size="12" fill="#3d474f">clear the issues</text>
+        <text x="598" y="72" text-anchor="middle" font-size="15" font-weight="600" fill="#101418">Clear</text>
+        <text x="598" y="92" text-anchor="middle" font-size="12" fill="#3d474f">required actions</text>
       </g>
       <line x1="672" y1="77" x2="698" y2="77" stroke="#8b959d" stroke-width="1.5" marker-end="url(#arw)" />
       <g>
@@ -485,18 +510,18 @@
     </thead>
     <tbody>
       <tr><td><strong>Generate</strong></td><td>You choose how broad the generated scope should be, and DocuSketch builds the line items.</td><td><a href="#generate">Section 4</a></td></tr>
-      <tr><td><strong>Review</strong></td><td>You read the scope room by room, filter it, and check the lines you are unsure about.</td><td><a href="#table">Section 6</a>, <a href="#evidence">7</a></td></tr>
+      <tr><td><strong>Review</strong></td><td>You read the scope room by room and check the lines you are unsure about.</td><td><a href="#table">Section 6</a>, <a href="#evidence">7</a></td></tr>
       <tr><td><strong>Edit</strong></td><td>You correct codes and quantities, add what the capture missed, and remove what does not belong.</td><td><a href="#editing">Section 8</a></td></tr>
-      <tr><td><strong>Validate</strong></td><td>Built-in checks list what must be fixed before export — starting with items not assigned to a room.</td><td><a href="#quality">Section 9</a></td></tr>
-      <tr><td><strong>Export</strong></td><td>You take the estimate out — to your estimating software, as a report, or as a shared link.</td><td><a href="#export">Section 11</a></td></tr>
+      <tr><td><strong>Clear</strong></td><td>You work through the required actions — the flags that stand between the estimate and an export.</td><td><a href="#quality">Section 9</a></td></tr>
+      <tr><td><strong>Export</strong></td><td>You take the estimate out to your estimating software.</td><td><a href="#export">Section 11</a></td></tr>
     </tbody>
   </table>
 
   <div class="note tip">
     <strong>Your work is versioned</strong>
     <p>
-      You never lose a previous state. Every generation creates a new version, and every saved round of edits a
-      new revision inside it — so you can compare, and go back. See <a href="#versions">Versions and revisions</a>.
+      You never lose a previous state. Every generation creates a new version, and every saved round of edits a new
+      revision inside it — so you can compare, and go back. See <a href="#versions">Versions and revisions</a>.
     </p>
   </div>
 </section>
@@ -507,15 +532,13 @@
 <section id="generate">
   <div class="sec-head">
     <h2 class="sec">4. Generating a version</h2>
-    <span class="badge outline">Outline — to expand</span>
   </div>
-  <p class="sec-note">Future Document360 article: <em>Generating an Initial Estimate and choosing a scope strategy</em>.</p>
 
   <p>
     When you generate, you choose a <strong>scope strategy</strong>: how much DocuSketch should put in the first
     draft. The three strategies are nested — each one contains everything the previous one has, plus more — so the
-    choice is really about where you want to start: with the minimum you can defend line by line, or with the
-    widest set, which you then prune.
+    choice is really about where you want to start: with the minimum you can defend line by line, or with the widest
+    set, which you then prune.
   </p>
 
   <table>
@@ -526,7 +549,7 @@
       <tr>
         <td><strong>Documented</strong></td>
         <td>Direct data only</td>
-        <td>Line items pulled strictly from provided data — scope of work, comments, 360&deg;, documents and Instant Sketch.</td>
+        <td>Line items pulled strictly from provided data — scope of work, comments, 360°, documents and Instant Sketch.</td>
       </tr>
       <tr>
         <td><strong>Standard</strong></td>
@@ -541,22 +564,20 @@
     </tbody>
   </table>
 
+  <h3>Choosing with the numbers in front of you</h3>
   <p>
-    The picker does not make you guess. Each strategy shows how many line items it would produce, the selected one
-    is broken down by confidence — how many high, medium and low — and a short <em>Adds, e.g.</em> list names
-    example items it brings in over the narrower option. Nothing is committed until you press the
-    <strong>Use</strong> button, and the editor reminds you that the items can be refined afterwards.
+    The picker does not make you guess. Each strategy shows how many line items it would produce; the selected one is
+    broken down by confidence — how many high, medium and low — and a short <em>Adds, e.g.</em> list names example
+    items it brings in over the narrower option. The office's own estimate total sits beside the button, so you can
+    see what you are about to apply.
+  </p>
+  <p>
+    Nothing is committed until you press <strong>Use Documented</strong>, <strong>Use Standard</strong> or
+    <strong>Use Expanded</strong>. Until then the table is read-only — the banner says the estimate is ready and
+    waiting for you to pick a scope to unlock editing.
   </p>
 
-  <h3>To expand here</h3>
-  <ul>
-    <li>Where the office default strategy is set, and how to change it for one estimate only.</li>
-    <li>What the generation banner shows while the estimate is being built, and why you can keep working.</li>
-    <li>What committing a scope locks, and how to go back to the original generated set to pick differently.</li>
-    <li>Re-generating: when it is the right move, and what happens to edits you already made.</li>
-  </ul>
-
-  <figure class="shot" data-shot="03-scope-strategies" data-where="Initial Estimate → generate → scope picker">
+  <figure class="shot" data-shot="03-scope-strategies" data-where="Editor, on a version whose scope is not committed yet">
     <img src="screenshots/03-scope-strategies.png" alt="The scope strategy picker" />
     <div class="shot-ph">
       <div class="ph-tag">Screenshot placeholder</div>
@@ -564,11 +585,32 @@
       <dl>
         <dt>File</dt><dd class="ph-file">screenshots/03-scope-strategies.png</dd>
         <dt>Where</dt><dd>Editor, on a version whose scope is not committed yet</dd>
-        <dt>Must show</dt><dd>All three strategies with item counts, the confidence breakdown and the Use button</dd>
+        <dt>Must show</dt><dd>Three strategies with item counts, the confidence breakdown and the Use button</dd>
       </dl>
     </div>
     <figcaption>Documented, Standard and Expanded — with how many line items each would produce, and what the widest one adds.</figcaption>
   </figure>
+
+  <h3>While it runs</h3>
+  <p>
+    Generating takes seconds, and you are not locked out while it happens: a status strip reports progress and tells
+    you that you can keep working. Results stream into the table as they arrive.
+  </p>
+
+  <h3>Changing your mind</h3>
+  <p>
+    A committed scope is not a dead end. If the version was generated with the wrong strategy,
+    <strong>Back to original version</strong> in the header reopens the original generated set so you can pick a
+    different scope. Generating again creates a new version and leaves the current one untouched.
+  </p>
+
+  <div class="note">
+    <strong>Your office has a default</strong>
+    <p>
+      The strategy the picker opens on is set in your office's estimate profile, so your team starts from the same
+      place every time. You can always switch for a single estimate.
+    </p>
+  </div>
 </section>
 
 <hr class="sep" />
@@ -577,31 +619,36 @@
 <section id="versions">
   <div class="sec-head">
     <h2 class="sec">5. Versions and revisions</h2>
-    <span class="badge outline">Outline — to expand</span>
   </div>
-  <p class="sec-note">Future Document360 article: <em>Working with estimate versions</em>.</p>
 
   <p>
-    Estimates are numbered <code>Version N.R</code> — the version number changes when a new estimate is
-    generated, the revision number when you save edits to it. The project's <strong>Estimates</strong> tab is where
-    they all live: every initial estimate on the project, with its status, how many line items it holds, its
-    amount, any notes, and when it was created and last updated. Each row opens the editor, and the history icon
-    beside it shows what happened to that estimate over time.
+    Estimates are numbered <code>Version N.R</code> — the version number changes when a new estimate is generated,
+    the revision number when you save edits to it. The project's <strong>Estimates</strong> tab is where they all
+    live: every initial estimate on the project, with its status, how many line items it holds, its amount, any
+    notes, and when it was created and last updated.
   </p>
 
-  <h3>To expand here</h3>
+  <h3>Reading the list</h3>
   <ul>
-    <li>Reading the version list: states, totals, and which version is current.</li>
-    <li>Version details and history.</li>
-    <li>Comparing two revisions to see exactly what changed.</li>
-    <li>When to generate a new version instead of editing the current one.</li>
+    <li>Tabs across the top split the list by estimate type — <strong>All</strong>, <strong>Emergency/Mitigation</strong>, <strong>Contents</strong>, <strong>Reconstruction</strong> — each with its own count.</li>
+    <li>The status badge tells you where the estimate stands: <strong>New</strong> for one nobody has worked yet, <strong>Done</strong> once it has been completed, and the signing states — <strong>Awaiting signature</strong>, <strong>Signed</strong> — for estimates sent out for approval.</li>
+    <li>The row itself names the version and the number of line items, for example <em>Initial estimate v12 · 98 line items</em>.</li>
+    <li>The history icon opens what happened to that estimate over time; the arrow opens the editor.</li>
   </ul>
 
-  <figure class="shot" data-shot="04-version-list" data-where="Project → Estimates → Initial (list view)">
-    <img src="screenshots/04-version-list.png" alt="The list of estimate versions" />
+  <h3>When to generate a new version instead of editing</h3>
+  <p>
+    Edit the current version when you are correcting it: a wrong quantity, a missing item, a line in the wrong room.
+    Generate a new version when the <em>basis</em> changed — you marked more affected areas, reworked the scope of
+    work, or want to see what a broader strategy would produce. The old version stays on the project, so you can
+    compare the two and send whichever you prefer.
+  </p>
+
+  <figure class="shot" data-shot="04-version-list" data-where="Project → Estimates, on a project with several versions">
+    <img src="screenshots/04-version-list.png" alt="The list of estimate versions on the Estimates tab" />
     <div class="shot-ph">
       <div class="ph-tag">Screenshot placeholder</div>
-      <div class="ph-title">The version list</div>
+      <div class="ph-title">The Estimates tab</div>
       <dl>
         <dt>File</dt><dd class="ph-file">screenshots/04-version-list.png</dd>
         <dt>Where</dt><dd>Project &rarr; Estimates, on a project with several versions</dd>
@@ -618,24 +665,18 @@
 <section id="table">
   <div class="sec-head">
     <h2 class="sec">6. Reading the line-item table</h2>
-    <span class="badge outline">Outline — to expand</span>
   </div>
-  <p class="sec-note">Future Document360 article: <em>The line-item table</em>.</p>
 
   <p>
     The table is the estimate. Items are grouped, each group carries its own subtotal, and the footer carries the
-    preliminary total for the version. Items not assigned to a room yet sit together in a single
-    <strong>Project</strong> group — a standing signal that they still need a home.
-  </p>
-  <p>
-    Above the table sit the controls you will use most: a search box, <strong>Add line item</strong> and
-    <strong>Add room</strong> — and, in the toolbar, the pricing tier (<strong>Min / Avg / Max</strong>), the count
-    of <strong>required actions</strong> still open, and <strong>Export</strong>.
+    preliminary total for the version.
   </p>
 
+  <h3>The columns</h3>
   <table>
     <thead><tr><th>Column</th><th>What it tells you</th></tr></thead>
     <tbody>
+      <tr><td><strong>#</strong></td><td>The line number, and a dot that marks where the line came from.</td></tr>
       <tr><td><strong>CAT / SEL / Act</strong></td><td>The estimating code: category, selector and activity.</td></tr>
       <tr><td><strong>Description</strong></td><td>The line item itself, in plain words.</td></tr>
       <tr><td><strong>Calc</strong></td><td>The expression the quantity is derived from, where one applies.</td></tr>
@@ -643,34 +684,52 @@
       <tr><td><strong>Unit Price / Total</strong></td><td>Pricing for the line, and the line total.</td></tr>
       <tr><td><strong>Source</strong></td><td>Whether the line came from DocuSketch or was added by a person.</td></tr>
       <tr><td><strong>Conf</strong></td><td>How confident DocuSketch is in the quantity on this line.</td></tr>
-      <tr><td><strong>Row actions</strong></td><td>Add, delete, and open the line item's own detail panel.</td></tr>
+      <tr><td><strong>Row actions</strong></td><td>Add a line below, delete the line, or open its detail panel.</td></tr>
     </tbody>
   </table>
 
-  <h3>To expand here</h3>
+  <h3>How rows are grouped</h3>
+  <p>
+    Groups nest the way the property does: <strong>Project</strong> at the top, then <strong>Level</strong> — First
+    Floor, Second Floor — then <strong>Room</strong>. Every group header carries its item count and its own total, and
+    collapses so you can work one room at a time. Items that are not assigned to a room yet sit directly under
+    <strong>Project</strong> — a standing signal that they still need a home.
+  </p>
+
+  <h3>The controls above the table</h3>
   <ul>
-    <li>Filtering by source — DS Engine versus User — and what each bucket means.</li>
-    <li>Sorting, searching and jumping to a specific item.</li>
-    <li>Collapsing rooms, and reading group subtotals against the version total.</li>
-    <li>Switching the pricing tier and what that changes.</li>
-    <li>Selecting several rows at once for bulk actions.</li>
+    <li><strong>QTY confidence</strong> — filter the table down to the quantities DocuSketch is least sure of, instead of reading all of them.</li>
+    <li><strong>Search items</strong> — find a line by code or description without scrolling.</li>
+    <li><strong>Add line item</strong> and <strong>Add room</strong> — see <a href="#editing">Editing line items</a>.</li>
+    <li><strong>Pricing: Min / Avg / Max</strong> — switch the whole estimate between the low, average and high price tier. Totals update as you switch.</li>
+    <li><strong>AI suggestions</strong> — additional items DocuSketch thinks belong here, with a count. See <a href="#ai">AI assistance</a>.</li>
+    <li><strong>Required actions</strong> — the count of flags still open, and the way into the report. See <a href="#quality">Clearing required actions</a>.</li>
+    <li><strong>Export</strong> — the way out. See <a href="#export">Exporting and sharing</a>.</li>
   </ul>
 
-  <figure class="shot" data-shot="05-table-columns" data-where="Editor → line-item table">
-    <img src="screenshots/05-table-columns.png" alt="The line-item table with columns and a room group" />
+  <div class="note">
+    <strong>Preliminary total</strong>
+    <p>
+      The figure in the footer is labelled <em>preliminary</em> for a reason: it moves as you edit quantities, switch
+      the pricing tier and accept suggestions. It is a working number, not a quote.
+    </p>
+  </div>
+
+  <figure class="shot" data-shot="05-table-columns" data-where="Editor, table scrolled to a room group">
+    <img src="screenshots/05-table-columns.png" alt="The line-item table with a level and room group" />
     <div class="shot-ph">
       <div class="ph-tag">Screenshot placeholder</div>
-      <div class="ph-title">Table columns and a room group</div>
+      <div class="ph-title">Grouped rows</div>
       <dl>
         <dt>File</dt><dd class="ph-file">screenshots/05-table-columns.png</dd>
-        <dt>Where</dt><dd>Editor, table scrolled to a room group header</dd>
-        <dt>Must show</dt><dd>Header row, one room group with several items, the subtotal</dd>
+        <dt>Where</dt><dd>Editor, scrolled to a level or room group header</dd>
+        <dt>Must show</dt><dd>A group header with its count and total, and the rows under it</dd>
       </dl>
     </div>
-    <figcaption>One room group, with its items and subtotal.</figcaption>
+    <figcaption>Project, level and room — each group with its own count and total.</figcaption>
   </figure>
 
-  <figure class="shot" data-shot="06-editor-toolbar" data-where="Editor → the toolbar strip above the table">
+  <figure class="shot" data-shot="06-editor-toolbar" data-where="Editor, the strip above the table">
     <img src="screenshots/06-editor-toolbar.png" alt="The editor toolbar: pricing tier, required actions, export" />
     <div class="shot-ph">
       <div class="ph-tag">Screenshot placeholder</div>
@@ -691,61 +750,79 @@
 <section id="evidence">
   <div class="sec-head">
     <h2 class="sec">7. Where a line item came from</h2>
-    <span class="badge outline">Outline — to expand</span>
   </div>
-  <p class="sec-note">Future Document360 article: <em>Evidence and justification behind a line item</em>. Likely the most-read article of the set.</p>
 
   <p>
-    Select any line item and the detail panel opens beside the table. Besides the editable fields, it answers two
-    questions that matter when the estimate is challenged: <em>what evidence put this line here</em>, and
-    <em>how was this quantity arrived at</em>.
+    Select any line item and its detail panel opens beside the table. Besides the editable fields, it answers the two
+    questions that matter when the estimate is challenged: <em>what evidence put this line here</em>, and <em>how was
+    this quantity arrived at</em>.
   </p>
 
-  <table>
-    <thead><tr><th>Block</th><th>What it answers</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Sources</strong></td><td>Which inputs produced the line — for example the sketch, the scope of work, or an office default.</td></tr>
-      <tr><td><strong>AI Justification Summary</strong></td><td>The evidence the line was driven by, listed one row per source.</td></tr>
-      <tr><td><strong>Quantity Justification</strong></td><td>How the quantity was determined, the confidence level, and the full calculation behind it.</td></tr>
-      <tr><td><strong>Errors and warnings</strong></td><td>Anything the validation rules flagged on this specific line.</td></tr>
-    </tbody>
-  </table>
+  <h3>The header of the panel</h3>
+  <p>
+    Three facts sit at the top before any detail: the line number, the <strong>source</strong> — DS Engine for a line
+    DocuSketch produced, User for one a person added — and the <strong>quantity confidence</strong>, High, Medium or
+    Low. Below them the code and description, and the room the line belongs to.
+  </p>
 
-  <h3>To expand here</h3>
+  <h3>AI Justification Summary</h3>
+  <p>
+    This block lists the evidence the line was driven by, one row per source. A row names where the evidence came
+    from — the sketch, a field note, the 360° tour — and what was observed there. An equipment line, for example,
+    cites the sketch and reads <em>Dehumidifier refrigerant, Air mover centrifugal, Air mover axial — equipment
+    present</em>.
+  </p>
+
+  <h3>Quantity Justification</h3>
+  <p>
+    Three labelled rows explain the number in the Qty column:
+  </p>
   <ul>
-    <li>Reading a quantity calculation, with a worked example.</li>
-    <li>Confidence levels, and what to do about a low-confidence quantity.</li>
-    <li>Adding your own justification to a line.</li>
-    <li>The evidence panel: provenance, linked project snapshots, and the assumptions that were made.</li>
-    <li>The coverage audit: how much of the estimate is backed by snapshots, and where the gaps are.</li>
+    <li><strong>How determined</strong> — whether the quantity was measured from the sketch, taken from the scope, or predicted.</li>
+    <li><strong>Confidence</strong> — High, Medium or Low, with a coloured dot, matching the Conf column in the table.</li>
+    <li><strong>Calculation</strong> — the arithmetic in full, written out.</li>
   </ul>
+  <p>
+    The calculation is the part worth reading when a quantity surprises you. A drying-labour line, for instance,
+    spells out both candidate figures and which one won: <em>equipment monitoring 35 units × 2 hr/day × 3 days = 6 hr;
+    area 549.02 sq ft / 1,000 × 3 days = 1.65 hr; using the larger = 6 hr</em>. If you disagree with the result, you
+    can see exactly which input to argue with.
+  </p>
 
-  <figure class="shot" data-shot="07-line-item-panel" data-where="Editor → click a line item">
-    <img src="screenshots/07-line-item-panel.png" alt="The line item detail panel with justification blocks" />
+  <h3>Source notes and your own justification</h3>
+  <p>
+    Where a line traces back to something somebody said on site, the note is quoted in full under
+    <strong>Source Notes</strong> — the technician's own words about the room, the damage and what they decided.
+    You can also attach your own reasoning to a line with <strong>Add justification</strong>, which is the right place
+    to record a judgement call that the evidence alone does not explain.
+  </p>
+
+  <figure class="shot" data-shot="07-line-item-panel" data-where="Editor, open a line item from its row">
+    <img src="screenshots/07-line-item-panel.png" alt="The line item detail panel" />
     <div class="shot-ph">
       <div class="ph-tag">Screenshot placeholder</div>
       <div class="ph-title">Line item detail panel</div>
       <dl>
         <dt>File</dt><dd class="ph-file">screenshots/07-line-item-panel.png</dd>
-        <dt>Where</dt><dd>Editor, a line item with justifications present</dd>
-        <dt>Must show</dt><dd>Item details, Sources, AI Justification Summary, Quantity Justification with a real calculation</dd>
+        <dt>Where</dt><dd>Editor, open a line item from its row</dd>
+        <dt>Must show</dt><dd>Source and confidence badges, item details, Calc syntax, unit price and total</dd>
       </dl>
     </div>
-    <figcaption>The panel shows the evidence and the calculation, not just the number.</figcaption>
+    <figcaption>The panel: what the line is, and every field you can change about it.</figcaption>
   </figure>
 
-  <figure class="shot" data-shot="08-evidence-panel" data-where="Editor → evidence for a line item">
-    <img src="screenshots/08-evidence-panel.png" alt="The evidence panel with linked snapshots" />
+  <figure class="shot" data-shot="08-evidence-panel" data-where="Editor, the evidence view of a line item">
+    <img src="screenshots/08-evidence-panel.png" alt="Justification blocks for a line item" />
     <div class="shot-ph">
       <div class="ph-tag">Screenshot placeholder</div>
-      <div class="ph-title">Evidence panel</div>
+      <div class="ph-title">Justifications</div>
       <dl>
         <dt>File</dt><dd class="ph-file">screenshots/08-evidence-panel.png</dd>
-        <dt>Where</dt><dd>Evidence view of a line item with linked snapshots</dd>
-        <dt>Must show</dt><dd>Provenance, snapshot links, assumptions</dd>
+        <dt>Where</dt><dd>Editor, the evidence view of a line item</dd>
+        <dt>Must show</dt><dd>AI Justification Summary and Quantity Justification with a real calculation</dd>
       </dl>
     </div>
-    <figcaption>Photographic evidence linked to the line, with the assumptions made around it.</figcaption>
+    <figcaption>The evidence behind the line, and the arithmetic behind the quantity.</figcaption>
   </figure>
 </section>
 
@@ -755,31 +832,66 @@
 <section id="editing">
   <div class="sec-head">
     <h2 class="sec">8. Editing line items</h2>
-    <span class="badge outline">Outline — to expand</span>
   </div>
-  <p class="sec-note">Future Document360 article: <em>Editing the scope</em>.</p>
 
   <p>
-    Everything in the table is yours to change. Edits are held until you save them, so you can work through a
-    whole room and commit it in one go — or discard the round if it went wrong.
+    Everything in the table is yours to change. Edits are held until you save them, so you can work through a whole
+    room and commit it in one go — or discard the round if it went wrong. The toolbar shows
+    <strong>Unsaved changes</strong> while anything is pending.
   </p>
 
-  <h3>To expand here</h3>
+  <h3>Editing in place</h3>
+  <p>
+    Click a cell and type. Codes, description, calculation, quantity and unit price are all editable directly in the
+    row; the same fields sit in the detail panel if you prefer to work there, where <strong>Previous</strong> and
+    <strong>Next</strong> walk you through the estimate line by line.
+  </p>
+
+  <h3>The Calc field</h3>
+  <p>
+    Calc is how you express a quantity instead of hard-coding it. It takes a plain number
+    (<code>12</code>), a formula (<code>12+8</code>), or a variable the sketch provides:
+  </p>
+  <table>
+    <thead><tr><th>Variable</th><th>Means</th><th>Unit</th></tr></thead>
+    <tbody>
+      <tr><td><code>F</code></td><td>Floor area</td><td>SF</td></tr>
+      <tr><td><code>C</code></td><td>Ceiling area</td><td>SF</td></tr>
+      <tr><td><code>W</code></td><td>Wall area</td><td>SF</td></tr>
+      <tr><td><code>PF</code></td><td>Floor perimeter</td><td>LF</td></tr>
+      <tr><td><code>PC</code></td><td>Ceiling perimeter</td><td>LF</td></tr>
+    </tbody>
+  </table>
+  <p>
+    You can combine them with <code>+ - * / ( )</code>, and a number next to a variable multiplies it —
+    <code>0.41C</code> means 0.41 × ceiling area. The advantage over a typed number is that the quantity stays tied to
+    the measured room: the cheat-sheet sits next to the field so you do not have to memorise it.
+  </p>
+
+  <h3>Adding items</h3>
+  <p>
+    <strong>Add line item</strong> opens the price catalog. Search it by code or description, and add what you need.
+    The panel states where the item will land — <em>Adding to: Project</em>, or the room you picked — and lets you
+    change that destination before you add, so new lines do not quietly pile up at the project level.
+    <strong>Add room</strong> creates a room group when the scope needs one the sketch does not have.
+  </p>
+
+  <h3>Duplicating, moving, deleting</h3>
   <ul>
-    <li>Editing in place: codes, description, quantity, unit price.</li>
-    <li>The Calc field: it takes a plain number (<code>12</code>), a formula (<code>12+8</code>), or a sketch
-      variable — <code>F</code> floor, <code>C</code> ceiling, <code>W</code> walls, <code>PF</code> floor
-      perimeter — with <code>+ - * / ( )</code> and implicit multiplication, so <code>0.41C</code> means
-      0.41 &times; ceiling area. The editor keeps this cheat-sheet next to the field.</li>
-    <li>Adding a line item from the price catalog.</li>
-    <li>Duplicating, moving between rooms, and deleting items.</li>
-    <li>Assigning an item that has no room.</li>
-    <li>Bypassing a flagged item, and why the reason you type matters later.</li>
-    <li>Excluded items: what ends up there and how to bring something back.</li>
-    <li>Unsaved changes, saving, and discarding.</li>
+    <li><strong>Duplicate</strong> copies a line — useful when the same work repeats in several rooms with different quantities.</li>
+    <li><strong>Move</strong> reassigns a line to another room, which is how you clear items sitting under Project.</li>
+    <li><strong>Delete</strong> removes it. Deleting is per line, and the row actions sit at the end of every row.</li>
+    <li>Tick several rows first and the toolbar offers the same actions in bulk.</li>
   </ul>
 
-  <figure class="shot" data-shot="09-inline-edit" data-where="Editor → edit a cell">
+  <h3>Saving and discarding</h3>
+  <p>
+    <strong>Save</strong> commits the round and creates a new revision of the version. <strong>Discard</strong>
+    throws the pending edits away and returns the table to the last saved state. Leaving the editor with unsaved
+    changes prompts you first.
+  </p>
+
+  <figure class="shot" data-shot="09-inline-edit" data-where="Editor, a cell in edit mode">
     <img src="screenshots/09-inline-edit.png" alt="Editing a line item in place" />
     <div class="shot-ph">
       <div class="ph-tag">Screenshot placeholder</div>
@@ -792,6 +904,20 @@
     </div>
     <figcaption>Edits are held as unsaved changes until you save the round.</figcaption>
   </figure>
+
+  <figure class="shot" data-shot="15-add-line-item" data-where="Editor → Add line item">
+    <img src="screenshots/15-add-line-item.png" alt="The add line items panel with the price catalog" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">Adding from the catalog</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/15-add-line-item.png</dd>
+        <dt>Where</dt><dd>Editor &rarr; Add line item</dd>
+        <dt>Must show</dt><dd>The catalog list and the "Adding to" destination with its Change link</dd>
+      </dl>
+    </div>
+    <figcaption>The catalog panel tells you where the new line will land before you add it.</figcaption>
+  </figure>
 </section>
 
 <hr class="sep" />
@@ -799,35 +925,53 @@
 <!-- ============================================================ 9 -->
 <section id="quality">
   <div class="sec-head">
-    <h2 class="sec">9. Checking quality before you export</h2>
-    <span class="badge outline">Outline — to expand</span>
+    <h2 class="sec">9. Clearing required actions</h2>
   </div>
-  <p class="sec-note">Future Document360 article: <em>Validation and coverage checks</em>.</p>
 
   <p>
-    Before an estimate leaves the portal, the built-in checks tell you what still needs a decision. The toolbar
-    keeps the count in view — <em>49 required actions</em> in the screenshot above — and opens the full report when
-    you click it. When nothing is left, the report says so plainly: <em>no required actions — this estimate is
-    ready to export</em>.
+    Before an estimate leaves the portal, DocuSketch tells you what still needs a decision. The toolbar keeps the
+    count in view — <strong>28 required actions</strong> — and clicking it opens the full report. Rows that need
+    attention are highlighted in the table too, so you can work them in place.
   </p>
 
-  <h3>To expand here</h3>
+  <h3>What the report contains</h3>
+  <p>
+    The report groups everything by how much it matters, and says so at the top: <em>errors should be fixed before
+    export; warnings and suggested items are optional</em>.
+  </p>
   <ul>
-    <li>The issues report: unassigned items first, then errors, then suggestions.</li>
-    <li>Fixing versus bypassing — and when bypassing in bulk is reasonable.</li>
-    <li>Accepting a suggested item.</li>
-    <li>The coverage audit and gap analysis.</li>
+    <li><strong>Errors</strong> — something is wrong with the line and the export will carry it. Fix these.</li>
+    <li><strong>Warnings</strong> — most commonly a missing activity code (ACT) or a description that overrides the catalog default. Each one names the line number and its code, so you can tell at a glance whether it matters.</li>
+    <li><strong>Unassigned items</strong> — lines with no room. They export, but nobody downstream can tell where the work happens.</li>
+    <li><strong>Suggested items</strong> — things DocuSketch thinks are missing, offered rather than applied.</li>
   </ul>
 
-  <figure class="shot" data-shot="10-validation-report" data-where="Editor → toolbar → Issues">
+  <h3>Working through them</h3>
+  <p>
+    Each entry offers <strong>Review</strong>, which takes you to that line in the table, and <strong>Ignore</strong>,
+    which clears the flag without changing the line. <strong>Filter table to flagged rows</strong> hides everything
+    else, which is the fastest way to clear a long list. Dismissed warnings are not gone forever — they come back if
+    the condition that raised them returns.
+  </p>
+
+  <div class="note warn">
+    <strong>Ignore is a decision, not a shortcut</strong>
+    <p>
+      Ignoring a warning records that you looked at it and chose to proceed. That is a reasonable thing to do for a
+      code your office does not use — but it is worth a moment's thought on anything that affects a quantity or a
+      price, because the export carries the line as it stands.
+    </p>
+  </div>
+
+  <figure class="shot" data-shot="10-validation-report" data-where="Editor toolbar → required actions">
     <img src="screenshots/10-validation-report.png" alt="The validation report" />
     <div class="shot-ph">
       <div class="ph-tag">Screenshot placeholder</div>
       <div class="ph-title">Validation report</div>
       <dl>
         <dt>File</dt><dd class="ph-file">screenshots/10-validation-report.png</dd>
-        <dt>Where</dt><dd>Editor toolbar, the required-actions button</dd>
-        <dt>Must show</dt><dd>Unassigned items, errors and suggested items sections with counts</dd>
+        <dt>Where</dt><dd>Editor toolbar &rarr; the required-actions button</dd>
+        <dt>Must show</dt><dd>Grouped entries with counts, and the Review / Ignore actions</dd>
       </dl>
     </div>
     <figcaption>Everything that needs a decision before export, in one list.</figcaption>
@@ -840,35 +984,69 @@
 <section id="ai">
   <div class="sec-head">
     <h2 class="sec">10. AI assistance</h2>
-    <span class="badge outline">Outline — to expand</span>
   </div>
-  <p class="sec-note">Future Document360 article: <em>AI assistance in the estimate editor</em>. Availability varies by account — confirm before publishing.</p>
 
   <p>
-    Beyond generating the scope, the editor can answer questions about the estimate and act on instructions in
-    plain language. Both assistants sit in the top-right corner of the editor: <strong>Ask DS AI</strong> and
-    <strong>Ask Aime</strong>.
+    Beyond generating the scope, the editor offers three kinds of help. All of them propose; none of them change the
+    estimate without you.
   </p>
 
-  <h3>To expand here</h3>
-  <ul>
-    <li>Asking a question about the estimate, and what the answer is based on.</li>
-    <li>Describing a change in words and reviewing what it proposes before applying it.</li>
-    <li>What these assistants can and cannot see.</li>
-  </ul>
+  <h3>AI suggestions</h3>
+  <p>
+    The toolbar carries a count of <strong>AI suggestions</strong> — additional line items DocuSketch thinks belong in
+    this estimate but did not add. Open it and they are listed the way the estimate is: by project, level and room,
+    each with its code, description, quantity, price and confidence. Every row offers <strong>Add line item</strong> to
+    accept it and <strong>Ignore</strong> to dismiss it. This is the safest way to widen a Documented scope: you see
+    each candidate with its evidence rather than regenerating everything.
+  </p>
 
-  <figure class="shot" data-shot="11-ai-assistant" data-where="Editor → AI actions">
-    <img src="screenshots/11-ai-assistant.png" alt="AI assistance panel" />
+  <h3>Ask DS AI</h3>
+  <p>
+    Describe a change in plain language and review what it proposes before anything is applied — <em>add baseboard
+    trim</em>, <em>swap vinyl for LVP</em>, <em>make cleaning heavy</em>. It returns proposed line items, and you
+    decide.
+  </p>
+
+  <h3>Ask Aime</h3>
+  <p>
+    An AI review of the estimate as it stands, for when you want a second opinion on the whole scope rather than a
+    specific edit.
+  </p>
+
+  <div class="note">
+    <strong>Availability</strong>
+    <p>
+      The AI assistants are rolled out per account. If you do not see them in the editor header, they are not enabled
+      for your company yet.
+    </p>
+  </div>
+
+  <figure class="shot" data-shot="14-ai-suggestions" data-where="Editor toolbar → AI suggestions">
+    <img src="screenshots/14-ai-suggestions.png" alt="The AI suggestions list" />
     <div class="shot-ph">
       <div class="ph-tag">Screenshot placeholder</div>
-      <div class="ph-title">AI assistance</div>
+      <div class="ph-title">AI suggestions</div>
       <dl>
-        <dt>File</dt><dd class="ph-file">screenshots/11-ai-assistant.png</dd>
-        <dt>Where</dt><dd>Editor header, Ask DS AI / Ask Aime — account must have them enabled</dd>
-        <dt>Must show</dt><dd>The panel open with one question and its answer</dd>
+        <dt>File</dt><dd class="ph-file">screenshots/14-ai-suggestions.png</dd>
+        <dt>Where</dt><dd>Editor toolbar &rarr; AI suggestions</dd>
+        <dt>Must show</dt><dd>Suggested items grouped by room with Add line item / Ignore</dd>
       </dl>
     </div>
-    <figcaption>Ask about the estimate without leaving it.</figcaption>
+    <figcaption>Suggested items, each with its confidence — accepted one at a time.</figcaption>
+  </figure>
+
+  <figure class="shot" data-shot="11-ai-assistant" data-where="Editor header → Ask DS AI">
+    <img src="screenshots/11-ai-assistant.png" alt="The Ask DS AI panel" />
+    <div class="shot-ph">
+      <div class="ph-tag">Screenshot placeholder</div>
+      <div class="ph-title">Ask DS AI</div>
+      <dl>
+        <dt>File</dt><dd class="ph-file">screenshots/11-ai-assistant.png</dd>
+        <dt>Where</dt><dd>Editor header &rarr; Ask DS AI</dd>
+        <dt>Must show</dt><dd>The panel open beside the table, with its prompt field</dd>
+      </dl>
+    </div>
+    <figcaption>Describe a change; review the proposed line items before they land.</figcaption>
   </figure>
 </section>
 
@@ -878,40 +1056,48 @@
 <section id="export">
   <div class="sec-head">
     <h2 class="sec">11. Exporting and sharing</h2>
-    <span class="badge outline">Outline — to expand</span>
   </div>
-  <p class="sec-note">Future Document360 article: <em>Exporting an Initial Estimate</em>.</p>
 
   <p>
-    When the estimate is ready, the export panel puts the output formats and what goes into them in one place —
-    the line items themselves, the floor plan with measurements, and the supporting documentation.
+    <strong>Export</strong> opens a panel titled <em>Download or share this estimate</em>. The estimate leaves
+    DocuSketch as an <strong>ESX</strong> file — the format Xactimate reads — so the scope you reviewed here becomes
+    the scope you continue with there.
   </p>
+
+  <h3>Clear the blockers first</h3>
   <p>
-    If anything still needs a decision, the panel opens on that instead: a red count of items needing review, with
-    <strong>Review</strong> to work through them one by one and <strong>Bypass all</strong> to accept them as they
-    are. You clear that list first, then choose a format.
+    If anything still needs a decision, the panel opens on that instead of on the formats: a red count of items
+    needing review, each one named by line number and code, with <strong>Review</strong> to work through them and
+    <strong>Bypass all</strong> to accept them as they stand. You clear that list, then export.
   </p>
 
-  <h3>To expand here</h3>
-  <ul>
-    <li>Choosing the report type, and which one your recipient actually needs.</li>
-    <li>What is included in each export, and what is deliberately left out.</li>
-    <li>Warnings that block an export, and how to clear them.</li>
-    <li>Sharing the estimate instead of downloading it.</li>
-  </ul>
+  <h3>Export options</h3>
+  <p>
+    Alongside the file, the panel offers what travels with it — line notes, and a documentation pack of the project's
+    photos and reports. Options still being built are marked <em>Coming soon</em> in the panel, so what you see there
+    is always the current truth.
+  </p>
 
-  <figure class="shot" data-shot="12-export-panel" data-where="Editor → toolbar → Export">
+  <div class="note tip">
+    <strong>Exporting does not freeze the estimate</strong>
+    <p>
+      The version stays editable after an export, and the project keeps every version. If you export and then spot a
+      correction, fix it and export again — the earlier file is unaffected.
+    </p>
+  </div>
+
+  <figure class="shot" data-shot="12-export-panel" data-where="Editor toolbar → Export">
     <img src="screenshots/12-export-panel.png" alt="The export panel" />
     <div class="shot-ph">
       <div class="ph-tag">Screenshot placeholder</div>
       <div class="ph-title">Export panel</div>
       <dl>
         <dt>File</dt><dd class="ph-file">screenshots/12-export-panel.png</dd>
-        <dt>Where</dt><dd>Editor toolbar, Export</dd>
-        <dt>Must show</dt><dd>Report type options and the what-is-included list</dd>
+        <dt>Where</dt><dd>Editor toolbar &rarr; Export</dd>
+        <dt>Must show</dt><dd>The items-need-review block, the ESX section and the export options</dd>
       </dl>
     </div>
-    <figcaption>Pick the format, see what travels with it.</figcaption>
+    <figcaption>Blockers first, then the file.</figcaption>
   </figure>
 </section>
 
@@ -920,33 +1106,31 @@
 <!-- ============================================================ 12 -->
 <section id="mobile">
   <div class="sec-head">
-    <h2 class="sec">12. In the mobile app</h2>
-    <span class="badge outline">Outline — to expand</span>
+    <h2 class="sec">12. On a phone</h2>
+    <span class="badge outline">Native app section pending</span>
   </div>
 
   <p>
-    Opened on a phone, the portal switches to a layout built for one: each line item is a card with its code,
-    description, quantity and price, with search, the pricing tier and the AI actions stacked above, and
-    <strong>Add</strong> and <strong>Export</strong> fixed to the bottom of the screen. Tapping a card opens that
-    item's details.
+    Opened on a phone, the portal switches to a layout built for one. Each line item becomes a card with its code,
+    description, quantity and price; search, the pricing tier and the AI actions stack above the list;
+    <strong>Add</strong> and <strong>Export</strong> are fixed to the bottom of the screen. A <em>Saved</em> indicator
+    in the header tells you the state of your edits. Tapping a card opens that item's details, including its
+    justifications.
+  </p>
+  <p>
+    This is the same estimate and the same data as on a desktop — handy for a walk-through on site, where you are
+    checking the scope against the room you are standing in. Long review sessions are still easier on a desktop,
+    where the table and the detail panel sit side by side.
   </p>
   <p>
     The DocuSketch mobile app covers the same estimate separately — that part is still to be written.
   </p>
 
-  <h3>To cover</h3>
-  <ul>
-    <li>Reviewing and editing items on a small screen.</li>
-    <li>Evidence and justification on mobile.</li>
-    <li>What you still need a desktop for.</li>
-    <li>The native app: how it differs from the portal on a phone.</li>
-  </ul>
-
-  <figure class="shot" data-shot="13-mobile-list" data-where="Mobile app — to be captured later">
-    <img src="screenshots/13-mobile-list.png" alt="Initial Estimate on mobile" />
+  <figure class="shot" data-shot="13-mobile-list" data-where="Portal at phone width, editor open">
+    <img src="screenshots/13-mobile-list.png" alt="Initial Estimate at phone width" />
     <div class="shot-ph">
       <div class="ph-tag">Screenshot placeholder</div>
-      <div class="ph-title">Initial Estimate on mobile</div>
+      <div class="ph-title">The estimate on a phone</div>
       <dl>
         <dt>File</dt><dd class="ph-file">screenshots/13-mobile-list.png</dd>
         <dt>Where</dt><dd>Portal at phone width, editor open</dd>
@@ -963,18 +1147,46 @@
 <section id="faq">
   <div class="sec-head">
     <h2 class="sec">13. FAQ and troubleshooting</h2>
-    <span class="badge stub">Stub — collect from support</span>
+    <span class="badge outline">To extend from support tickets</span>
   </div>
 
-  <p>To be filled from real support tickets. Candidates so far:</p>
-  <ul>
-    <li>Why is a room missing from my estimate?</li>
-    <li>Why does a line item have a quantity I did not expect?</li>
-    <li>Why can I not export yet?</li>
-    <li>I generated with the wrong scope strategy — what now?</li>
-    <li>Can I get back a line item I deleted?</li>
-    <li>Why do prices differ from what my office normally uses?</li>
-  </ul>
+  <h3>Why is a room missing from my estimate?</h3>
+  <p>
+    The scope follows the rooms marked as affected. If a room was never marked, nothing was generated for it. Mark it
+    and generate a new version, or add the room and its items by hand in the editor.
+  </p>
+
+  <h3>Why does a line item have a quantity I did not expect?</h3>
+  <p>
+    Open the line and read <strong>Quantity Justification</strong>. It names how the quantity was determined and
+    writes out the calculation, including which of two candidate figures was used. If the inputs are wrong, correct
+    the Calc expression; if the method is wrong, override the quantity directly.
+  </p>
+
+  <h3>Why can I not export yet?</h3>
+  <p>
+    Items still need review. The export panel lists them with their line numbers — clear them, or bypass them
+    deliberately, and the export proceeds.
+  </p>
+
+  <h3>I generated with the wrong scope strategy. What now?</h3>
+  <p>
+    Use <strong>Back to original version</strong> to reopen the original generated set and pick a different strategy,
+    or generate a new version. Either way the current version stays on the project.
+  </p>
+
+  <h3>Why are so many items sitting under Project instead of a room?</h3>
+  <p>
+    Either they are genuinely project-wide, or the capture did not tie them to a room. Move them with the row action —
+    and treat a long Project group as a sign that affected areas were marked thinly.
+  </p>
+
+  <h3>Why do prices differ from what my office normally uses?</h3>
+  <p>
+    Check the pricing tier — <strong>Min</strong>, <strong>Avg</strong> and <strong>Max</strong> change every line at
+    once. Beyond that, pricing comes from your office's catalog, so a persistent difference is a catalog question
+    rather than an estimate one.
+  </p>
 </section>
 
 <hr class="sep" />
@@ -983,7 +1195,6 @@
 <section id="glossary">
   <div class="sec-head">
     <h2 class="sec">14. Glossary</h2>
-    <span class="badge stub">Stub</span>
   </div>
 
   <table>
@@ -993,10 +1204,14 @@
       <tr><td><strong>CAT / SEL / Act</strong></td><td>Category, selector and activity — the estimating code that identifies the work.</td></tr>
       <tr><td><strong>Scope strategy</strong></td><td>How broad the generated scope should be: Documented, Standard or Expanded.</td></tr>
       <tr><td><strong>Affected area</strong></td><td>A room marked as touched by the loss. The scope follows what is marked.</td></tr>
-      <tr><td><strong>Source</strong></td><td>What produced a line item — DocuSketch or a person.</td></tr>
+      <tr><td><strong>Source</strong></td><td>What produced a line item — DS Engine for DocuSketch, User for a person.</td></tr>
+      <tr><td><strong>Quantity confidence</strong></td><td>How sure DocuSketch is of a quantity: High, Medium or Low.</td></tr>
       <tr><td><strong>Justification</strong></td><td>The stated reason a line item, or its quantity, is what it is.</td></tr>
-      <tr><td><strong>Provenance</strong></td><td>The trail from a line item back to the captured evidence behind it.</td></tr>
+      <tr><td><strong>Required action</strong></td><td>A flag on the estimate that wants a decision before export.</td></tr>
+      <tr><td><strong>AI suggestion</strong></td><td>An additional line item DocuSketch proposes but does not add.</td></tr>
+      <tr><td><strong>Calc</strong></td><td>The expression a quantity is derived from, which can reference sketch measurements.</td></tr>
       <tr><td><strong>Version / revision</strong></td><td>A generated estimate, and a saved round of edits inside it.</td></tr>
+      <tr><td><strong>ESX</strong></td><td>The export format Xactimate reads.</td></tr>
     </tbody>
   </table>
 </section>
@@ -1018,28 +1233,38 @@
 
 <details class="team">
   <summary>For the team — remove before publishing</summary>
+
   <p><strong>Open questions</strong></p>
   <ol>
-    <li><strong>Naming clash, found while capturing:</strong> the Estimates tab calls the action <em>Create Instant Estimate</em>, the rows read <em>Initial estimate v12</em>, and the header buttons are <em>Ask DS AI</em> / <em>Ask Aime</em>. Which name does the article teach?</li>
-    <li>How do we position Initial Estimate against an ordered estimate delivered by the DocuSketch estimating team? Readers will conflate them.</li>
-    <li>Which parts are behind feature flags or plan tiers today — AI assistance, coverage audit, expanded export options? The article must not promise what an account cannot see.</li>
-    <li>Export: which formats do we document for customers, and is there anything deliberately not exported that we should state (for example pricing in some outputs)?</li>
-    <li><strong>Found while capturing:</strong> Export opens straight into the blocking list when items still need review, with <em>Bypass all</em> right there. Do we teach bypassing at all, or only fixing?</li>
+    <li><strong>Naming.</strong> The Estimates tab calls the action <em>Create Instant Estimate</em>, the rows read <em>Initial estimate v12</em>, and the assistants are <em>Ask DS AI</em> and <em>Ask Aime</em>. The article teaches "Initial Estimate" throughout — confirm that is the customer-facing name.</li>
+    <li>How do we position Initial Estimate against an estimate ordered from the DocuSketch expert team? Readers will conflate them.</li>
+    <li>Which parts are gated per account today — the AI assistants certainly, possibly more? The article must not promise what an account cannot see.</li>
+    <li>Export: ESX is documented here. Are PDF / JSON / share links customer-facing too, or internal?</li>
     <li>Is the audience split real — do adjusters need their own shorter article about evidence and justification only?</li>
-    <li>Sections 4 to 11 are outlines. Which ones does the team want expanded first?</li>
+    <li>Section 12 covers the portal on a phone. Who writes the native-app part, and does it belong in this article or its own?</li>
   </ol>
-  <p><strong>Screenshot conventions to agree</strong></p>
+
+  <p><strong>Known gap: the provenance sidebar</strong></p>
+  <p>
+    SES-1033 added a docked right rail whose tabs are the sources behind a line item — Mapping, 360° Tour, Field
+    Notes, Scope Walkthrough, Scope Defaults, Carrier Directives — opened by clicking a source label. It is gated by
+    two flags (<code>estimateProvenanceSidebar</code> + <code>aiJustificationVisibility</code>) and did not render on
+    sandbox under the account used for these shots, so section 7 documents today's justification blocks only. When the
+    flags go on, section 7 needs a rewrite and two new screenshots.
+  </p>
+
+  <p><strong>Screenshot conventions</strong></p>
   <ul>
-    <li>One demo project used for all shots, so numbers stay consistent across the article. <strong>The current shots come from sandbox project “24 Pinehurst Crescent (migration from 2856831)”, which is not fit for publication:</strong> every price is $0.00, the line items are all unassigned (one Project group, no rooms), several rows repeat, and one note carries an internal ticket reference. We need a clean demo project before final capture.</li>
-    <li>No real customer names, addresses or claim numbers in any capture.</li>
-    <li>Browser at a fixed width, light theme, no personal avatar in the header.</li>
+    <li>All shots come from sandbox project <em>CAT Hour Test 6</em> (priced items, rooms, AI suggestions), except the scope picker, which came from an older project because no current version had an uncommitted scope.</li>
+    <li>No real customer names, addresses or claim numbers in any capture. Sandbox data is throwaway, but check each frame before publishing.</li>
+    <li>Browser at 1440×900, 2× density, light theme.</li>
+    <li>Re-run with <code>node capture.mjs run &lt;steps.json&gt;</code> — the capture script sits next to this page.</li>
   </ul>
 </details>
 
 <footer class="page">
   Draft prepared for team review. Source of truth for the final article is Document360.
 </footer>
-
 
     </div>
   </main>

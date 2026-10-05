@@ -9,7 +9,10 @@
  *   node capture.mjs shot <name> [url]     capture the full page (or the given url)
  *   node capture.mjs clip <name> <sel>     capture one element by CSS selector
  */
-import { chromium } from 'playwright';
+// Playwright is not installed next to this file — resolve it from a local checkout that has it.
+// Override with PW=/path/to/node_modules/playwright when the default moves.
+const PW = process.env.PW ?? '/Users/artemarmeev/Work/GitHubRep2/docusketch-frontend/node_modules/playwright/index.mjs';
+const { chromium } = await import(PW).catch(() => import('playwright'));
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
@@ -99,6 +102,7 @@ if (mode === 'run') {
       if (st.clickText) { await page.getByText(st.clickText, { exact: false }).first().click({ timeout: 15000 }); await settle(st.settle ?? 900); }
       if (st.waitFor) { await page.locator(st.waitFor).first().waitFor({ state: 'visible', timeout: 20000 }); }
       if (st.wait) { await page.waitForTimeout(st.wait); }
+      if (st.mouseTo) { await page.mouse.move(st.mouseTo[0], st.mouseTo[1]); await page.waitForTimeout(300); }
       if (st.scrollTo) { await page.locator(st.scrollTo).first().scrollIntoViewIfNeeded(); await page.waitForTimeout(400); }
       if (st.eval) { console.log('   eval:', JSON.stringify(await page.evaluate(st.eval)).slice(0, 600)); }
       if (st.shot) { await page.screenshot({ path: path.join(SHOTS, `${st.shot}.png`), fullPage: !!st.fullPage }); }

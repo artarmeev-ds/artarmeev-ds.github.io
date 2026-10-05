@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Win the Work — DocuSketch Help Center (preview)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================
+     Help Center look-alike shell.
+     Type scale, colours and chrome copied from help.docusketch.com
+     (Document360): Roboto 13px / 1.55, h1 32.5px 600, link #0065FF,
+     brand strip #f4f3ea, side rail #f4f4f5 / 359px.
+     Deliberately NOT functional: the logo does not navigate and the
+     article tree is empty, so nobody mistakes this for the live site.
+     ============================================================ */
+  :root {
+    --hc-font: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --hc-brand-bg: #f4f3ea;
+    --hc-rail-bg: #f4f4f5;
+    --hc-line: #e2e2e4;
+    --hc-line-soft: #ededee;
+    --ink: #000000;
+    --ink-2: #3f4245;
+    --ink-3: #74777b;
+    --link: #0065ff;
+    --link-soft: #eaf1ff;
+    --warn: #96631a;
+    --warn-soft: #fdf6e7;
+    --warn-line: #ecdcb6;
+    --ok: #1a7f52;
+    --ok-soft: #eaf6f0;
+    --ok-line: #c4e3d3;
+    --mock: #6b4b96;
+    --mock-soft: #f7f4fb;
+    --mock-line: #e3d9ef;
+    --rail-w: 359px;
+    --brand-h: 60px;
+    --contentw: 820px;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: #fff;
+    color: var(--ink);
+    font-family: var(--hc-font);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* ---------------- top chrome ---------------- */
+  .hc-top { display: flex; align-items: stretch; border-bottom: 1px solid var(--hc-line); position: sticky; top: 0; z-index: 20; background: #fff; }
+  .hc-brand {
+    width: var(--rail-w); min-width: var(--rail-w); height: var(--brand-h);
+    background: var(--hc-brand-bg);
+    display: flex; align-items: center; padding: 0 24px;
+    cursor: default; user-select: none;
+  }
+  .hc-brand img { height: 30px; width: auto; display: block; }
+  .hc-brand .brand-flag {
+    margin-left: 10px; font-size: 10px; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--mock); background: #fff; border: 1px solid var(--mock-line); border-radius: 3px; padding: 2px 6px;
+  }
+  .hc-navbar { flex: 1; background: var(--hc-rail-bg); display: flex; align-items: center; gap: 16px; padding: 0 20px; min-width: 0; }
+  .crumbs { display: flex; align-items: center; gap: 8px; color: var(--ink-2); font-size: 13px; white-space: nowrap; overflow: hidden; }
+  .hc-rail, .hc-top { font-size: 13px; }
+  .crumbs .sep { color: #a9adb2; }
+  .crumbs .here { color: var(--ink); }
+  .hc-search {
+    margin-left: auto; display: flex; align-items: center; gap: 8px;
+    background: #fff; border: 1px solid var(--hc-line); border-radius: 4px;
+    padding: 5px 10px; min-width: 240px; color: #9aa0a6; font-size: 13px; cursor: not-allowed;
+  }
+
+  /* ---------------- body layout ---------------- */
+  .hc-body { display: flex; align-items: flex-start; }
+  .hc-rail {
+    width: var(--rail-w); min-width: var(--rail-w);
+    background: var(--hc-rail-bg); border-right: 1px solid var(--hc-line);
+    min-height: calc(100vh - var(--brand-h));
+    padding: 16px 16px 40px;
+    position: sticky; top: var(--brand-h); align-self: flex-start;
+    max-height: calc(100vh - var(--brand-h)); overflow: auto;
+  }
+  .rail-filter {
+    width: 100%; background: #fff; border: 1px solid var(--hc-line); border-radius: 4px;
+    padding: 6px 10px; font-family: var(--hc-font); font-size: 13px; color: #9aa0a6; cursor: not-allowed;
+  }
+  .rail-empty {
+    margin-top: 18px; border: 1px dashed #c9ccd0; border-radius: 6px; background: #fff;
+    padding: 16px; color: var(--ink-2);
+  }
+  .rail-empty .re-title { font-weight: 500; margin-bottom: 6px; color: var(--ink); }
+  .rail-empty p { margin: 0 0 10px; font-size: 12.5px; color: var(--ink-3); line-height: 1.5; }
+  .rail-empty p:last-child { margin-bottom: 0; }
+
+  .hc-main { flex: 1; min-width: 0; padding: 26px 40px 96px; }
+  .hc-article { max-width: var(--contentw); }
+
+  /* ---------------- preview notice ---------------- */
+  .preview-note {
+    border: 1px solid var(--mock-line); background: var(--mock-soft); border-radius: 6px;
+    padding: 14px 18px; margin-bottom: 26px; color: #4f3a70; font-size: 14px; line-height: 1.55;
+  }
+  .preview-note strong { color: var(--mock); }
+
+  /* ---------------- article typography (D360 scale) ---------------- */
+  .article-title { font-size: 36px; font-weight: 600; line-height: 1.2; margin: 0 0 8px; color: var(--ink); }
+  .article-info { display: flex; flex-wrap: wrap; gap: 6px 16px; color: var(--ink-3); font-size: 14px; padding-bottom: 18px; border-bottom: 1px solid var(--hc-line-soft); margin-bottom: 26px; }
+  .lede { font-size: 18px; line-height: 1.6; color: var(--ink-2); margin: 0 0 24px; }
+
+  p { margin: 0 0 18px; }
+  ul, ol { margin: 0 0 16px; padding-left: 24px; }
+  li { margin-bottom: 4px; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code { background: #f4f4f5; border: 1px solid var(--hc-line); border-radius: 3px; padding: 1px 5px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; }
+  hr.sep { border: 0; border-top: 1px solid var(--hc-line-soft); margin: 34px 0; }
+
+  section { scroll-margin-top: 76px; margin-bottom: 34px; }
+  h2.sec { font-size: 28px; font-weight: 600; line-height: 1.3; margin: 0; color: var(--ink); }
+  h3 { font-size: 20px; font-weight: 600; margin: 28px 0 8px; }
+  h4 { font-size: 16px; font-weight: 600; margin: 20px 0 6px; color: var(--ink-2); }
+  .sec-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+  .sec-note { font-size: 14px; color: var(--ink-3); margin: -6px 0 20px; }
+
+  /* ---------------- in-article TOC ---------------- */
+  nav.toc { background: #fafafb; border: 1px solid var(--hc-line); border-radius: 6px; padding: 16px 20px; margin: 0 0 32px; }
+  nav.toc h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin: 0 0 10px; font-weight: 600; }
+  nav.toc ol { margin: 0; padding-left: 20px; columns: 2; column-gap: 32px; }
+  nav.toc li { margin-bottom: 4px; break-inside: avoid; }
+  nav.toc a { color: var(--ink); }
+  nav.toc a:hover { color: var(--link); }
+
+  /* ---------------- badges ---------------- */
+  .badge { font-size: 11px; letter-spacing: .05em; text-transform: uppercase; border-radius: 3px; padding: 2px 7px; border: 1px solid var(--hc-line); color: var(--ink-3); background: #f4f4f5; white-space: nowrap; }
+  .badge.draft { background: var(--link-soft); border-color: #cfe0ff; color: #0b46b4; }
+  .badge.outline { background: var(--warn-soft); border-color: var(--warn-line); color: var(--warn); }
+  .badge.stub { background: var(--mock-soft); border-color: var(--mock-line); color: var(--mock); }
+
+  /* ---------------- callouts (D360-ish) ---------------- */
+  .note { border: 1px solid #cfe0ff; border-left: 3px solid var(--link); background: var(--link-soft); border-radius: 4px; padding: 12px 16px; margin: 18px 0; }
+  .note.warn { border-color: var(--warn-line); border-left-color: #d79a2b; background: var(--warn-soft); }
+  .note.tip { border-color: var(--ok-line); border-left-color: var(--ok); background: var(--ok-soft); }
+  .note strong { display: block; margin-bottom: 2px; }
+  .note p:last-child { margin-bottom: 0; }
+
+  /* ---------------- tables ---------------- */
+  table { width: 100%; border-collapse: collapse; margin: 20px 0 24px; font-size: 15px; }
+  th, td { text-align: left; vertical-align: top; padding: 9px 12px; border: 1px solid var(--hc-line); }
+  th { background: #f7f7f8; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-3); font-weight: 600; white-space: nowrap; }
+  td code { white-space: nowrap; }
+
+  /* ---------------- steps ---------------- */
+  ol.steps { list-style: none; padding: 0; counter-reset: step; }
+  ol.steps > li { counter-increment: step; position: relative; padding: 0 0 0 44px; margin-bottom: 18px; }
+  ol.steps > li::before {
+    content: counter(step); position: absolute; left: 0; top: 0;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--link-soft); color: #0b46b4; font-size: 14px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+  }
+  ol.steps strong { display: block; }
+
+  /* ---------------- screenshots ---------------- */
+  figure.shot { margin: 20px 0 24px; }
+  figure.shot img { display: none; width: 100%; height: auto; border: 1px solid var(--hc-line); border-radius: 6px; }
+  figure.shot.has-shot img { display: block; }
+  figure.shot.has-shot .shot-ph { display: none; }
+  .shot-ph {
+    border: 1.5px dashed #c9ccd0; border-radius: 6px;
+    background: repeating-linear-gradient(45deg, #fcfcfd, #fcfcfd 10px, #f6f6f8 10px, #f6f6f8 20px);
+    padding: 18px; color: var(--ink-2);
+  }
+  .shot-ph .ph-tag { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin-bottom: 6px; }
+  .shot-ph .ph-title { font-weight: 600; margin-bottom: 8px; color: var(--ink); }
+  .shot-ph dl { display: grid; grid-template-columns: 120px 1fr; gap: 4px 12px; margin: 0; font-size: 15px; }
+  .shot-ph dt { color: var(--ink-3); }
+  .shot-ph dd { margin: 0; }
+  .shot-ph .ph-file { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }
+  figcaption { font-size: 14px; color: var(--ink-3); margin-top: 8px; }
+
+  .flow { width: 100%; height: auto; margin: 20px 0 8px; }
+
+  /* ---------------- shot list ---------------- */
+  .pill { font-size: 11px; border-radius: 3px; padding: 2px 7px; border: 1px solid var(--hc-line); white-space: nowrap; }
+  .pill.todo { background: var(--warn-soft); border-color: var(--warn-line); color: var(--warn); }
+  .pill.done { background: var(--ok-soft); border-color: var(--ok-line); color: var(--ok); }
+  .progress-line { font-size: 15px; color: var(--ink-2); margin-bottom: 4px; }
+
+  /* ---------------- team block ---------------- */
+  details.team { border: 1px solid var(--mock-line); background: var(--mock-soft); border-radius: 6px; padding: 14px 18px; margin-top: 40px; }
+  details.team summary { cursor: pointer; font-weight: 600; color: var(--mock); }
+  details.team[open] summary { margin-bottom: 10px; }
+
+  footer.page { border-top: 1px solid var(--hc-line-soft); margin-top: 40px; padding-top: 16px; font-size: 14px; color: var(--ink-3); }
+
+  /* ---------------- responsive ---------------- */
+  @media (max-width: 1100px) {
+    .hc-rail { display: none; }
+    .hc-brand { width: auto; min-width: 0; }
+    .hc-main { padding: 22px 24px 72px; }
+  }
+  @media (max-width: 680px) {
+    .hc-search { display: none; }
+    .article-title { font-size: 28px; }
+    h2.sec { font-size: 23px; }
+    nav.toc ol { columns: 1; }
+    .shot-ph dl { grid-template-columns: 1fr; }
+    .shot-ph dt { margin-top: 5px; }
+  }
+  @media print {
+    .hc-top, .hc-rail, nav.toc, details.team { display: none; }
+    .hc-main { padding: 0; }
+  }
+
+  /* ---------------- rail navigation (Golden Thread articles) ---------------- */
+  .rail-group { margin-top: 20px; }
+  .rail-group h4 { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin: 0 0 8px; font-weight: 600; }
+  .rail-nav { list-style: none; margin: 0; padding: 0; }
+  .rail-nav li { margin: 0 0 2px; }
+  .rail-nav a { display: flex; align-items: center; gap: 9px; padding: 7px 10px; border-radius: 4px; color: var(--ink); text-decoration: none; }
+  .rail-nav a:hover { background: #e9e9ec; text-decoration: none; }
+  .rail-nav a.current { background: #e4e4e7; font-weight: 500; }
+  .rail-nav .dot { width: 6px; height: 6px; border-radius: 50%; background: #c3c6ca; flex: none; }
+  .rail-nav a.ready .dot { background: var(--ok); }
+  .rail-nav .wip { margin-left: auto; font-size: 10px; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-3); }
+  .rail-note { margin-top: 18px; border: 1px dashed #c9ccd0; border-radius: 6px; background: #fff; padding: 12px 14px; color: var(--ink-3); font-size: 12.5px; line-height: 1.5; }
+  .rail-note strong { color: var(--ink); display: block; margin-bottom: 4px; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<div class="hc-top">
+  <div class="hc-brand" role="img" aria-label="DocuSketch (preview — not a link)" title="Preview only — this logo does not open the Help Center home page">
+    <img src="../initial-estimate/assets/docusketch-wordmark.png" alt="DocuSketch" />
+    <span class="brand-flag">Preview</span>
+  </div>
+  <div class="hc-navbar">
+    <div class="crumbs">
+      <span>Documentation</span><span class="sep">&rsaquo;</span>
+      <span>Closing</span><span class="sep">&rsaquo;</span>
+      <span class="here">Win the Work</span>
+    </div>
+    <div class="hc-search" aria-disabled="true" title="Search is disabled in this preview">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="#9aa0a6" stroke-width="1.5"/><path d="M11 11l3.5 3.5" stroke="#9aa0a6" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span>Search</span>
+    </div>
+  </div>
+</div>
+
+<div class="hc-body">
+  <aside class="hc-rail">
+    <input class="rail-filter" type="text" placeholder="Filter by name" disabled />
+    <div class="rail-group">
+      <h4>Golden Thread</h4>
+      <ul class="rail-nav">
+        <li><a href="../instant-sketch/"><span class="dot"></span>Instant Sketch<span class="wip">draft</span></a></li>
+        <li><a href="../affected-areas/"><span class="dot"></span>Affected Areas<span class="wip">draft</span></a></li>
+        <li><a href="../scope-walkthrough/"><span class="dot"></span>Scope Walkthrough<span class="wip">draft</span></a></li>
+        <li><a href="../initial-estimate/"><span class="dot"></span>Initial Estimate</a></li>
+        <li><a class="current ready" href="./"><span class="dot"></span>Win the Work<span class="wip">draft</span></a></li>
+      </ul>
+    </div>
+    <div class="rail-note">
+      <strong>Mock-up, not the Help Center</strong>
+      These five are the Golden Thread articles we are drafting. Only Initial Estimate has content; the rest open a
+      placeholder. The logo, search and filter are inert on purpose.
+    </div>
+  </aside>
+
+  <main class="hc-main">
+    <div class="hc-article">
+
+      <div class="preview-note">
+        <strong>Not written yet.</strong>
+        This page is a placeholder so the Golden Thread set can be navigated end to end. Nothing here is
+        documentation.
+      </div>
+
+      <h1 class="article-title">Win the Work</h1>
+      <div class="article-info">
+        <span>Draft in progress</span>
+        <span>No content yet</span>
+        <span>Part of Golden Thread</span>
+      </div>
+
+      <p class="lede">Put the estimate in front of the customer: documents, signature, approval.</p>
+
+      <div class="note">
+        <strong>What this article will cover</strong>
+        <p>
+          The same shape as <a href="../initial-estimate/">Initial Estimate</a>: what the feature is, what has to be
+          in place before you use it, how it works end to end, then a section per screen with real screenshots — on
+          the web portal first, the mobile app after.
+        </p>
+      </div>
+
+      <p>
+        Want this one next? Say so and it gets written the same way: the product is read from the code and the live
+        environment, the screenshots are captured from a sandbox project, and the draft lands here for review before
+        anything moves into Document360.
+      </p>
+
+      <p><a href="../">&larr; Back to the draft list</a></p>
+
+      <footer class="page">
+        Placeholder page. Source of truth for published articles is Document360.
+      </footer>
+
+    </div>
+  </main>
+</div>
+
+</body>
+</html>
